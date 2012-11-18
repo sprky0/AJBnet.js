@@ -18,7 +18,7 @@ var AJBnet = {
 	srcBasePath : "",
 	closureHolder : null,
 	readyStack : [],
-
+	initRun : false,
 
 	/**
 	 * keycode shortcuts
@@ -116,19 +116,25 @@ var AJBnet = {
 	},
 
 	/**
-	 * Explicitly require a library
+	 * Explicitly require a single library
 	 */
 	require : function(lib, postLoadCallback) {
+
 		// do something	
 
 		// if (this.libs[lib] && !this.isObject( this.libs[lib] ))
 		//	throw "Unavailable Library!";
 
 		// replace this with traversal
-		if (this.libs[lib])
-			return true;
+		// if (this.libs[lib])
+		//	return true;
 
-		this.load(lib,postLoadCallback);
+		// future remote load thing
+		// if (!lib.match(/^http/)
+
+		var src = this.srcBasePath + (lib+"").toLowerCase() + ".js";
+
+		this.load(src,postLoadCallback);
 
 		return this;
 	},
@@ -138,14 +144,16 @@ var AJBnet = {
 	 */	
 	depend : function(libs, postLoadCallback) {
 
-		if (typeof libs == "string")
+		if (!this.isArray(libs))
 			libs = [libs];
 
 		// try to load dependencies.  Loaded thingies will exist on this already so we're all set
 		for(var i in libs)
-			this.require(libs[i],postLoadCallback);
+			this.require(libs[i]); // ,postLoadCallback);
+		// if there is more than one, this will be called multiple times.  that is dumb
 
-		// this.execute(postLoadCallback);
+		// sticking this here for now
+		this.execute(postLoadCallback);
 
 		return this;
 	},
@@ -173,16 +181,19 @@ var AJBnet = {
 				pointer[token] = {};
 		}
 
-		this.depend(dependencies,object);
+		if (this.isNull(dependencies) || this.isArray(dependencies) && dependencies.length == 0)
+			this.execute(object);
+		else
+			this.depend(dependencies,object);
 
 	},
 
-	load : function(script,postLoadCallback) {
+	load : function(src,postLoadCallback) {
 
 		var _callback = postLoadCallback;
 		var element = document.createElement("script");
 			element.setAttribute("type","text/javascript");
-			element.setAttribute("src", this.srcBasePath + (script+"").toLowerCase() + ".js");
+			element.setAttribute("src", src);
 			element.onload = function() {AJBnet.execute(_callback);};
 
 		document.getElementsByTagName("head")[0].appendChild( element );

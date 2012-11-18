@@ -3,7 +3,7 @@
  *
  * 
  */
-AJBnet.define("Gallery",['Image'],function(){
+AJBnet.define("Gallery",["Image"],function(){
 // AJBnet.depend('js/image',function(){
 
 	/**
@@ -11,9 +11,7 @@ AJBnet.define("Gallery",['Image'],function(){
 	 */
 	AJBnet.libs.Gallery = function(options) {
 
-		for (i in options||{}){
-			this[i] = options[i];
-		}
+		AJBnet.extend(this,options);
 
 		$(this.container).css({overflow : "hidden"});
 
@@ -63,7 +61,7 @@ AJBnet.define("Gallery",['Image'],function(){
 		}
 	
 		/**
-		 * Get offset
+		 * Get an item by its offset from the current item
 		 */	
 		AJBnet.libs.Gallery.prototype.getByOffset = function(offset) {
 	
