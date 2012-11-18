@@ -163,7 +163,7 @@ var AJBnet = {
 
 		var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
 
-		console.log(path);
+		this.log(path);
 
 		var pointer = this.libs;
 
@@ -261,6 +261,18 @@ var AJBnet = {
 	 */
 	isReady : function() {
 		return (document && document.getElementsByTagName("body")[0]);
+	},
+
+	/**
+	 * console.log wrap
+	 */
+	log : function(obj) {
+
+		// check against debug state or something
+
+		console.log(obj);
+		return this;
+
 	}
 
 };
