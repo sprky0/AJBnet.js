@@ -1,0 +1,136 @@
+/**
+ * Image Gallery
+ *
+ * 
+ */
+AJBnet.define("Gallery",['Image'],function(){
+// AJBnet.depend('js/image',function(){
+
+	/**
+	 * Gallery with many images
+	 */
+	AJBnet.libs.Gallery = function(options) {
+
+		for (i in options||{}){
+			this[i] = options[i];
+		}
+
+		$(this.container).css({overflow : "hidden"});
+
+		this.loadSet();
+
+		return this;
+	}
+
+		AJBnet.libs.Gallery.prototype.buffer = 1; // 1 before and after current
+		AJBnet.libs.Gallery.prototype.infinite = true;
+		AJBnet.libs.Gallery.prototype.images = [];
+		AJBnet.libs.Gallery.prototype.objects = [];
+		AJBnet.libs.Gallery.prototype.current = 0;
+		AJBnet.libs.Gallery.prototype.container = "body";
+
+		/**
+		 * Initialize the gallery and preload stuff
+		 */
+		AJBnet.libs.Gallery.prototype.loadSet = function(){
+	
+			this.current = 0;
+	
+			for(var i = 0; i < this.objects.length; i++)
+				this.objects[i].unload();
+	
+			this.objects = [];
+	
+			for(var i = 0; i < this.images.length; i++)
+				this.objects.push( AJBnet.new("Image",{container:this.container,src:this.images[i],delay:true}) );
+	
+			this.load();
+	
+		}
+		
+		AJBnet.libs.Gallery.prototype.load = function(){
+	
+			this.objects[this.current].load( true );
+	
+			var next = this.getNext(), previous = this.getPrevious();
+	
+			if (next && next.loaded != true)
+				next.load();
+	
+			if (previous && previous.loaded != true)
+				prev.load();
+	
+		}
+	
+		/**
+		 * Get offset
+		 */	
+		AJBnet.libs.Gallery.prototype.getByOffset = function(offset) {
+	
+	/*
+			if (!this.objects[this.current + offset] && this.infinite !== true)
+				return null; // no exist
+			else if (!this.objects[this.current + 1] && this.infinite === true)
+				return this.objects[0]; // loop to first
+			else
+				return this.objects[this.current + 1]; // next
+	*/
+			return null;
+	
+		}
+	
+		/**
+		 * Get the next Img object
+		 */	
+		AJBnet.libs.Gallery.prototype.getNext = function() {
+		
+			if (!this.objects[this.current + 1] && this.infinite !== true)
+				return null; // no exist
+			else if (!this.objects[this.current + 1] && this.infinite === true)
+				return this.objects[0]; // loop to first
+			else
+				return this.objects[this.current + 1]; // next
+	
+		}
+	
+		/**
+		 * Get the previous Img object
+		 */	
+		AJBnet.libs.Gallery.prototype.getPrevious = function() {
+		
+			if (!this.objects[this.current - 1] && this.infinite !== true)
+				return null; // no exist
+			else if (!this.objects[this.current - 1] && this.infinite === true)
+				return this.objects[this.current.length - 1]; // loop to last
+			else
+				return this.objects[this.current - 1]; // previous
+	
+		}
+		
+		AJBnet.libs.Gallery.prototype.next = function(){
+			if (!this.getNext())
+				return;
+			this.objects[this.current].hide();
+			
+			if (!this.objects[this.current + 1])
+				this.current = 0;
+			else
+				this.current++;
+	
+			this.load();
+		}
+		
+		AJBnet.libs.Gallery.prototype.previous = function(){
+			if (!this.objects[this.current - 1] && this.infinite !== true)
+				return;
+			this.objects[this.current].hide();
+	
+			if (!this.objects[this.current - 1])
+				this.current = this.objects.length - 1;
+			else
+				this.current--;
+	
+			this.load();
+		}
+
+});

@@ -1,0 +1,73 @@
+/**
+ * AJBnet Framework Tests
+ * 
+ * @todo decide on style for init -- automatic?
+ */
+AJBnet.init().depend(['Tests/Core'],function(){
+
+	console.log(AJBnet.libs);
+
+	/**
+	 * A set of 
+	 */
+	var number = 1,
+		integer = 2,
+		float = 1.1,
+		string = "this is a string",
+		array = [number,integer],
+		object = {string:number},
+		null_value = null, // ok these seem a little dopey to define, but I want them all the be in a row
+		false_value = false,
+		undefined_value = undefined;
+
+	// we need namespaces should be : tests/core
+	var tests = AJBnet.new("Tests/Core",{container:"body"});
+
+	// number
+	tests.addTest(integer,"isNumber",true);
+	tests.addTest(float,"isNumber",true);
+	tests.addTest(string,"isNumber",false);
+	tests.addTest(false_value,"isNumber",false);
+
+	// integer
+	tests.addTest(integer,"isInteger",true);
+	tests.addTest(float,"isInteger",false);
+	tests.addTest(string,"isInteger",false);
+	tests.addTest(false_value,"isInteger",false);
+
+	// floating point
+	tests.addTest(float,"isFloat",true);
+	tests.addTest(integer,"isFloat",false);
+	tests.addTest(string,"isFloat",false);
+	tests.addTest(false_value,"isFloat",false);
+
+	// string
+	tests.addTest(string,"isString",true);
+	tests.addTest(integer,"isString",false);
+	tests.addTest(float,"isString",false);
+	tests.addTest(false_value,"isString",false);
+
+	// array
+	tests.addTest(array,"isArray",true);
+	tests.addTest(object,"isArray",false);
+	tests.addTest(string,"isArray",false);
+	tests.addTest(false_value,"isArray",false);
+
+	// object
+	tests.addTest(object,"isObject",true);
+	tests.addTest(array,"isObject",false);
+	tests.addTest(string,"isObject",false);
+	tests.addTest(false_value,"isObject",false);
+
+	/*
+		string_value : "string",
+		float_value : 1.5,
+		function_value : function(){},
+		object_value : {property : "value"},
+		undefinded_value : undefined,
+		null_value : null
+	*/
+
+	tests.run();
+
+});
