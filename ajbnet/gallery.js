@@ -31,40 +31,43 @@ AJBnet.define("Gallery",["Image"],function(){
 		 * Initialize the gallery and preload stuff
 		 */
 		AJBnet.libs.Gallery.prototype.loadSet = function(){
-	
+
 			this.current = 0;
-	
+
 			for(var i = 0; i < this.objects.length; i++)
 				this.objects[i].unload();
-	
+
 			this.objects = [];
-	
+
 			for(var i = 0; i < this.images.length; i++)
 				this.objects.push( AJBnet.new("Image",{container:this.container,src:this.images[i],delay:true}) );
-	
+
 			this.load();
-	
+
 		}
-		
+
 		AJBnet.libs.Gallery.prototype.load = function(){
-	
+
+			if (!AJBnet.isObject(this.objects[this.current]))
+				throw "Couldn't trigger load() on Image at index " + this.current;
+
 			this.objects[this.current].load( true );
-	
+
 			var next = this.getNext(), previous = this.getPrevious();
-	
+
 			if (next && next.loaded != true)
 				next.load();
-	
+
 			if (previous && previous.loaded != true)
 				prev.load();
-	
+
 		}
-	
+
 		/**
 		 * Get an item by its offset from the current item
 		 */	
 		AJBnet.libs.Gallery.prototype.getByOffset = function(offset) {
-	
+
 	/*
 			if (!this.objects[this.current + offset] && this.infinite !== true)
 				return null; // no exist
@@ -74,7 +77,7 @@ AJBnet.define("Gallery",["Image"],function(){
 				return this.objects[this.current + 1]; // next
 	*/
 			return null;
-	
+
 		}
 	
 		/**

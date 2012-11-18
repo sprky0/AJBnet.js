@@ -3,9 +3,7 @@
  * 
  * @todo decide on style for init -- automatic?
  */
-AJBnet.init().depend(['Tests/Core'],function(){
-
-	console.log(AJBnet.libs);
+AJBnet.init().define("Tests/Main",['Tests/Core'],function(){
 
 	/**
 	 * A set of 
@@ -69,5 +67,6 @@ AJBnet.init().depend(['Tests/Core'],function(){
 	*/
 
 	tests.run();
+
 
 });

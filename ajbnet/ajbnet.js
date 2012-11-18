@@ -61,11 +61,12 @@ var AJBnet = {
 		var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
 
 		var classname = path.shift();
-		var token = path.shift();
+		// start here, in case we are at the top level
+		var token = classname;
 		var pointer = this.libs;
 
 		// Traverse the tree of loaded classes until we reach the last
-		while (token != null) {
+		while (path.length > 0) {
 			token = path.shift();
 			pointer = pointer[token];
 		}
@@ -73,12 +74,10 @@ var AJBnet = {
 		if (!pointer || !token)
 			throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
 
-		var top_namespace = pointer;
-
-		if (!this.isFunction(top_namespace[classname]))
+		if (!this.isFunction(pointer[classname]))
 			throw "Class '" + classpath + "' not loaded yet!";
 
-		return new top_namespace[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
+		return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 	},
 
 	/**
@@ -179,7 +178,10 @@ var AJBnet = {
 			var token = path.shift();
 			if (!pointer[token])
 				pointer[token] = {};
+			pointer = pointer[token]
 		}
+
+		console.log( pointer );
 
 		if (this.isNull(dependencies) || this.isArray(dependencies) && dependencies.length == 0)
 			this.execute(object);
