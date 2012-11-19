@@ -1,15 +1,15 @@
 // @todo require jquery
-AJBnet.define("Tests/Core",null,function(){
+AJBnet
+	.define("Tests/Core",null,function(){
 
-	AJBnet.libs.Tests.Core = function(options){
+		AJBnet.libs.Tests.Core = function(options){
 
-		AJBnet.extend(this,options); // same as forloop overwrite
-		// this.container = options.container || "body";
+			AJBnet.extend(this,options); // same as forloop overwrite
 
-		return this;
-
-	}
-
+			return this;
+	
+		}
+	
 		AJBnet.libs.Tests.Core.prototype.container = "body";
 		AJBnet.libs.Tests.Core.prototype.table = null;
 		AJBnet.libs.Tests.Core.prototype.tests = [];
@@ -18,7 +18,11 @@ AJBnet.define("Tests/Core",null,function(){
 		 * Add a core function test!
 		 */
 		AJBnet.libs.Tests.Core.prototype.addTest = function(value, function_name, expected){
-			this.tests.push({ core_function : function_name, test_value : value, expected_result : expected });
+			this.tests.push({
+				core_function : function_name,
+				test_value : value,
+				expected_result : expected
+			});
 			return this;
 		};
 	
@@ -28,7 +32,7 @@ AJBnet.define("Tests/Core",null,function(){
 		AJBnet.libs.Tests.Core.prototype.showResult = function(funct,param,expected,received,success,message) {
 	
 			if (success == true) {
-				received = "<span style='color:#0a0'>"+received+"</span>";	
+				received = "<span style='color:#0a0'>"+received+"</span>";
 				var row_type = "<tr>";
 			} else {
 				received = "<span style='color:#a00'>"+received+"</span>";
@@ -81,10 +85,9 @@ AJBnet.define("Tests/Core",null,function(){
 					success,
 					message
 				);
-				
-				// alert( AJBnet[this.tests[i].core_function](this.tests[i].test_value) === this.tests[i].expected_result )		
+	
 			}
-			
+	
 		}
-		
-});
+
+	});

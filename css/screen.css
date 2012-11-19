@@ -9,6 +9,7 @@ html {}
 
 body.padded {
 	padding: 50px;
+	width: auto;
 }
 
 h1, h2, h3, p, ul, li {

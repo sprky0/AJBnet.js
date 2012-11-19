@@ -6,6 +6,12 @@
  */
 var AJBnet = {
 
+	config : {
+		debug : false,
+		initRun : false,
+		srcBasePath : ""
+	},
+
 	// how do we handle dependencies on libraries like this?  same way?  (path to vendor == 'namespace' but they are assuemd to have no dependencies?)
 	// 		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 
@@ -15,10 +21,8 @@ var AJBnet = {
 	 * @var object Libraries the available loaded libraries
 	 */
 	libs : {},
-	srcBasePath : "",
 	closureHolder : null,
 	readyStack : [],
-	initRun : false,
 
 	/**
 	 * keycode shortcuts
@@ -31,18 +35,28 @@ var AJBnet = {
 	/**
 	 * this is called automatically as soon as the object is in memory
 	 */
-	init : function(force) {
+	init : function(options,force) {
 
-		if (this.initRun === true && force !== true)
+		if (this.config.initRun === true && force !== true)
 			throw "Init already run!";
 
+		for(i in options||{}){
+			switch(i){
+				case "debug":
+					this.config.debug = options[i];
+					break;
+			}
+		}
+
 		// do better and more automaticy than this -- find out from the <head><script> tag that loads ajbnet core
-		this.srcBasePath = "ajbnet/";
+		this.config.srcBasePath = "ajbnet/";
 
 		// If the document is not ready yet, initialize the ready loop which
 		// will wait to execute the readyStack
 		if (!this.isReady())
 			this.readyLoop();
+
+		this.config.initRun = true;
 
 		return this;
 
@@ -131,7 +145,7 @@ var AJBnet = {
 		// future remote load thing
 		// if (!lib.match(/^http/)
 
-		var src = this.srcBasePath + (lib+"").toLowerCase() + ".js";
+		var src = this.config.srcBasePath + (lib+"").toLowerCase() + ".js";
 
 		this.load(src,postLoadCallback);
 
@@ -192,11 +206,18 @@ var AJBnet = {
 
 	load : function(src,postLoadCallback) {
 
+		AJBnet.log("Going to load " + src);
+
 		var _callback = postLoadCallback;
 		var element = document.createElement("script");
 			element.setAttribute("type","text/javascript");
 			element.setAttribute("src", src);
-			element.onload = function() {AJBnet.execute(_callback);};
+			element.onload = function() {
+
+				AJBnet.log("Running callback for " + src);
+				AJBnet.execute(_callback);
+			
+			};
 
 		document.getElementsByTagName("head")[0].appendChild( element );
 
@@ -207,6 +228,9 @@ var AJBnet = {
 	/**
 	 * execute a closure, in the context of the framework
 	 * this will allow you to use the 'this' keyword to access AJBnet functions
+	 *
+	 * @param function closure
+	 * @return mixed
 	 */
 	execute : function(closure) {
 	
@@ -227,50 +251,96 @@ var AJBnet = {
 	/**
 	 * Extend object2 to object1 - basic overwrite
 	 *
-	 * @todo Clone objects
+	 * @todo Clone ref objects ?
+	 * @param object obj1
+	 * @param object obj2
+	 * @return object
 	 */
 	extend : function(obj1,obj2) {
 
 		for(i in obj2||{})
 			obj1[i] = obj2[i];
-		
+
 		return obj1;
 
 	},
 
 	/**
-	 * these are cool
+	 * @param mixed Object to test
+	 * @return boolean
 	 */
 	isNumber : function(number) {
 		return typeof number == "number";
 	},
+
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isFloat : function(float) {
 		return typeof float == "number" && (parseInt(float) !== float);
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isInteger : function(integer) {
 		return typeof integer == "number" && (parseInt(integer) === integer);
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isUndefined : function(value) {
 		return value === undefined;	
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isNull : function(value) {
 		return value === null;
-	},	
+	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */	
 	isString : function(string) {
 		return typeof string == "string";
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isFunction : function(closure){
 		return typeof closure === "function";
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isObject : function(object) {
 		return Object.prototype.toString.call( object ) === "[object Object]"
 	},
+	
+	/**
+	 * @param mixed Object to test
+	 * @return boolean
+	 */
 	isArray : function(object) {
 		return Object.prototype.toString.call( object ) === "[object Array]";
 	},
 
 	/**
-	 * document is ready?
+	 * Is the HTML document available to be interacted with?
+	 *
+	 * @return boolean
 	 */
 	isReady : function() {
 		return (document && document.getElementsByTagName("body")[0]);
@@ -278,10 +348,13 @@ var AJBnet = {
 
 	/**
 	 * console.log wrap
+	 *
+	 * @return object AJBnet
 	 */
 	log : function(obj) {
 
-		// check against debug state or something
+		if(!this.config.debug === true)
+			return this;
 
 		console.log(obj);
 		return this;
