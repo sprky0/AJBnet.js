@@ -3,7 +3,7 @@
  *
  * @todo require jquery
  */
-AJBnet.define("Image",null,function(){
+AJBnet.define("Gallery/Image",null,function(){
 
 	AJBnet.libs.Image = function(options) {
 	

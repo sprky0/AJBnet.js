@@ -12,7 +12,8 @@ var AJBnet = {
 		srcBasePath : ""
 	},
 
-	// how do we handle dependencies on libraries like this?  same way?  (path to vendor == 'namespace' but they are assuemd to have no dependencies?)
+	// how do we handle dependencies on libraries like this?
+	// same way?  (path to vendor == 'namespace' but they are assuemd to have no dependencies?)
 	// 		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 
 	/**
@@ -318,7 +319,8 @@ var AJBnet = {
 	 * @return boolean
 	 */
 	isFunction : function(closure){
-		return typeof closure === "function";
+		// return typeof closure === "function";
+		return Object.prototype.toString.call( closure ) === "[object Function]";
 	},
 	
 	/**
@@ -330,6 +332,8 @@ var AJBnet = {
 	},
 	
 	/**
+	 * Is the object an Array
+	 *
 	 * @param mixed Object to test
 	 * @return boolean
 	 */

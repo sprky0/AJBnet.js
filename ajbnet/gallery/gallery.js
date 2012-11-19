@@ -3,7 +3,7 @@
  *
  * 
  */
-AJBnet.define("Gallery",["Image"],function(){
+AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 // AJBnet.depend('js/image',function(){
 
 	/**
