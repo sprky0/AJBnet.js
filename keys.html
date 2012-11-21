@@ -4,12 +4,23 @@
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/screen.css" />
 	<script type="text/javascript" src="ajbnet/vendor/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="ajbnet/ajbnet.js"></script>
-	<script type="text/javascript" src="ajbnet/gallery/main.js"></script>
+	<script type="text/javascript">
+	
+	$(function(){
+		
+		$(document).bind("keyup",function(e){
+			
+			$("BODY").append(e.keyCode);
+			$("BODY").append("<br/>");		
+			
+		});
+		
+		});
+	
+	</script>
 </head>
 <body>
 
-	<h1>Loading</h1>
 
 </body>
 </html>

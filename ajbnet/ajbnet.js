@@ -6,6 +6,11 @@
  */
 var AJBnet = {
 
+	/**
+	 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
+	 * 
+	 * @var object
+	 */
 	config : {
 		debug : false,
 		initRun : false,
@@ -14,14 +19,18 @@ var AJBnet = {
 
 	// how do we handle dependencies on libraries like this?
 	// same way?  (path to vendor == 'namespace' but they are assuemd to have no dependencies?)
-	// 		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+	// <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 
 	/**
 	 * Libraries
 	 *
-	 * @var object Libraries the available loaded libraries
+	 * This is where libraries are stored, arranged by namespace
+	 *
+	 * @var object
 	 */
 	libs : {},
+	map : {},
+
 	closureHolder : null,
 	readyStack : [],
 
@@ -29,8 +38,40 @@ var AJBnet = {
 	 * keycode shortcuts
 	 */
 	key : {
+
+		// ROMAN ALPHA
+		A : 65, B : 66, C : 67, D : 68,
+		E : 69, F : 70, G : 71, H : 72,
+		I : 73, J : 74, K : 75, L : 76,
+		M : 77, N : 78, O : 79, P : 80,
+		Q : 81, R : 82, S : 83, T : 84,
+		U : 85, V : 86, W : 87, X : 88,
+		Y : 89, Z : 90,
+		
+		// OTHER
+		TAB : 9,
+		SHIFT : 16,
+		RETURN : 13, ENTER : 13,
+		ALT : 18, OPTION : 18,
+
+		// ARROW KEYS
 		LEFT : 37,
-		RIGHT : 39
+		UP : 38,
+		RIGHT : 39,
+		DOWN : 40,
+
+		//  NUMERALS
+		ZERO : 48,
+		ONE : 49,
+		TWO : 50,
+		THREE : 51,
+		FOUR : 52,
+		FIVE : 53,
+		SIX : 54,
+		SEVEN : 55,
+		EIGHT : 56,
+		NINE : 57
+
 	},
 
 	/**
@@ -43,6 +84,9 @@ var AJBnet = {
 
 		for(i in options||{}){
 			switch(i){
+				default:
+					throw "Unknown option '" + i + "' passed to AJBnet.init";
+					break;
 				case "debug":
 					this.config.debug = options[i];
 					break;
@@ -148,6 +192,7 @@ var AJBnet = {
 
 		var src = this.config.srcBasePath + (lib+"").toLowerCase() + ".js";
 
+		// something with this callback should be diff
 		this.load(src,postLoadCallback);
 
 		return this;
@@ -156,14 +201,14 @@ var AJBnet = {
 	/**
 	 * Declare a dependency
 	 */	
-	depend : function(libs, postLoadCallback) {
+	depend : function(dependencies, postLoadCallback) {
 
-		if (!this.isArray(libs))
-			libs = [libs];
+		if (!this.isArray(dependencies))
+			dependencies = [dependencies];
 
 		// try to load dependencies.  Loaded thingies will exist on this already so we're all set
-		for(var i in libs)
-			this.require(libs[i]); // ,postLoadCallback);
+		for(var i in dependencies)
+			this.require(dependencies[i]); // ,postLoadCallback);
 		// if there is more than one, this will be called multiple times.  that is dumb
 
 		// sticking this here for now
@@ -179,29 +224,39 @@ var AJBnet = {
 	 * @param array dependencies
 	 * @param object closure to be executed after dependency load that defines the class
 	 */
-	define : function(classpath, dependencies, object) {
+	define : function(classpath, dependencies, closure) {
 
 		// Honey Badger don't care.  Only problem here is that this sucks for using AJBnet to build other libs though.  Everyone is automatically namespaced to AJBnet
 
-		var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
+		// var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
+		var path = classpath.split("/");
 
 		this.log(path);
 
+		// ensure that the place for this library to live is created
 		var pointer = this.libs;
-
 		while(path.length != 0) {
 			var token = path.shift();
 			if (!pointer[token])
 				pointer[token] = {};
 			pointer = pointer[token]
 		}
+		// console.log( token, pointer[token] );
 
-		console.log( pointer );
+		this.map[classpath] = {
+			dependencies : dependencies,
+			callback : closure,
+			loaded : false
+		};
 
-		if (this.isNull(dependencies) || this.isArray(dependencies) && dependencies.length == 0)
-			this.execute(object);
-		else
-			this.depend(dependencies,object);
+		// if there are no dependencies, go for it!
+		if (this.isNull(dependencies) || this.isArray(dependencies) && dependencies.length == 0) {
+			this.execute(closure);
+		} else {
+			this.depend(dependencies,closure); // classpath,
+		}
+
+		return this;
 
 	},
 
