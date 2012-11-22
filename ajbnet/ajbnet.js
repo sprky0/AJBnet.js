@@ -290,18 +290,13 @@ var AJBnet = {
 			this.map[classpath].loaded = true;
 		}
 
-		// if (!this.map[classpath])
-		//	throw "Can't find " + classpath + " in the map.";
-
 		for (i in this.map) {
 			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
 				this.log("Testing dependencies for " + i);
-				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].loaded == true) {
+				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].run == true) {
 
 					this.log("Dependency satisfied!  Removing dependency " + j);
-					// this doesn't work b/c it leaves an undefined value in the array, must be another way to splice or something w/o loop
-					// delete(this.map[i].dependencies[j]);
 
 					var replacement_array = [];
 					for(var k = 0; k < this.map[i].dependencies.length; k++) {
@@ -330,7 +325,7 @@ var AJBnet = {
 			}
 		}
 
-		this.log("AJBnet.loaded()" + details);
+		this.log("AJBnet.loaded() END" + details);
 
 		if (loop == true) {
 			this.loaded();
