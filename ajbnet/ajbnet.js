@@ -124,20 +124,25 @@ var AJBnet = {
 	new : function(classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) {
 
 		// var path = (classpath.split(/AJBnet[.|\/]/)[1]||classpath).split(/[\.|\/]/);
-		var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
-
+		// var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
+		var path = classpath.split("/");
 		var classname = path.shift();
+
 		// start here, in case we are at the top level
 		var token = classname;
 		var pointer = this.libs;
+
+		//
+		// WORK OUT THIS -- WHY U NO DEPENDENCY RESOLVING PUPPY
 
 		// Traverse the tree of loaded classes until we reach the last
 		while (path.length > 0) {
 			token = path.shift();
 			pointer = pointer[token];
+			this.log( pointer + " to " + token);
 		}
 
-		if (!pointer || !token)
+		if (!pointer) // || !token) (token is done now)
 			throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
 
 		if (!this.isFunction(pointer[classname]))
