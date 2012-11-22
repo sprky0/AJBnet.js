@@ -3,9 +3,7 @@
  * 
  * @todo decide on style for init -- automatic?
  */
-AJBnet
-	.init({debug : true})
-	.define("Tests/Main",['Tests/Core'],function(){
+AJBnet.define("Tests/Main",['Tests/Core'],function(){
 
 		/**
 		 * Possible Variable Types

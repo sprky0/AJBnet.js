@@ -14,7 +14,8 @@ var AJBnet = {
 	config : {
 		debug : false,
 		initRun : false,
-		srcBasePath : ""
+		srcBasePath : "",
+		main : null
 	},
 
 	// how do we handle dependencies on libraries like this?
@@ -47,7 +48,7 @@ var AJBnet = {
 		Q : 81, R : 82, S : 83, T : 84,
 		U : 85, V : 86, W : 87, X : 88,
 		Y : 89, Z : 90,
-		
+
 		// OTHER
 		TAB : 9,
 		SHIFT : 16,
@@ -90,6 +91,9 @@ var AJBnet = {
 				case "debug":
 					this.config.debug = options[i];
 					break;
+				case "app":
+					this.config.main = options[i];
+					break;
 			}
 		}
 
@@ -102,6 +106,9 @@ var AJBnet = {
 			this.readyLoop();
 
 		this.config.initRun = true;
+
+		if (!this.isNull( this.config.main ))
+			this.require( this.config.main );
 
 		return this;
 
@@ -176,7 +183,7 @@ var AJBnet = {
 	/**
 	 * Explicitly require a single library
 	 */
-	require : function(lib, postLoadCallback) {
+	require : function(classpath) { // , postLoadCallback) {
 
 		// do something	
 
@@ -190,29 +197,10 @@ var AJBnet = {
 		// future remote load thing
 		// if (!lib.match(/^http/)
 
-		var src = this.config.srcBasePath + (lib+"").toLowerCase() + ".js";
+		var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
 
 		// something with this callback should be diff
-		this.load(src,postLoadCallback);
-
-		return this;
-	},
-
-	/**
-	 * Declare a dependency
-	 */	
-	depend : function(dependencies, postLoadCallback) {
-
-		if (!this.isArray(dependencies))
-			dependencies = [dependencies];
-
-		// try to load dependencies.  Loaded thingies will exist on this already so we're all set
-		for(var i in dependencies)
-			this.require(dependencies[i]); // ,postLoadCallback);
-		// if there is more than one, this will be called multiple times.  that is dumb
-
-		// sticking this here for now
-		this.execute(postLoadCallback);
+		this.load(src,classpath); // ,postLoadCallback
 
 		return this;
 	},
@@ -226,59 +214,87 @@ var AJBnet = {
 	 */
 	define : function(classpath, dependencies, closure) {
 
-		// Honey Badger don't care.  Only problem here is that this sucks for using AJBnet to build other libs though.  Everyone is automatically namespaced to AJBnet
+		var path = classpath.split("/"),
+			dependencies = dependencies || [],
+			pointer = this.libs;
 
-		// var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
-		var path = classpath.split("/");
-
-		this.log(path);
-
-		// ensure that the place for this library to live is created
-		var pointer = this.libs;
 		while(path.length != 0) {
 			var token = path.shift();
 			if (!pointer[token])
 				pointer[token] = {};
 			pointer = pointer[token]
 		}
-		// console.log( token, pointer[token] );
 
 		this.map[classpath] = {
-			dependencies : dependencies,
+			dependencies : dependencies || [],
 			callback : closure,
 			loaded : false
 		};
 
-		// if there are no dependencies, go for it!
-		if (this.isNull(dependencies) || this.isArray(dependencies) && dependencies.length == 0) {
-			this.execute(closure);
+		if (dependencies.length == 0) {
+			//this.log(classpath + " has no dependencies, so the closure is called immediately!");
+			//this.map[classpath].loaded = true;
+			//this.execute(this.map["closure"]);
 		} else {
-			this.depend(dependencies,closure); // classpath,
+			
+			for(var i = 0; i < dependencies.length; i++)
+				this.require(dependencies[i]); // classpath,
 		}
 
 		return this;
 
 	},
 
-	load : function(src,postLoadCallback) {
+	load : function(src,classpath,postLoadCallback) {
 
 		AJBnet.log("Going to load " + src);
 
 		var _callback = postLoadCallback;
+		var _classpath = classpath;
 		var element = document.createElement("script");
 			element.setAttribute("type","text/javascript");
 			element.setAttribute("src", src);
 			element.onload = function() {
 
-				AJBnet.log("Running callback for " + src);
-				AJBnet.execute(_callback);
-			
+				AJBnet.log(classpath + " at " + src + " has loaded.");
+				AJBnet.loaded(classpath);
+
 			};
 
 		document.getElementsByTagName("head")[0].appendChild( element );
 
 		return this;
 
+	},
+
+	loaded : function(classpath) {
+
+		if (!this.map[classpath])
+			throw "Can't find " + classpath + " in the map.";
+
+		this.map[classpath].loaded = true;
+
+		for (i in this.map) {
+			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
+			for (var j = 0; j < this.map[i].dependencies.length; j++) {
+				this.log("Testing dependencies for " + i);
+				if (this.map[i].dependencies[j].loaded == true) {
+					this.log("Removing dependency " + j);
+					delete(this.map[i].dependencies[j]);
+				}
+			}
+		}
+
+		for (i in this.map) {
+			if (this.map[i].dependencies.length == 0) {
+				this.log("Executing the callback for " + i);
+				this.execute(this.map[i].callback);
+			}
+		}
+
+		console.log( this.map[classpath] );
+
+		return this;
 	},
 
 	/**
