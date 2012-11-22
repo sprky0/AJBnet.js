@@ -247,7 +247,7 @@ var AJBnet = {
 
 	load : function(src,classpath,postLoadCallback) {
 
-		AJBnet.log("Going to load " + src);
+		AJBnet.log("AJBnet.load() -> " + src);
 
 		var _callback = postLoadCallback;
 		var _classpath = classpath;
@@ -256,7 +256,7 @@ var AJBnet = {
 			element.setAttribute("src", src);
 			element.onload = function() {
 
-				AJBnet.log(classpath + " at " + src + " has loaded.");
+				AJBnet.log("onload callback for " + classpath + " at " + src + " called.");
 				AJBnet.loaded(classpath);
 
 			};
@@ -269,6 +269,8 @@ var AJBnet = {
 
 	loaded : function(classpath) {
 
+		this.log("AJBnet.loaded() for " + classpath);
+
 		if (!this.map[classpath])
 			throw "Can't find " + classpath + " in the map.";
 
@@ -278,9 +280,26 @@ var AJBnet = {
 			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
 				this.log("Testing dependencies for " + i);
-				if (this.map[i].dependencies[j].loaded == true) {
+				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].loaded == true) {
 					this.log("Removing dependency " + j);
-					delete(this.map[i].dependencies[j]);
+
+					var replacement_array = [];
+					for(var k = 0; k < this.map[i].dependencies.length; k++) {
+						
+						if (k == i)
+							continue;
+						else
+							replacement_array.push( this.map[i].dependencies[k] );
+
+					}
+
+					this.map[i].dependencies = replacement_array;
+
+					// delete(this.map[i].dependencies[j]);
+					console.log( this.map[i].dependencies.length );
+					console.log( this.map[i].dependencies );
+
+
 				}
 			}
 		}
