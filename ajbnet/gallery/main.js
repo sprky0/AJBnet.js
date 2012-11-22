@@ -1,11 +1,9 @@
-AJBnet
-.init({debug : true})
-.depend('Gallery/Gallery',function(){
+AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
 
 	AJBnet.ready(function(){
 
 		function run_gallery(image_array){
-		
+
 			var g = AJBnet.new("Gallery/Gallery",{
 				container : "body",
 				images : image_array

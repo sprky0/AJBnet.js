@@ -126,7 +126,9 @@ var AJBnet = {
 		// var path = (classpath.split(/AJBnet[.|\/]/)[1]||classpath).split(/[\.|\/]/);
 		// var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
 		var path = classpath.split("/");
-		var classname = path.shift();
+		var classname = path.pop();
+
+		console.log(classname);
 
 		// start here, in case we are at the top level
 		var token = classname;
@@ -142,6 +144,9 @@ var AJBnet = {
 			pointer = pointer[token];
 			this.log( pointer + " to " + token);
 		}
+
+		console.log(token, pointer);
+		// console.log( token );
 
 		if (!pointer) // || !token) (token is done now)
 			throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
