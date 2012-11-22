@@ -1,5 +1,5 @@
 AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
-
+ 
 	AJBnet.ready(function(){
 
 		function run_gallery(image_array){
