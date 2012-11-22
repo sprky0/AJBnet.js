@@ -3,7 +3,13 @@
  * 
  * @todo decide on style for init -- automatic?
  */
-AJBnet.define("Tests/Main",['Tests/Core'],function(){
+// AJBnet.define("Tests/Main",['Tests/Core'],function(){
+AJBnet.define("Tests/Main",['Tests/Constructor'],function(){
+
+	with(AJBnet.libs.Tests)
+		var x = new Constructor();
+
+	console.log(x);
 
 	/**
 	 * Possible Variable Types

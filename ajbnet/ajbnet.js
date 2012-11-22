@@ -132,8 +132,9 @@ var AJBnet = {
 		var token = classname;
 		var pointer = this.libs;
 
-		//
 		// WORK OUT THIS -- WHY U NO DEPENDENCY RESOLVING PUPPY
+
+		console.log(token, pointer );
 
 		// Traverse the tree of loaded classes until we reach the last
 		while (path.length > 0) {

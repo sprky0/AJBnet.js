@@ -2,11 +2,8 @@
 AJBnet.define("Tests/Core",function(){
 
 	AJBnet.libs.Tests.Core = function(options){
-
 		AJBnet.extend(this,options); // same as forloop overwrite
-
 		return this;
-
 	}
 
 	AJBnet.libs.Tests.Core.prototype.container = "body";
