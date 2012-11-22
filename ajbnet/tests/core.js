@@ -1,5 +1,5 @@
 // @todo require jquery
-AJBnet.define("Tests/Core",null,function(){
+AJBnet.define("Tests/Core",function(){
 
 	AJBnet.libs.Tests.Core = function(options){
 

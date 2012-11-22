@@ -212,12 +212,25 @@ var AJBnet = {
 	 * @param array dependencies
 	 * @param object closure to be executed after dependency load that defines the class
 	 */
-	define : function(classpath, dependencies, closure) {
+	define : function(classpath, dependencies_or_closure, closure) {
+
+		if (this.isFunction(dependencies_or_closure)) {
+			closure = dependencies_or_closure;
+			dependencies = null;
+		} else {
+			dependencies = dependencies_or_closure;
+		}
 
 		var path = classpath.split("/"),
 			dependencies = dependencies || [],
 			pointer = this.libs;
 
+		/**
+		 * This will create a placeholder internally for this class.  eg: AJBnet.libs.package.sub.class = function(){}
+		 * 
+		 * For using the AJBnet.new(/package/class) method, the declaration much match this path as projected
+		 * Will figure out a more convenient shorthand for this in the future to make the class definitions easier.
+		 */
 		while(path.length != 0) {
 			var token = path.shift();
 			if (!pointer[token])
@@ -228,7 +241,8 @@ var AJBnet = {
 		this.map[classpath] = {
 			dependencies : dependencies || [],
 			callback : closure,
-			loaded : false
+			loaded : false,
+			run : false
 		};
 
 		if (dependencies.length == 0) {
@@ -245,11 +259,10 @@ var AJBnet = {
 
 	},
 
-	load : function(src,classpath,postLoadCallback) {
+	load : function(src,classpath) {
 
 		AJBnet.log("AJBnet.load() -> " + src);
 
-		var _callback = postLoadCallback;
 		var _classpath = classpath;
 		var element = document.createElement("script");
 			element.setAttribute("type","text/javascript");
@@ -269,49 +282,59 @@ var AJBnet = {
 
 	loaded : function(classpath) {
 
-		this.log("AJBnet.loaded() for " + classpath);
+		var details = classpath ? " (triggered by " + classpath + ")" : "";
 
-		if (!this.map[classpath])
-			throw "Can't find " + classpath + " in the map.";
+		this.log("AJBnet.loaded() START" + details);
 
-		this.map[classpath].loaded = true;
+		if (classpath) {
+			this.map[classpath].loaded = true;
+		}
+
+		// if (!this.map[classpath])
+		//	throw "Can't find " + classpath + " in the map.";
 
 		for (i in this.map) {
 			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
 				this.log("Testing dependencies for " + i);
 				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].loaded == true) {
-					this.log("Removing dependency " + j);
+
+					this.log("Dependency satisfied!  Removing dependency " + j);
+					// this doesn't work b/c it leaves an undefined value in the array, must be another way to splice or something w/o loop
+					// delete(this.map[i].dependencies[j]);
 
 					var replacement_array = [];
 					for(var k = 0; k < this.map[i].dependencies.length; k++) {
-						
-						if (k == i)
+						if (k == j)
 							continue;
 						else
 							replacement_array.push( this.map[i].dependencies[k] );
-
 					}
 
 					this.map[i].dependencies = replacement_array;
-
-					// delete(this.map[i].dependencies[j]);
-					console.log( this.map[i].dependencies.length );
-					console.log( this.map[i].dependencies );
-
 
 				}
 			}
 		}
 
+		console.log( this.map );
+
+		var loop = false;
+
 		for (i in this.map) {
-			if (this.map[i].dependencies.length == 0) {
+			if (this.map[i].dependencies.length == 0 && this.map[i].run === false) {
 				this.log("Executing the callback for " + i);
 				this.execute(this.map[i].callback);
+				this.map[i].run = true;
+				loop = true;
 			}
 		}
 
-		console.log( this.map[classpath] );
+		this.log("AJBnet.loaded()" + details);
+
+		if (loop == true) {
+			this.loaded();
+		}
 
 		return this;
 	},
@@ -332,6 +355,10 @@ var AJBnet = {
 			delete(this.closureHolder);
 			this.closureHolder = null;
 			return result;
+
+		} else {
+
+			throw "Closure passed to execute is bogus";	
 
 		}
 
