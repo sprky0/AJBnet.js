@@ -33,9 +33,9 @@ AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
 		};
 		
 		$.ajax({
-			url : "test_lib/meta.json",
+			url : "test_lib/meta.txt",
 			data : {},
-			complete : function(a,b,c,d) {				
+			complete : function(a,b,c,d) {
 				console.log(a,b,c,d);
 			},
 			error : function(a,b,c,d) {
@@ -43,13 +43,6 @@ AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
 			},
 			type : "json"
 		});
-
-//		$.get(
-//			"test_lib/meta.json",
-//			function(d){
-//			},
-//			"json"
-//		);
 
 	});
 
