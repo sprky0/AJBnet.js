@@ -128,15 +128,11 @@ var AJBnet = {
 		var path = classpath.split("/");
 		var classname = path.pop();
 
-		console.log(classname);
+		this.log(classname);
 
 		// start here, in case we are at the top level
 		var token = classname;
 		var pointer = this.libs;
-
-		// WORK OUT THIS -- WHY U NO DEPENDENCY RESOLVING PUPPY
-
-		console.log(token, pointer );
 
 		// Traverse the tree of loaded classes until we reach the last
 		while (path.length > 0) {
@@ -144,9 +140,6 @@ var AJBnet = {
 			pointer = pointer[token];
 			this.log( pointer + " to " + token);
 		}
-
-		console.log(token, pointer);
-		// console.log( token );
 
 		if (!pointer) // || !token) (token is done now)
 			throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
@@ -322,8 +315,6 @@ var AJBnet = {
 				}
 			}
 		}
-
-		console.log( this.map );
 
 		var loop = false;
 

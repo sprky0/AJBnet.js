@@ -12,6 +12,10 @@ body.padded {
 	width: auto;
 }
 
+html.gallery body, html.gallery {
+	height: 100%;
+}
+
 h1, h2, h3, p, ul, li {
 	color: #000;
 	font-family: helvetica;

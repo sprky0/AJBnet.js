@@ -5,13 +5,10 @@ AJBnet.js is a javascript framework!
 
 Done
 	- Make something similar to the PHP is_array / is_null family of functions
-
-In Progress:
 	- Handling dependencies, something similar to require.js
 
-Future:
+In Progress:
 	- Handle loading remote libraries and libraries that don't use the same framework for declarations
-
 
 
 Notes:
@@ -58,7 +55,5 @@ Notes:
 	- Ok here is the deal:
 		- make a map
 		- on each load complete, check dependencies on that node, and mark the lib as completed in the stack
-		- when the number of loaded libs matches the total number of libs, time to run callbacks!
-		- traverse the map and push closures and names to the stack by depth, trigger load
-
-	
+		- check for dependency matches for loaded libraries and remove those from the stack for each object
+		- when the number of remaining dependencies is 0 for a library, trigger the callback

@@ -37,7 +37,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 		this.objects = [];
 
 		for(var i = 0; i < this.images.length; i++)
-			this.objects.push( AJBnet.new("Image",{container:this.container,src:this.images[i],delay:true}) );
+			this.objects.push( AJBnet.new("Gallery/Image",{container:this.container,src:this.images[i],delay:true}) );
 
 		this.load();
 
