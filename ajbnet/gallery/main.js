@@ -31,13 +31,25 @@ AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
 			});
 
 		};
+		
+		$.ajax({
+			url : "test_lib/meta.json",
+			data : {},
+			complete : function(a,b,c,d) {				
+				console.log(a,b,c,d);
+			},
+			error : function(a,b,c,d) {
+				console.log(a,b,c,d);
+			},
+			type : "json"
+		});
 
-		// go man, go!
-		$.get(
-			"test_lib/meta.json",
-			run_gallery,
-			"json"
-		);
+//		$.get(
+//			"test_lib/meta.json",
+//			function(d){
+//			},
+//			"json"
+//		);
 
 	});
 
