@@ -3,7 +3,7 @@
  * 
  * @todo decide on style for init -- automatic?
  */
-AJBnet.define("Tests/Main",['Tests/Core'],function(){
+AJBnet.define("Tests/Main",['Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
 // AJBnet.define("Tests/Main",['Tests/Constructor'],function(){
 
 //	with(AJBnet.libs.Tests)
@@ -62,5 +62,10 @@ AJBnet.define("Tests/Main",['Tests/Core'],function(){
 	tests.addTest(false_value,"isObject",false);
 
 	tests.run();
+
+
+	
+
+
 
 });

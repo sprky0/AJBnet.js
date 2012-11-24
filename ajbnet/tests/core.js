@@ -1,19 +1,19 @@
 // @todo require jquery
 AJBnet.define("Tests/Core",function(){
 
-	AJBnet.libs.Tests.Core = function(options){
+	var Core = function(options){
 		AJBnet.extend(this,options); // same as forloop overwrite
 		return this;
 	}
 
-	AJBnet.libs.Tests.Core.prototype.container = "body";
-	AJBnet.libs.Tests.Core.prototype.table = null;
-	AJBnet.libs.Tests.Core.prototype.tests = [];
+	Core.prototype.container = "body";
+	Core.prototype.table = null;
+	Core.prototype.tests = [];
 
 	/**
 	 * Add a core function test!
 	 */
-	AJBnet.libs.Tests.Core.prototype.addTest = function(value, function_name, expected){
+	Core.prototype.addTest = function(value, function_name, expected){
 		this.tests.push({
 			core_function : function_name,
 			test_value : value,
@@ -25,7 +25,7 @@ AJBnet.define("Tests/Core",function(){
 	/**
 	 * Format the results nicely!
 	 */
-	AJBnet.libs.Tests.Core.prototype.showResult = function(funct,param,expected,received,success,message) {
+	Core.prototype.showResult = function(funct,param,expected,received,success,message) {
 
 		if (success == true) {
 			received = "<span style='color:#0a0'>"+received+"</span>";
@@ -41,7 +41,7 @@ AJBnet.define("Tests/Core",function(){
 
 	}
 
-	AJBnet.libs.Tests.Core.prototype.run = function() {
+	Core.prototype.run = function() {
 
 		$(this.container).empty().append("<h1>Test Results</h1>");
 
@@ -85,5 +85,8 @@ AJBnet.define("Tests/Core",function(){
 		}
 
 	}
+
+	// Would be nice to not have to do this somehow.  Any ideas?
+	AJBnet.libs.Tests.Core = Core;
 
 });

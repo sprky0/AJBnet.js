@@ -1,15 +1,27 @@
 AJBnet.js
 =========
 
-AJBnet.js is a javascript framework!
+AJBnet.js is a javascript framework!  It is intended to provide require.js type autoloading of dependencies,
+provide a way to define classes inside of namespaces for logical grouping, while supporting declaring classes
+with standard JS prototypical inheretance.
+
 
 Done
-	- Make something similar to the PHP is_array / is_null family of functions
-	- Handling dependencies, something similar to require.js
+	- Core functions to shortcut missing strict comparisons, eg: isArray, isNull etc.
+	- Loading dependencies
 
 In Progress:
 	- Handle loading remote libraries and libraries that don't use the same framework for declarations
+	- Tests
 
+Bugs:
+	- A same-named class and package can not exist in the same level, eg:
+		/Name1/Name2/Name3 and /Name1/Name2/Name3/Name4
+		to declare a class Name3 and a class Name4 that lives in an associated package
+		is impossible.  Need to work out a modified storage scheme to resolve.  *doh  (if needed - maybe skip)
+
+	- It is possible to declare a circular dependency that loads forever.  Should be handled by caching loaded classes.
+		Should just check for the first level.  A -> A is no good, but I think A -> B -> A should be fine.
 
 Notes:
 
