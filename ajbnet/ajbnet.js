@@ -75,6 +75,11 @@ var AJBnet = {
 
 	},
 
+	regex : {
+		classpath : "^[A-Za-z0-9\-\.\/]+$",
+		static : "^[A-Za-z0-9\-\.\/]+\.js$"
+	},
+
 	/**
 	 * this is called automatically as soon as the object is in memory
 	 */
@@ -198,6 +203,8 @@ var AJBnet = {
 	 */
 	require : function(classpath) { // , postLoadCallback) {
 
+		classpath = new String(classpath);
+
 		// do something	
 
 		// if (this.libs[lib] && !this.isObject( this.libs[lib] ))
@@ -209,11 +216,28 @@ var AJBnet = {
 
 		// future remote load thing
 		// if (!lib.match(/^http/)
+		// this.log(this.regex.classpath);	
 
-		var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
+		if (classpath.match(this.regex.static)) {
+
+			console.log( classpath + " seems to be a static library");
+			var src = this.config.srcBasePath + classpath;
+
+		} else if (classpath.match(this.regex.classpath)) {
+
+			console.log( classpath + " seems to be a namespaced class");			
+			var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
+
+		} else {
+			
+			throw classpath + " doesn't seem to be properly named.";
+	
+		}
+
+		
 
 		// something with this callback should be diff
-		this.load(src,classpath); // ,postLoadCallback
+		this.load(src,classpath);
 
 		return this;
 	},
@@ -293,6 +317,9 @@ var AJBnet = {
 
 	},
 
+	/**
+	 * This is called when a library has loaded or run, and checks the depdendency map for more work to do
+	 */
 	loaded : function(classpath) {
 
 		var details = classpath ? " (triggered by " + classpath + ")" : "";
@@ -320,7 +347,6 @@ var AJBnet = {
 					}
 
 					this.map[i].dependencies = replacement_array;
-
 				}
 			}
 		}
@@ -338,6 +364,7 @@ var AJBnet = {
 
 		this.log("AJBnet.loaded() END" + details);
 
+		// When a library has been loaded + run, it may have satisfied others, so we loop once
 		if (loop == true) {
 			this.loaded();
 		}
@@ -364,7 +391,7 @@ var AJBnet = {
 
 		} else {
 
-			throw "Closure passed to execute is bogus";	
+			throw "Closure passed to execute is not a function!";	
 
 		}
 
@@ -442,7 +469,6 @@ var AJBnet = {
 	 * @return boolean
 	 */
 	isFunction : function(closure){
-		// return typeof closure === "function";
 		return Object.prototype.toString.call( closure ) === "[object Function]";
 	},
 	
