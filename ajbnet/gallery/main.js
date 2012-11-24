@@ -1,5 +1,5 @@
 AJBnet.define('Gallery/Main',['Gallery/Gallery'],function(){
- 
+
 	AJBnet.ready(function(){
 
 		$("body").empty();

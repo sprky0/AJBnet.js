@@ -6,7 +6,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 	/**
 	 * Gallery with many images
 	 */
-	AJBnet.libs.Gallery.Gallery = function(options) {
+	Gallery = function(options) {
 
 		AJBnet.extend(this,options);
 
@@ -17,17 +17,17 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 		return this;
 	}
 
-	AJBnet.libs.Gallery.Gallery.prototype.buffer = 1; // 1 before and after current
-	AJBnet.libs.Gallery.Gallery.prototype.infinite = true;
-	AJBnet.libs.Gallery.Gallery.prototype.images = [];
-	AJBnet.libs.Gallery.Gallery.prototype.objects = [];
-	AJBnet.libs.Gallery.Gallery.prototype.current = 0;
-	AJBnet.libs.Gallery.Gallery.prototype.container = "body";
+	Gallery.prototype.buffer = 1; // 1 before and after current
+	Gallery.prototype.infinite = true;
+	Gallery.prototype.images = [];
+	Gallery.prototype.objects = [];
+	Gallery.prototype.current = 0;
+	Gallery.prototype.container = "body";
 
 	/**
 	 * Initialize the gallery and preload stuff
 	 */
-	AJBnet.libs.Gallery.Gallery.prototype.loadSet = function(){
+	Gallery.prototype.loadSet = function(){
 
 		this.current = 0;
 
@@ -43,7 +43,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 
 	}
 
-	AJBnet.libs.Gallery.Gallery.prototype.load = function(){
+	Gallery.prototype.load = function(){
 
 		if (!AJBnet.isObject(this.objects[this.current]))
 			throw "Couldn't trigger load() on Image at index " + this.current;
@@ -63,7 +63,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 	/**
 	 * Get an item by its offset from the current item
 	 */	
-	AJBnet.libs.Gallery.Gallery.prototype.getByOffset = function(offset) {
+	Gallery.prototype.getByOffset = function(offset) {
 
 /*
 		if (!this.objects[this.current + offset] && this.infinite !== true)
@@ -80,7 +80,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 	/**
 	 * Get the next Img object
 	 */	
-	AJBnet.libs.Gallery.Gallery.prototype.getNext = function() {
+	Gallery.prototype.getNext = function() {
 	
 		if (!this.objects[this.current + 1] && this.infinite !== true)
 			return null; // no exist
@@ -94,7 +94,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 	/**
 	 * Get the previous Img object
 	 */	
-	AJBnet.libs.Gallery.Gallery.prototype.getPrevious = function() {
+	Gallery.prototype.getPrevious = function() {
 	
 		if (!this.objects[this.current - 1] && this.infinite !== true)
 			return null; // no exist
@@ -105,7 +105,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 
 	}
 	
-	AJBnet.libs.Gallery.Gallery.prototype.next = function(){
+	Gallery.prototype.next = function(){
 		if (!this.getNext())
 			return;
 		this.objects[this.current].hide();
@@ -118,7 +118,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 		this.load();
 	}
 	
-	AJBnet.libs.Gallery.Gallery.prototype.previous = function(){
+	Gallery.prototype.previous = function(){
 		if (!this.objects[this.current - 1] && this.infinite !== true)
 			return;
 		this.objects[this.current].hide();
@@ -130,5 +130,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/Image"],function(){
 
 		this.load();
 	}
+
+	AJBnet.libs.Gallery.Gallery = Gallery;
 
 });

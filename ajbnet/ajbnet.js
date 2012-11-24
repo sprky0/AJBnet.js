@@ -14,7 +14,7 @@ var AJBnet = {
 	config : {
 		debug : false,
 		initRun : false,
-		srcBasePath : "",
+		srcBasePath : null,
 		main : null
 	},
 
@@ -88,6 +88,14 @@ var AJBnet = {
 				default:
 					throw "Unknown option '" + i + "' passed to AJBnet.init";
 					break;
+				case "srcBasePath":
+					var path = options[i];
+					if (!path.match(/\/$/)) {
+						// maybe it might eventually be "/loader.script?lib="
+						throw "Invalid src path, must end in trailing slash.";
+					}
+					this.config.srcBasePath = path;
+					break;
 				case "debug":
 					this.config.debug = options[i];
 					break;
@@ -98,7 +106,8 @@ var AJBnet = {
 		}
 
 		// do better and more automaticy than this -- find out from the <head><script> tag that loads ajbnet core
-		this.config.srcBasePath = "ajbnet/";
+		if (this.isNull(this.config.srcBasePath))
+			this.config.srcBasePath = "ajbnet/";
 
 		// If the document is not ready yet, initialize the ready loop which
 		// will wait to execute the readyStack
