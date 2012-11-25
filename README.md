@@ -6,15 +6,19 @@ provide a way to define classes inside of namespaces for logical grouping, while
 with standard JS prototypical inheretance.
 
 
-Done
+Done:
+
 	- Core functions to shortcut missing strict comparisons, eg: isArray, isNull etc.
 	- Loading dependencies
+	- Handle loading remote libraries and libraries that don't use the same framework for declarations
 
 In Progress:
-	- Handle loading remote libraries and libraries that don't use the same framework for declarations
-	- Tests
+
+	- Prevent double loading the same class
+	- Moar tests
 
 Bugs:
+
 	- A same-named class and package can not exist in the same level, eg:
 		/Name1/Name2/Name3 and /Name1/Name2/Name3/Name4
 		to declare a class Name3 and a class Name4 that lives in an associated package
@@ -62,8 +66,8 @@ Notes:
 		}
 
 	- Not sure about traversal for this, it might be easier to have flat map?  Eg make these all siblings and just loop
-			nutil its all done?
-	
+		until its all done?
+
 	- Ok here is the deal:
 		- make a map
 		- on each load complete, check dependencies on that node, and mark the lib as completed in the stack
