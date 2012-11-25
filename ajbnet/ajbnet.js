@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.0
+ * @version 0.2
  * @author sprky0
  */
 var AJBnet = {
@@ -211,8 +211,8 @@ var AJBnet = {
 		//	throw "Unavailable Library!";
 
 		// replace this with traversal
-		// if (this.libs[lib])
-		//	return true;
+		if (this.map[classpath] && this.map[classpath].loaded == true)
+			return true;
 
 		// future remote load thing
 		// if (!lib.match(/^http/)
@@ -222,22 +222,22 @@ var AJBnet = {
 
 			console.log( classpath + " seems to be a static library");
 			var src = this.config.srcBasePath + classpath;
+			this.define(classpath,function(){
+				// not needed for static libs, but here it is for whatever might go here
+			});
+			this.load(src,classpath);
 
 		} else if (classpath.match(this.regex.classpath)) {
 
 			console.log( classpath + " seems to be a namespaced class");			
 			var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
+			this.load(src,classpath);
 
 		} else {
 			
 			throw classpath + " doesn't seem to be properly named.";
 	
 		}
-
-		
-
-		// something with this callback should be diff
-		this.load(src,classpath);
 
 		return this;
 	},
@@ -246,8 +246,8 @@ var AJBnet = {
 	 * Define a class under the window[AJBnet] namespace
 	 *
 	 * @param string classpath A namespace "path" to a class, eg: Package/SubPackage/Class
-	 * @param array dependencies
-	 * @param object closure to be executed after dependency load that defines the class
+	 * @param array|function dependencies_or_closure Either an array of dependencies, or the closure
+	 * @param function Closure to be executed after dependency load that defines the class
 	 */
 	define : function(classpath, dependencies_or_closure, closure) {
 
@@ -287,9 +287,10 @@ var AJBnet = {
 			//this.map[classpath].loaded = true;
 			//this.execute(this.map["closure"]);
 		} else {
-			
+
 			for(var i = 0; i < dependencies.length; i++)
 				this.require(dependencies[i]); // classpath,
+
 		}
 
 		return this;
