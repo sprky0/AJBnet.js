@@ -4,10 +4,10 @@
  * @todo decide on style for init -- automatic?
  */
 AJBnet.define("Tests/Main",['Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
-// AJBnet.define("Tests/Main",['Tests/Constructor'],function(){
 
-//	with(AJBnet.libs.Tests)
-//		var x = new Constructor();
+// this is possible:
+//	with(AJBnet.libs.Package.Sub)
+//		var x = new Constructor(x,y,z);
 
 	/**
 	 * Possible Variable Types
@@ -63,9 +63,7 @@ AJBnet.define("Tests/Main",['Tests/Core','Tests/Constructor','Tests/Nested/Const
 
 	tests.run();
 
-
-	
-
-
+	// var c1 = AJBnet.new("Tests/Constructor");
+	// var c2 = AJBnet.new("Tests/Nested/Constructor");
 
 });

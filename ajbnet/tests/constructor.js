@@ -1,7 +1,7 @@
 /**
  * Test - Constructor via AJBnet.new
  */
-AJBnet.define("Tests/Constructor",["Tests/Nested/Constructor"],function(){
+AJBnet.define("Tests/Constructor",function(){
 
 	var Constructor = function(options) {
 		return this;
@@ -12,8 +12,6 @@ AJBnet.define("Tests/Constructor",["Tests/Nested/Constructor"],function(){
 		Constructor.prototype.test = function() {
 			return this.message;
 		}
-
-	console.log( Constructor );
 
 	AJBnet.libs.Tests.Constructor = Constructor;
 

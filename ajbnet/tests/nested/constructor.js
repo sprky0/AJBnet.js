@@ -1,7 +1,7 @@
 /**
  * Test - same named class under a different namespace
  */
-AJBnet.define("Tests/Nested/Constructor",function(){ // ,["Tests/Constructor/Constructor"]
+AJBnet.define("Tests/Nested/Constructor",function(){
 
 	var Constructor = function(options) {
 		return this;
@@ -13,8 +13,6 @@ AJBnet.define("Tests/Nested/Constructor",function(){ // ,["Tests/Constructor/Con
 			return this.message;
 		}
 
-	console.log( Constructor );
-
-	AJBnet.libs.Tests.Constructor = Constructor;
+	AJBnet.libs.Tests.Nested.Constructor = Constructor;
 
 });
