@@ -15,6 +15,7 @@ Done:
 In Progress:
 
 	- Prevent double loading the same class
+	- Handle circular dependencies
 	- Moar tests
 
 Bugs:
@@ -24,8 +25,10 @@ Bugs:
 		to declare a class Name3 and a class Name4 that lives in an associated package
 		is impossible.  Need to work out a modified storage scheme to resolve.  *doh  (if needed - maybe skip)
 
-	- It is possible to declare a circular dependency that loads forever.  Should be handled by caching loaded classes.
+	X - It is possible to declare a circular dependency that loads forever.  Should be handled by caching loaded classes.
 		Should just check for the first level.  A -> A is no good, but I think A -> B -> A should be fine.
+		
+		- The above no longer occurs, but now the callback on the lowest will never be run, not sure why
 
 Notes:
 

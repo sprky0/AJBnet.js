@@ -18,10 +18,6 @@ var AJBnet = {
 		main : null
 	},
 
-	// how do we handle dependencies on libraries like this?
-	// same way?  (path to vendor == 'namespace' but they are assuemd to have no dependencies?)
-	// <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-
 	/**
 	 * Libraries
 	 *
@@ -50,27 +46,18 @@ var AJBnet = {
 		Y : 89, Z : 90,
 
 		// OTHER
-		TAB : 9,
-		SHIFT : 16,
+		TAB : 9, SHIFT : 16,
 		RETURN : 13, ENTER : 13,
 		ALT : 18, OPTION : 18,
 
 		// ARROW KEYS
-		LEFT : 37,
-		UP : 38,
-		RIGHT : 39,
-		DOWN : 40,
+		LEFT : 37, UP : 38,
+		RIGHT : 39, DOWN : 40,
 
 		//  NUMERALS
-		ZERO : 48,
-		ONE : 49,
-		TWO : 50,
-		THREE : 51,
-		FOUR : 52,
-		FIVE : 53,
-		SIX : 54,
-		SEVEN : 55,
-		EIGHT : 56,
+		ZERO : 48, ONE : 49, TWO : 50,
+		THREE : 51, FOUR : 52, FIVE : 53,
+		SIX : 54, SEVEN : 55, EIGHT : 56,
 		NINE : 57
 
 	},
@@ -152,7 +139,6 @@ var AJBnet = {
 		while (path.length > 0) {
 			token = path.shift();
 			pointer = pointer[token];
-			this.log( pointer + " to " + token);
 		}
 
 		if (!pointer) // || !token) (token is done now)
@@ -336,9 +322,7 @@ var AJBnet = {
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
 				this.log("Testing dependencies for " + i);
 				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].run == true) {
-
 					this.log("Dependency satisfied!  Removing dependency " + j);
-
 					var replacement_array = [];
 					for(var k = 0; k < this.map[i].dependencies.length; k++) {
 						if (k == j)
