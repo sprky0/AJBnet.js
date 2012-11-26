@@ -229,16 +229,9 @@ var AJBnet = {
 
 			console.log( classpath + " seems to be a static library");
 			var src = this.config.srcBasePath + classpath;
-
-			// this breaks down b/c these two steps are in the wrong order.  define comes in the loaded file, not before.
-			// doh
-
-			// maybe this works?
 			this.load(src,classpath,function(){
-
 				// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
 				AJBnet.define(classpath,function(){});
-
 			});
 
 		} else if (classpath.match(this.regex.classpath)) {
