@@ -3,11 +3,15 @@
  * 
  * @todo decide on style for init -- automatic?
  */
+// AJBnet.define("Tests/Main", ['Tests/Function'], function() { // ['Tests/Doubleload','Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
 AJBnet.define("Tests/Main",['Tests/Doubleload','Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
 
 // this is possible:
 //	with(AJBnet.libs.Package.Sub)
 //		var x = new Constructor(x,y,z);
+
+	// MyFunction();
+	// return;
 
 	/**
 	 * Possible Variable Types

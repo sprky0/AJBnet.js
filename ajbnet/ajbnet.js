@@ -13,6 +13,7 @@ var AJBnet = {
 	 */
 	config : {
 		debug : false,
+		debugLevel : 100,
 		initRun : false,
 		srcBasePath : null,
 		main : null
@@ -77,9 +78,11 @@ var AJBnet = {
 
 		for(i in options||{}){
 			switch(i){
+
 				default:
 					throw "Unknown option '" + i + "' passed to AJBnet.init";
 					break;
+
 				case "srcBasePath":
 					var path = options[i];
 					if (!path.match(/\/$/)) {
@@ -88,9 +91,11 @@ var AJBnet = {
 					}
 					this.config.srcBasePath = path;
 					break;
+
 				case "debug":
 					this.config.debug = options[i];
 					break;
+
 				case "app":
 					this.config.main = options[i];
 					break;
@@ -109,10 +114,20 @@ var AJBnet = {
 		this.config.initRun = true;
 
 		if (!this.isNull( this.config.main ))
-			this.require( this.config.main );
+			this.run( this.config.main );
 
 		return this;
 
+	},
+	
+	/**
+	 * Run a code block in a particular namespace, used for the concept of the 'main', or other, still minding dependencies etc
+	 * 
+	 * @param string classpath
+	 */
+	run : function(classpath) {
+		this.require( classpath );
+		return this;
 	},
 
 	/**
@@ -148,6 +163,7 @@ var AJBnet = {
 			throw "Class '" + classpath + "' not loaded yet!";
 
 		return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
+
 	},
 
 	/**
@@ -220,9 +236,9 @@ var AJBnet = {
 			this.load(src,classpath);
 
 		} else {
-			
+
 			throw classpath + " doesn't seem to be properly named.";
-	
+
 		}
 
 		return this;
@@ -340,6 +356,9 @@ var AJBnet = {
 
 		for (i in this.map) {
 			if (this.map[i].dependencies.length == 0 && this.map[i].run === false) {
+				
+				console.log( i, this.map[i] );
+				
 				this.log("Executing the callback for " + i);
 				this.execute(this.map[i].callback);
 				this.map[i].run = true;
@@ -370,7 +389,7 @@ var AJBnet = {
 
 			this.closureHolder = closure;
 			var result = this.closureHolder();
-			delete(this.closureHolder);
+			// delete(this.closureHolder);
 			this.closureHolder = null;
 			return result;
 
@@ -446,7 +465,7 @@ var AJBnet = {
 	 * @return boolean
 	 */	
 	isString : function(string) {
-		return typeof string == "string";
+		return typeof string === "string";
 	},
 	
 	/**
@@ -489,9 +508,9 @@ var AJBnet = {
 	 *
 	 * @return object AJBnet
 	 */
-	log : function(obj) {
+	log : function(obj, level) {
 
-		if(!this.config.debug === true)
+		if(!this.config.debug === true || level < this.config.debugLevel)
 			return this;
 
 		console.log(obj);
