@@ -121,8 +121,10 @@ var AJBnet = {
 	},
 	
 	/**
-	 * Run a code block in a particular namespace, used for the concept of the 'main', or other, still minding dependencies etc
+	 * Run a code block in a particular namespace, minding dependencies etc.
 	 * 
+	 * @note As is, this will only work the first time.  Need a way to force re-running the closure.
+	 * @todo Force re-run of the closure
 	 * @param string classpath
 	 */
 	run : function(classpath) {
@@ -161,6 +163,10 @@ var AJBnet = {
 
 		if (!this.isFunction(pointer[classname]))
 			throw "Class '" + classpath + "' not loaded yet!";
+
+		// this is possible as well, not particularly better though
+		//	with(AJBnet.libs.Package.Sub)
+		//		var x = new Constructor(x,y,z);
 
 		return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 
@@ -205,12 +211,11 @@ var AJBnet = {
 	 */
 	require : function(classpath) { // , postLoadCallback) {
 
-		classpath = new String(classpath);
+		// be strict!
+		if (!this.isString(classpath))
+			throw "Invalid value for classpath, should be a String.";
 
-		// do something	
-
-		// if (this.libs[lib] && !this.isObject( this.libs[lib] ))
-		//	throw "Unavailable Library!";
+		//	classpath = new String(classpath);
 
 		// replace this with traversal
 		if (this.map[classpath] && this.map[classpath].loaded == true)
@@ -224,10 +229,17 @@ var AJBnet = {
 
 			console.log( classpath + " seems to be a static library");
 			var src = this.config.srcBasePath + classpath;
-			this.define(classpath,function(){
-				// not needed for static libs, but here it is for whatever might go here
+
+			// this breaks down b/c these two steps are in the wrong order.  define comes in the loaded file, not before.
+			// doh
+
+			// maybe this works?
+			this.load(src,classpath,function(){
+
+				// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
+				AJBnet.define(classpath,function(){});
+
 			});
-			this.load(src,classpath);
 
 		} else if (classpath.match(this.regex.classpath)) {
 
@@ -299,17 +311,21 @@ var AJBnet = {
 
 	},
 
-	load : function(src,classpath) {
+	load : function(src,classpath,callback) {
 
 		AJBnet.log("AJBnet.load() -> " + src);
 
-		var _classpath = classpath;
+		// var _classpath = classpath, _callback = callback;
 		var element = document.createElement("script");
 			element.setAttribute("type","text/javascript");
 			element.setAttribute("src", src);
 			element.onload = function() {
 
 				AJBnet.log("onload callback for " + classpath + " at " + src + " called.");
+
+				if (AJBnet.isFunction(callback))
+					callback();
+
 				AJBnet.loaded(classpath);
 
 			};

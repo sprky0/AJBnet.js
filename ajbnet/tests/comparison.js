@@ -1,20 +1,10 @@
 /**
- * AJBnet Framework Tests
- * 
- * @todo decide on style for init -- automatic?
+ * This test will run all the internal comparison methods and make sure they do what they should
  */
-// AJBnet.define("Tests/Main", ['Tests/Function'], function() { // ['Tests/Doubleload','Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
-AJBnet.define("Tests/Main",['Tests/Doubleload','Tests/Core','Tests/Constructor','Tests/Nested/Constructor'],function(){
-
-// this is possible:
-//	with(AJBnet.libs.Package.Sub)
-//		var x = new Constructor(x,y,z);
-
-	// MyFunction();
-	// return;
+AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 
 	/**
-	 * Possible Variable Types
+	 * Possible variable types we will use in the tests
 	 */
 	var number = 1,
 		integer = 2,
@@ -26,8 +16,7 @@ AJBnet.define("Tests/Main",['Tests/Doubleload','Tests/Core','Tests/Constructor',
 		false_value = false,
 		undefined_value = undefined;
 
-	// we need namespaces should be : tests/core
-	var tests = AJBnet.new("Tests/Core",{container:"body"});
+	var tests = AJBnet.new("Tests/Core",{container:"#results"});
 
 	// number
 	tests.addTest(integer,"isNumber",true);
@@ -66,8 +55,5 @@ AJBnet.define("Tests/Main",['Tests/Doubleload','Tests/Core','Tests/Constructor',
 	tests.addTest(false_value,"isObject",false);
 
 	tests.run();
-
-	// var c1 = AJBnet.new("Tests/Constructor");
-	// var c2 = AJBnet.new("Tests/Nested/Constructor");
 
 });

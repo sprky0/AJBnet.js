@@ -1,5 +1,5 @@
 // @todo require jquery
-AJBnet.define("Tests/Core",function(){
+AJBnet.define("Tests/Core",['vendor/jquery-1.7.1.min.js'],function(){
 
 	var Core = function(options){
 		AJBnet.extend(this,options); // same as forloop overwrite
@@ -13,12 +13,30 @@ AJBnet.define("Tests/Core",function(){
 	/**
 	 * Add a core function test!
 	 */
-	Core.prototype.addTest = function(value, function_name, expected){
-		this.tests.push({
-			core_function : function_name,
-			test_value : value,
-			expected_result : expected
-		});
+	Core.prototype.addTest = function(value, test, expected, name){
+
+		if ( AJBnet.isFunction(test) ) {
+			
+			this.tests.push({
+				type : "closure",
+				test : test,
+				name : name,
+				test_value : value,
+				expected_result : expected
+			});
+
+		} else {
+
+			this.tests.push({
+				type : "core",
+				test : test,
+				name : name || test,
+				test_value : value,
+				expected_result : expected
+			});
+
+		}
+
 		return this;
 	};
 
@@ -61,32 +79,85 @@ AJBnet.define("Tests/Core",function(){
 
 		for(i in this.tests) {
 
-			if ( typeof AJBnet[this.tests[i].core_function] != "function" )
-				throw "AJBnet core doesn't have a function '" + this.tests[i].function_name + "'";
+			switch( this.tests[i].type ) {
 
-			var result = AJBnet[this.tests[i].core_function](this.tests[i].test_value);
-			var success = result === this.tests[i].expected_result;
-			var message = "Response was ";
+				default:
+				case "core":				
 
-			if (true == success)
-				message += " as expected.";
-			else
-				message += " not as expected!";
+					var result, success, message;
 
-			this.showResult(
-				this.tests[i].core_function,
-				this.tests[i].test_value,
-				this.tests[i].expected_result,
-				result,
-				success,
-				message
-			);
+					try {
+
+						if ( typeof AJBnet[this.tests[i].test] != "function" )
+							throw "AJBnet core doesn't have a function '" + this.tests[i].test + "'";
+
+						result = AJBnet[this.tests[i].test](this.tests[i].test_value);
+						success = result === this.tests[i].expected_result;
+						message = "Response was ";
+
+						if (true == success)
+							message += " as expected.";
+						else
+							message += " not as expected!";
+
+					} catch(e) {
+						
+						success = "false";
+						message = "<strong>Exception:</strong> " + e;
+
+					}
+
+					this.showResult(
+						this.tests[i].name,
+						this.tests[i].test_value,
+						this.tests[i].expected_result,
+						result,
+						success,
+						message
+					);
+					
+					break;
+					
+				case "closure":
+
+					if ( typeof this.tests[i].test != "function" )
+						throw "Closure (" + ") to test is not a valid function!";
+		
+					try {
+
+						var result = AJBnet[this.tests[i].test](this.tests[i].test_value);
+						var success = result === this.tests[i].expected_result;
+						var message = "Response was ";
+
+						if (true == success)
+							message += " as expected.";
+						else
+							message += " not as expected!";
+
+					} catch(e) {
+						
+						success = "false";
+						message = "<strong>Exception:</strong> " + e;
+
+					}
+
+					this.showResult(
+						this.tests[i].name,
+						this.tests[i].test_value,
+						this.tests[i].expected_result,
+						result,
+						success,
+						message
+					);
+
+					break;
+
+			}
 
 		}
 
 	}
 
-	// Would be nice to not have to do this somehow.  Any ideas?
 	AJBnet.libs.Tests.Core = Core;
 
 });
