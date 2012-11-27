@@ -3,21 +3,24 @@
 <head>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/screen.css" />
-	<!--<script type="text/javascript" src="ajbnet/vendor/jquery-1.7.1.min.js"></script>-->
-	<script type="text/javascript" src="ajbnet/ajbnet.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"></script>
+<!--
 
-	// This works perfectly fine, but i think it might make sense to keep HTML and JS separate to be more strict
-	AJBnet.init({
-		debug : false,
-		app : "Gallery/Main"
-	});
+	@note The above attribute data-init can be excluded and this used if you want:  (or if you want to delay init for any reason)
 
-	</script>
+	AJBnet.init({debug:false,app:"Gallery/Main"});
+
+-->
 </head>
 <body>
 
-	<h1>Loading</h1>
+	<header>
+		<h1><em>AJBnet.js</em> Framework</h1>
+		<h2>Example Application: Gallery</h2>
+	</header>
+
+	<div>Tacos</div>
+
 
 </body>
 </html>

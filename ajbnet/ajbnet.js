@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.2
+ * @version 0.3
  * @author sprky0
  */
 var AJBnet = {
@@ -66,7 +66,8 @@ var AJBnet = {
 
 	regex : {
 		classpath : "^[A-Za-z0-9\-\.\/]+$",
-		static : "^[A-Za-z0-9\-\.\/]+\.js$"
+		static : "^[A-Za-z0-9\-\.\/]+\.js$",
+		origin : "ajbnet.js"
 	},
 
 	/**
@@ -114,13 +115,45 @@ var AJBnet = {
 
 		this.config.initRun = true;
 
-		if (!this.isNull( this.config.main ))
-			this.run( this.config.main );
+		if (!this.isNull( this.config.main )) {
+			
+			if (this.isArray( this.config.main ))
+				for(i in this.config.main)
+					this.run(this.config.main[i]);
+			else
+				this.run(this.config.main);
+
+		}
 
 		return this;
 
 	},
+
+	/**
+	 * This guy tries to figure out init from a data-init property of the originating script tag.
+	 */
+	autoInit : function() {
 	
+		var scripts = document.getElementsByTagName("script"), origin = null;
+	
+		for (var i in scripts ) {
+			var test = scripts[i].src + "";
+			if ( test.match( AJBnet.regex.origin ) ) {
+				var origin = scripts[i];
+				break;
+			}
+		}
+	
+		var init_json = origin.getAttribute("data-init"), init_object;
+	
+		if (!this.isNull(init_json)){
+			// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
+			eval("init_object="+init_json);
+			this.init(init_object);
+		}
+	
+	},
+
 	/**
 	 * Run a code block in a particular namespace, minding dependencies etc.
 	 * 
@@ -491,7 +524,7 @@ var AJBnet = {
 	 * @return boolean
 	 */
 	isObject : function(object) {
-		return Object.prototype.toString.call( object ) === "[object Object]"
+		return Object.prototype.toString.call(object) === "[object Object]"
 	},
 	
 	/**
@@ -501,7 +534,7 @@ var AJBnet = {
 	 * @return boolean
 	 */
 	isArray : function(object) {
-		return Object.prototype.toString.call( object ) === "[object Array]";
+		return Object.prototype.toString.call(object) === "[object Array]";
 	},
 
 	/**
@@ -527,5 +560,6 @@ var AJBnet = {
 		return this;
 
 	}
-
+	
 };
+AJBnet.autoInit();

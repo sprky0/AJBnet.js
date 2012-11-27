@@ -16,7 +16,7 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.7.1.min.js'],function(){
 	Core.prototype.addTest = function(value, test, expected, name){
 
 		if ( AJBnet.isFunction(test) ) {
-			
+
 			this.tests.push({
 				type : "closure",
 				test : test,
@@ -125,7 +125,7 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.7.1.min.js'],function(){
 		
 					try {
 
-						var result = AJBnet[this.tests[i].test](this.tests[i].test_value);
+						var result = this.tests[i].test(this.tests[i].test_value);
 						var success = result === this.tests[i].expected_result;
 						var message = "Response was ";
 
