@@ -5,18 +5,34 @@
 	<link rel="stylesheet" href="css/screen.css" />
 	<script type="text/javascript" src="ajbnet/vendor/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript">
-	
+
 	$(function(){
-		
+
 		$(document).bind("keyup",function(e){
-			
-			$("BODY").append(e.keyCode);
-			$("BODY").append("<br/>");		
+
+			var $thing = $("<span>"+e.keyCode+"</span>")
+					.css({
+						display:"inline-block",
+						padding:"5px", margin:"5px",
+						border : "1px solid #fa0",
+						"background-color" : "#d80",
+						color : "#fff"
+						
+					})
+					.appendTo("BODY");
+
+			setTimeout(function(){
+				
+				$thing.fadeOut("fast",function(){
+					$(this).remove();	
+				});
+				
+			}, 1000);
 			
 		});
-		
-		});
-	
+
+	});
+
 	</script>
 </head>
 <body>

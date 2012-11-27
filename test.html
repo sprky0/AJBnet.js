@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="tests">
 <head>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/screen.css" />
@@ -10,15 +10,17 @@
 
 	</script>
 </head>
-<body class="padded">
+<body>
 
-	<h1>Tests</h1>
+	<header>
 
-	<button onclick="AJBnet.run('Tests/Comparison')">Core Comparison</button>
-	<button onclick="AJBnet.run('Tests/Circular')">Circular Dependency</button>
-	<button onclick="AJBnet.run('Tests/Doubleload')">"Double Load"</button>
+		<h1><em>AJBnet</em> Tests</h1>
 
-	<hr />
+		<button onclick="AJBnet.run('Tests/Comparison')">Core Comparison</button>
+		<button onclick="AJBnet.run('Tests/Circular')">Circular Dependency</button>
+		<button onclick="AJBnet.run('Tests/Doubleload')">"Double Load"</button>
+		
+	</header>
 
 	<div id="results"></div>
 

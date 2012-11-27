@@ -47,9 +47,10 @@ var AJBnet = {
 		Y : 89, Z : 90,
 
 		// OTHER
-		TAB : 9, SHIFT : 16,
+		TAB : 9, SHIFT : 16, ESCAPE : 27,
 		RETURN : 13, ENTER : 13,
 		ALT : 18, OPTION : 18,
+		COMMAND : 224, CONTROL : 17,
 
 		// ARROW KEYS
 		LEFT : 37, UP : 38,
