@@ -1,4 +1,4 @@
-AJBnet.define('Gallery/Main',['vendor/jquery-1.7.1.min.js','Gallery/Gallery'],function(){
+AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],function(){
 
 	AJBnet.ready(function(){
 

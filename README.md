@@ -32,6 +32,8 @@ Bugs:
 
 Notes:
 
+@todo This junk is all done now basically -- can move this information to a different file to keep the github homepage clean)
+
 	Example dependency handling:
 
 		Classes:
@@ -69,7 +71,7 @@ Notes:
 		}
 
 	- Not sure about traversal for this, it might be easier to have flat map?  Eg make these all siblings and just loop
-		until its all done?
+		until its all done? -- TRUE did that
 
 	- Ok here is the deal:
 		- make a map
