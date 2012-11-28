@@ -5,11 +5,14 @@ AJBnet.define("Tests/Mixed/C",function(){
 
 	var C = function() {};
 
-	C.prototype.test = function() {
-		var A = AJBnet.new("Tests/Mixed/A");
-		AJBnet.log("C has made A which is a " + A.prototype.classname);
-	}
-	
+		C.prototype.test = function() {
+			return "C";
+		}
+
+		C.prototype.getA = function() {
+			return AJBnet.new("Tests/Mixed/A");
+		}
+
 	AJBnet.libs.Tests.Mixed.C = C;
 
 });

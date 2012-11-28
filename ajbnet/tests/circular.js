@@ -4,7 +4,19 @@ AJBnet.define("Tests/Circular",["Tests/Core","Tests/Mixed/A"],function(){
 
 	var tests = AJBnet.new("Tests/Core",{container:"#results"});
 
-	tests.addTest(true,function(){alert('dix');return false;},false,"tacos");
+	tests.addTest(true,function(){
+
+		var A = AJBnet.new("Tests/Mixed/A");
+		var B = A.getB();
+		var C = B.getC();
+		var A2 = C.getA();
+
+		if ( A.test() == "A" && B.test() == "B" && C.test() == "C" & A2.test() == "A" )
+			return true;
+
+		return false;
+
+	},true,"tacos");
 
 	tests.run();
 

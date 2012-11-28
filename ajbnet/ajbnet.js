@@ -563,3 +563,8 @@ var AJBnet = {
 	
 };
 AJBnet.autoInit();
+
+
+function new(classpath) {
+	return AJBnet.new(classpath);
+}
