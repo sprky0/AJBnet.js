@@ -1,6 +1,6 @@
 AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],function(){
 
-	AJBnet.ready(function(){
+	this.ready(function(){
 
 		$("body").empty();
 
@@ -21,7 +21,7 @@ AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],fu
 				.bind("keyup",function(e){
 
 					switch(e.keyCode){
-	
+
 						default:
 						// unknown key
 						AJBnet.log(e);
