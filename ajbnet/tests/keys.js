@@ -4,6 +4,8 @@ AJBnet.define("Tests/Keys",['vendor/jquery-1.8.3.min.js'],function(){
 
 		$(document).bind("keyup",function(e){
 
+			console.log(e);
+
 			var $thing = $("<span>"+e.keyCode+"</span>")
 					.css({
 						display:"inline-block",
