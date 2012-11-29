@@ -69,7 +69,7 @@ var AJBnet = {
 		static : "^[A-Za-z0-9\-\.\/]+\.js$",
 		origin : "ajbnet.js"
 	},
-
+	
 	/**
 	 * this is called automatically as soon as the object is in memory
 	 */
@@ -143,15 +143,15 @@ var AJBnet = {
 				break;
 			}
 		}
-	
+
 		var init_json = origin.getAttribute("data-init"), init_object;
-	
+
 		if (!this.isNull(init_json)){
 			// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
 			eval("init_object="+init_json);
 			this.init(init_object);
 		}
-	
+
 	},
 
 	/**
@@ -249,19 +249,23 @@ var AJBnet = {
 		if (!this.isString(classpath))
 			throw "Invalid value for classpath, should be a String.";
 
-		//	classpath = new String(classpath);
-
-		// replace this with traversal
-		if (this.map[classpath] && this.map[classpath].loaded == true)
+		// dont' double load!
+		if (this.map[classpath] && (this.map[classpath].loading == true || this.map[classpath].loaded == true))
 			return true;
 
-		// future remote load thing
-		// if (!lib.match(/^http/)
-		// this.log(this.regex.classpath);	
+		// set the state if it exists
+		if (!this.map[classpath]) {
+			this.map[classpath] = {
+				loading : true,
+				loaded : false,
+				run : false
+			}
+		};
 
 		if (classpath.match(this.regex.static)) {
 
-			console.log( classpath + " seems to be a static library");
+			// this.log( classpath + " seems to be a static library");
+
 			var src = this.config.srcBasePath + classpath;
 			this.load(src,classpath,function(){
 				// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
@@ -270,7 +274,8 @@ var AJBnet = {
 
 		} else if (classpath.match(this.regex.classpath)) {
 
-			console.log( classpath + " seems to be a namespaced class");			
+			// this.log( classpath + " seems to be a namespaced class");
+
 			var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
 			this.load(src,classpath);
 
@@ -320,6 +325,7 @@ var AJBnet = {
 			dependencies : dependencies || [],
 			callback : closure,
 			loaded : false,
+			loading : false,
 			run : false
 		};
 
@@ -377,6 +383,11 @@ var AJBnet = {
 		}
 
 		for (i in this.map) {
+
+			// not even ready to check yet
+			if (this.map[i] && this.map[i].loading == true)
+				continue;
+
 			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
 				this.log("Testing dependencies for " + i);
@@ -398,13 +409,24 @@ var AJBnet = {
 		var loop = false;
 
 		for (i in this.map) {
+			
+			// console.log( this.map, i );
+			// not even ready to check yet
+			if (this.map[i] && this.map[i].loading == true)
+				continue;
+
 			if (this.map[i].dependencies.length == 0 && this.map[i].run === false) {
 				
-				console.log( i, this.map[i] );
-				
 				this.log("Executing the callback for " + i);
+
+				// console.log( this.map[i] );
+
 				this.execute(this.map[i].callback);
+
+				// console.log( this.map[i] );
+
 				this.map[i].run = true;
+
 				loop = true;
 			}
 		}
@@ -427,13 +449,15 @@ var AJBnet = {
 	 * @return mixed
 	 */
 	execute : function(closure) {
-	
+
 		if (this.isFunction(closure)) {
 
 			this.closureHolder = closure;
 			var result = this.closureHolder();
+
 			// delete(this.closureHolder);
-			this.closureHolder = null;
+			// this.closureHolder = null;
+
 			return result;
 
 		} else {
