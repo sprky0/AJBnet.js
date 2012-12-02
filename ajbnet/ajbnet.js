@@ -614,18 +614,28 @@ var AJBnet = {
 	},
 
 	/**
-	 * console.log wrap
+	 * logging
 	 *
 	 * @return object AJBnet
 	 */
 	log : function(obj, type) {
 
 		if(this.config.debug === true || this.config.logsEnabled[type] === true)
-			console.log(obj);
+			this.logFunction(obj);
 
 		return this;
 
-	}
+	},
 	
+	/**
+	 * console.log wrap, which can be overriden for custom logging
+	 *
+	 * @return object AJBnet
+	 */
+	logFunction : function(obj) {
+		console.log(obj);
+		return this;
+	}
+
 };
 AJBnet.autoInit();
