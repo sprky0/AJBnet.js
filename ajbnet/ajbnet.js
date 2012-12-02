@@ -16,7 +16,28 @@ var AJBnet = {
 		debugLevel : 100,
 		initRun : false,
 		srcBasePath : null,
-		main : null
+
+		/**
+		 * @var string|array Classpaths to try and run automatically
+		 */
+		main : null,
+	
+		/**
+		 * Which logs should be enabled for logging in the log?  LOGS
+		 *
+		 * @var object logsEnabled
+		 */
+		logsEnabled : {
+			core : true,
+			application : true,
+			loading : true,
+			execution : true,
+			constructor : true,
+			notice : true,
+			warning : true,
+			error : true
+		}
+
 	},
 
 	/**
@@ -65,15 +86,29 @@ var AJBnet = {
 	},
 
 	regex : {
-		classpath : "^[A-Za-z0-9\-\.\/]+$",
-		static : "^[A-Za-z0-9\-\.\/]+\.js$",
-		origin : "ajbnet.js"
+		classpath : /^[A-Za-z0-9\-\.\/]+$/,
+		static : /^[A-Za-z0-9\-\.\/]+\.js$/,
+		origin : /ajbnet.js/,
+		srcPath : /\/$/
 	},
-	
+
+	logs : {
+		core : "core",
+		application : "application",
+		loading : "loading",
+		execution : "execution",
+		constructor : "constructor",
+		notice : "notice",
+		warning : "warning",
+		error : "error"
+	},
+
 	/**
 	 * this is called automatically as soon as the object is in memory
 	 */
 	init : function(options,force) {
+
+		this.log("AJBnet.init()", this.logs.core);
 
 		if (this.config.initRun === true && force !== true)
 			throw "Init already run!";
@@ -87,7 +122,7 @@ var AJBnet = {
 
 				case "srcBasePath":
 					var path = options[i];
-					if (!path.match(/\/$/)) {
+					if (!path.match(this.srcPath)) {
 						// maybe it might eventually be "/loader.script?lib="
 						throw "Invalid src path, must end in trailing slash.";
 					}
@@ -104,25 +139,23 @@ var AJBnet = {
 			}
 		}
 
-		// do better and more automaticy than this -- find out from the <head><script> tag that loads ajbnet core
 		if (this.isNull(this.config.srcBasePath))
 			this.config.srcBasePath = "ajbnet/";
 
 		// If the document is not ready yet, initialize the ready loop which
-		// will wait to execute the readyStack
+		// will wait to execute readyStack array of closures
 		if (!this.isReady())
 			this.readyLoop();
 
 		this.config.initRun = true;
 
+		// run one or many main 'scripts'
 		if (!this.isNull( this.config.main )) {
-			
-			if (this.isArray( this.config.main ))
+			if (this.isArray(this.config.main))
 				for(i in this.config.main)
 					this.run(this.config.main[i]);
 			else
 				this.run(this.config.main);
-
 		}
 
 		return this;
@@ -133,7 +166,9 @@ var AJBnet = {
 	 * This guy tries to figure out init from a data-init property of the originating script tag.
 	 */
 	autoInit : function() {
-	
+
+		this.log("AJBnet.autoInit()", this.logs.core);
+
 		var scripts = document.getElementsByTagName("script"), origin = null;
 	
 		for (var i in scripts ) {
@@ -149,6 +184,12 @@ var AJBnet = {
 		if (!this.isNull(init_json)){
 			// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
 			eval("init_object="+init_json);
+			
+			if (!this.isObject(init_object)) {
+				this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
+				return this;
+			}
+			
 			this.init(init_object);
 		}
 
@@ -180,7 +221,7 @@ var AJBnet = {
 		var path = classpath.split("/");
 		var classname = path.pop();
 
-		this.log(classname);
+		this.log(classname, this.logs.constructor);
 
 		// start here, in case we are at the top level
 		var token = classname;
@@ -297,6 +338,7 @@ var AJBnet = {
 	 */
 	define : function(classpath, dependencies_or_closure, closure) {
 
+		// Test to figure out which param is which (can exclude dependencies if you don't have any)
 		if (this.isFunction(dependencies_or_closure)) {
 			closure = dependencies_or_closure;
 			dependencies = null;
@@ -445,6 +487,7 @@ var AJBnet = {
 	 * execute a closure, in the context of the framework
 	 * this will allow you to use the 'this' keyword to access AJBnet functions
 	 *
+	 * @note only use this if you don't need to execute in the same scope as the framework
 	 * @param function closure
 	 * @return mixed
 	 */
@@ -575,12 +618,11 @@ var AJBnet = {
 	 *
 	 * @return object AJBnet
 	 */
-	log : function(obj, level) {
+	log : function(obj, type) {
 
-		if(!this.config.debug === true || level < this.config.debugLevel)
-			return this;
+		if(this.config.debug === true || this.config.logsEnabled[type] === true)
+			console.log(obj);
 
-		console.log(obj);
 		return this;
 
 	}
