@@ -451,7 +451,7 @@ var AJBnet = {
 		var loop = false;
 
 		for (i in this.map) {
-			
+
 			// console.log( this.map, i );
 			// not even ready to check yet
 			if (this.map[i] && this.map[i].loading == true)
@@ -470,6 +470,13 @@ var AJBnet = {
 				this.map[i].run = true;
 
 				loop = true;
+
+			} else {
+
+				// trying to figure out cross dependencies / overlapping dependencies problems :(  *doh
+				// this.log( i + " still has " + this.map[i].dependencies.length + "!" );
+				// this.log( i + " thinks that it " + ( this.map[i].run !== false ? " been run " : " not been run ") );
+				
 			}
 		}
 

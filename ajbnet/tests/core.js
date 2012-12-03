@@ -1,4 +1,3 @@
-// @todo require jquery
 AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 	var Core = function(options){
