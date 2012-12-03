@@ -13,6 +13,7 @@ AJBnet.define("Tests/Nested/Constructor",function(){
 			return this.message;
 		}
 
-	AJBnet.libs.Tests.Nested.Constructor = Constructor;
+	// AJBnet.libs.Tests.Nested.Constructor = Constructor;
+	return Constructor;
 
 });

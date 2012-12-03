@@ -216,8 +216,6 @@ var AJBnet = {
 	 */
 	new : function(classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) {
 
-		// var path = (classpath.split(/AJBnet[.|\/]/)[1]||classpath).split(/[\.|\/]/);
-		// var path = (classpath.split("AJBnet/")[1]||classpath).split("/");
 		var path = classpath.split("/");
 		var classname = path.pop();
 
@@ -385,6 +383,45 @@ var AJBnet = {
 		return this;
 
 	},
+	
+	register : function(classpath, definition_closure) {
+		
+		// classpath ->  [namespace/]...class
+		// definition_closure - closure that either returns itself, or returns the constructor that is created in the closure
+		
+		var path = classpath.split("/");
+		var classname = path.pop();
+
+		this.log(classname, this.logs.constructor);
+		this.log(path);
+
+		// start here, in case we are at the top level
+		var token = classname;
+		var pointer = this.libs;
+
+		// Traverse the tree of loaded classes until we reach the last
+		while (path.length > 0) {
+			token = path.shift();
+			pointer = pointer[token];
+		}
+
+		if (!this.isObject(pointer)) // || !token) (token is done now)
+			throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
+
+		if (!this.isFunction(definition_closure))
+			throw "Closure was not passed for " + classpath;
+
+
+		//  = pointer[classname];
+		// var constructor = this.execute(definition_closure);
+		// console.log( constructor );
+		// console.log( pointer[classname] );
+		// pointer[classname] = constructor;
+		pointer[classname] = this.execute(definition_closure);
+
+		this.map[classname].run = true;
+
+	},
 
 	load : function(src,classpath,callback) {
 
@@ -459,16 +496,8 @@ var AJBnet = {
 
 			if (this.map[i].dependencies.length == 0 && this.map[i].run === false) {
 				
-				this.log("Executing the callback for " + i);
-
-				// console.log( this.map[i] );
-
-				this.execute(this.map[i].callback);
-
-				// console.log( this.map[i] );
-
-				this.map[i].run = true;
-
+				this.log("Registering " + i, this.logs.loading);
+				this.register(i, this.map[i].callback);
 				loop = true;
 
 			} else {
