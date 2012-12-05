@@ -30,8 +30,9 @@ Bugs:
 		
 		- The above no longer occurs, but now the callback on the lowest will never be run, not sure why
 
-	- There is something fishy happening in the construcors ... specifically with tests :(
-		- working on this, tried an alternate method bypassing "new" but that didn't help
+To Improve:
+
+		- Constructors are redefined each time, by re-running their respective closure.  This fixes a problem with certain objects that hang onto references, eg arrays.
 
 Notes:
 
