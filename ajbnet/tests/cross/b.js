@@ -10,6 +10,6 @@ AJBnet.define("Tests/Cross/B",["Tests/Cross/A"],function(){
 			return AJBnet.new("Tests/Cross/A");
 		}
 
-	AJBnet.libs.Tests.Cross.B = B;
+	return B;
 
 });

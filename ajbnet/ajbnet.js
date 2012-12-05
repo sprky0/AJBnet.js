@@ -12,6 +12,7 @@ var AJBnet = {
 	 * @var object
 	 */
 	config : {
+
 		debug : false,
 		debugLevel : 100,
 		initRun : false,
@@ -108,7 +109,7 @@ var AJBnet = {
 	 */
 	init : function(options,force) {
 
-		this.log("AJBnet.init()", this.logs.core);
+		// this.log("AJBnet.init()", this.logs.core);
 
 		if (this.config.initRun === true && force !== true)
 			throw "Init already run!";
@@ -167,7 +168,7 @@ var AJBnet = {
 	 */
 	autoInit : function() {
 
-		this.log("AJBnet.autoInit()", this.logs.core);
+		// this.log("AJBnet.autoInit()", this.logs.core);
 
 		var scripts = document.getElementsByTagName("script"), origin = null;
 	
@@ -186,7 +187,7 @@ var AJBnet = {
 			eval("init_object="+init_json);
 			
 			if (!this.isObject(init_object)) {
-				this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
+				// this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
 				return this;
 			}
 			
@@ -219,7 +220,7 @@ var AJBnet = {
 		var path = classpath.split("/");
 		var classname = path.pop();
 
-		this.log(classname, this.logs.constructor);
+		// this.log(classname, this.logs.constructor);
 
 		// start here, in case we are at the top level
 		var token = classname;
@@ -297,13 +298,12 @@ var AJBnet = {
 			this.map[classpath] = {
 				loading : true,
 				loaded : false,
+				running : false,
 				run : false
 			}
 		};
 
 		if (classpath.match(this.regex.static)) {
-
-			// this.log( classpath + " seems to be a static library");
 
 			var src = this.config.srcBasePath + classpath;
 			this.load(src,classpath,function(){
@@ -312,8 +312,6 @@ var AJBnet = {
 			});
 
 		} else if (classpath.match(this.regex.classpath)) {
-
-			// this.log( classpath + " seems to be a namespaced class");
 
 			var src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
 			this.load(src,classpath);
@@ -366,14 +364,11 @@ var AJBnet = {
 			callback : closure,
 			loaded : false,
 			loading : false,
+			running : false,
 			run : false
 		};
 
-		if (dependencies.length == 0) {
-			//this.log(classpath + " has no dependencies, so the closure is called immediately!");
-			//this.map[classpath].loaded = true;
-			//this.execute(this.map["closure"]);
-		} else {
+		if (dependencies.length > 0) {
 
 			for(var i = 0; i < dependencies.length; i++)
 				this.require(dependencies[i]); // classpath,
@@ -385,15 +380,14 @@ var AJBnet = {
 	},
 	
 	register : function(classpath, definition_closure) {
-		
+
+		this.log("AJBnet.register() - Running for " + classpath, this.logs.constructor);
+
 		// classpath ->  [namespace/]...class
 		// definition_closure - closure that either returns itself, or returns the constructor that is created in the closure
-		
+
 		var path = classpath.split("/");
 		var classname = path.pop();
-
-		this.log(classname, this.logs.constructor);
-		this.log(path);
 
 		// start here, in case we are at the top level
 		var token = classname;
@@ -411,21 +405,18 @@ var AJBnet = {
 		if (!this.isFunction(definition_closure))
 			throw "Closure was not passed for " + classpath;
 
+		this.log("AJBnet.register() - Running closure  for " + classpath, this.logs.constructor);
 
-		//  = pointer[classname];
-		// var constructor = this.execute(definition_closure);
-		// console.log( constructor );
-		// console.log( pointer[classname] );
-		// pointer[classname] = constructor;
 		pointer[classname] = this.execute(definition_closure);
+		this.map[classpath].run = true;
 
-		this.map[classname].run = true;
+		console.log( this.map[classpath] );
 
 	},
 
 	load : function(src,classpath,callback) {
 
-		AJBnet.log("AJBnet.load() -> " + src);
+		this.log("AJBnet.load() -> " + src);
 
 		// var _classpath = classpath, _callback = callback;
 		var element = document.createElement("script");
@@ -433,7 +424,7 @@ var AJBnet = {
 			element.setAttribute("src", src);
 			element.onload = function() {
 
-				AJBnet.log("onload callback for " + classpath + " at " + src + " called.");
+				AJBnet.log("onload callback for " + classpath + " at " + src + " called.", AJBnet.logs.loading);
 
 				if (AJBnet.isFunction(callback))
 					callback();
@@ -494,8 +485,10 @@ var AJBnet = {
 			if (this.map[i] && this.map[i].loading == true)
 				continue;
 
-			if (this.map[i].dependencies.length == 0 && this.map[i].run === false) {
-				
+			if (this.map[i].dependencies.length == 0 && this.map[i].run === false && this.map[i].running === false) {
+
+				this.map[i].running = true;
+
 				this.log("Registering " + i, this.logs.loading);
 				this.register(i, this.map[i].callback);
 				loop = true;

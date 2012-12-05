@@ -10,6 +10,6 @@ AJBnet.define("Tests/Mixed/B",["Tests/Mixed/C"],function(){
 			return AJBnet.new("Tests/Mixed/C");
 		}
 
-	AJBnet.libs.Tests.Mixed.B = B;
+	return B;
 
 });

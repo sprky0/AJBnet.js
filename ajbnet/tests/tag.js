@@ -9,7 +9,7 @@ AJBnet.define("Tests/Tag",function(){
 
 		var test = scripts[i].src + "", origin;
 
-		if (test.match("ajbnet.js")) {
+		if (test.match( this.regex.origin )) {
 			origin = scripts[i];
 		}
 

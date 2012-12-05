@@ -1,11 +1,11 @@
 /**
- * Image
+ * ImageProxy
  *
  * @todo require jquery
  */
-AJBnet.define("Gallery/Image",function(){
+AJBnet.define("Gallery/ImageProxy",function(){
 
-	AJBnet.libs.Gallery.Image = function(options) {
+	var ImageProxy = function(options) {
 
 		var that = this;
 		this.image = new Image();
@@ -28,22 +28,22 @@ AJBnet.define("Gallery/Image",function(){
 		return this;
 	}
 
-	AJBnet.libs.Gallery.Image.prototype.autoshow = false;
-	AJBnet.libs.Gallery.Image.prototype.delay = false;
-	AJBnet.libs.Gallery.Image.prototype.x = 0;
-	AJBnet.libs.Gallery.Image.prototype.y = 0;
-	AJBnet.libs.Gallery.Image.prototype.width = 640;
-	AJBnet.libs.Gallery.Image.prototype.height = 480;
-	AJBnet.libs.Gallery.Image.prototype.image = null;
-	AJBnet.libs.Gallery.Image.prototype.src = null;
-	AJBnet.libs.Gallery.Image.prototype.container = "body";
-	AJBnet.libs.Gallery.Image.prototype.loaded = false;
-	AJBnet.libs.Gallery.Image.prototype.scale = "boxed"; // boxed
+	ImageProxy.prototype.autoshow = false;
+	ImageProxy.prototype.delay = false;
+	ImageProxy.prototype.x = 0;
+	ImageProxy.prototype.y = 0;
+	ImageProxy.prototype.width = 640;
+	ImageProxy.prototype.height = 480;
+	ImageProxy.prototype.image = null;
+	ImageProxy.prototype.src = null;
+	ImageProxy.prototype.container = "body";
+	ImageProxy.prototype.loaded = false;
+	ImageProxy.prototype.scale = "boxed"; // boxed
 
 	/**
 	 * Callback - Image Has Loaded
 	 */
-	AJBnet.libs.Gallery.Image.prototype._loadCallback = function(){
+	ImageProxy.prototype._loadCallback = function(){
 		this.loaded = true;
 		this.scaleToContainer();
 		this.loadCallback();
@@ -52,36 +52,36 @@ AJBnet.define("Gallery/Image",function(){
 	/**
 	 * Callback - Image Is About To Be Told To Load
 	 */
-	AJBnet.libs.Gallery.Image.prototype._preloadCallback = function(){
+	ImageProxy.prototype._preloadCallback = function(){
 		this.preloadCallback();
 	}
 
 	/**
 	 * Scale Callback
 	 */
-	AJBnet.libs.Gallery.Image.prototype._scaleCallback = function(){
+	ImageProxy.prototype._scaleCallback = function(){
 		this.scaleCallback();
 	}
 
 	/**
 	 * Prescale Callback
 	 */
-	AJBnet.libs.Gallery.Image.prototype._prescaleCallback = function(){
+	ImageProxy.prototype._prescaleCallback = function(){
 		this.prescaleCallback();
 	}
 
 	/**
 	 * Callback Placeholders
 	 */
-	AJBnet.libs.Gallery.Image.prototype.preloadCallback = function(){};
-	AJBnet.libs.Gallery.Image.prototype.loadCallback = function(){};
-	AJBnet.libs.Gallery.Image.prototype.prescaleCallback = function(){};
-	AJBnet.libs.Gallery.Image.prototype.scaleCallback = function(){};
+	ImageProxy.prototype.preloadCallback = function(){};
+	ImageProxy.prototype.loadCallback = function(){};
+	ImageProxy.prototype.prescaleCallback = function(){};
+	ImageProxy.prototype.scaleCallback = function(){};
 
 	/**
 	 * Trigger Load
 	 */
-	AJBnet.libs.Gallery.Image.prototype.load = function(show){
+	ImageProxy.prototype.load = function(show){
 
 		if (false === this.loaded) {
 	
@@ -104,7 +104,7 @@ AJBnet.define("Gallery/Image",function(){
 	/**
 	 * Trigger Unload
 	 */
-	AJBnet.libs.Gallery.Image.prototype.unload = function(){
+	ImageProxy.prototype.unload = function(){
 		/*var that = this;
 		$(this.image).fadeOut('fast',function(){
 			that.image.src = null;
@@ -112,18 +112,18 @@ AJBnet.define("Gallery/Image",function(){
 		*/
 	}
 
-	AJBnet.libs.Gallery.Image.prototype.show = function(){
+	ImageProxy.prototype.show = function(){
 		$(this.image).fadeIn();	
 	}
 
-	AJBnet.libs.Gallery.Image.prototype.hide = function(){
+	ImageProxy.prototype.hide = function(){
 		$(this.image).fadeOut();	
 	}
 
 	/**
 	 * 
 	 */
-	AJBnet.libs.Gallery.Image.prototype.scaleToContainer = function(){
+	ImageProxy.prototype.scaleToContainer = function(){
 
 		this.prescaleCallback();
 
@@ -200,5 +200,7 @@ AJBnet.define("Gallery/Image",function(){
 
 		return this;
 	}
+	
+	return ImageProxy;
 
 });

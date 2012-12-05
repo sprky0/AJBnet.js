@@ -4,13 +4,6 @@
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/screen.css" />
 	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"></script>
-<!--
-
-	@note The above attribute data-init can be excluded and this used if you want:  (or if you want to delay init for any reason)
-
-	AJBnet.init({debug:false,app:"Gallery/Main"});
-
--->
 </head>
 <body>
 
@@ -19,8 +12,12 @@
 		<h2>Example Application: Gallery</h2>
 	</header>
 
-	<div>Tacos</div>
+	<article>
 
+		<p>This example uses the data-init attribute to specify the configuration properties of the application, and in this case, the main script.  The attribute data-init can be excluded if you want to manually init the framework, or delay any code from being run on load, like so:</p>
+		<code>AJBnet.init({debug:false,app:"Gallery/Main"});</code>
+
+	</article>
 
 </body>
 </html>

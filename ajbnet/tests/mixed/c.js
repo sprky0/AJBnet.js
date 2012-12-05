@@ -1,7 +1,4 @@
-// this works :(
-AJBnet.define("Tests/Mixed/C",function(){
-// This fails:
-// AJBnet.define("Tests/Mixed/C",["Tests/Mixed/A"],function(){
+AJBnet.define("Tests/Mixed/C",["Tests/Mixed/A"],function(){
 
 	var C = function() {};
 
@@ -13,6 +10,6 @@ AJBnet.define("Tests/Mixed/C",function(){
 			return AJBnet.new("Tests/Mixed/A");
 		}
 
-	AJBnet.libs.Tests.Mixed.C = C;
+	return C;
 
 });

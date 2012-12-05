@@ -157,6 +157,6 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 	}
 
-	AJBnet.libs.Tests.Core = Core;
+	return Core;
 
 });
