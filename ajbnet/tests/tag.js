@@ -18,8 +18,6 @@ AJBnet.define("Tests/Tag",["Tests/Core"],function(){
 			return test_origin.toString();
 		},"[object HTMLScriptElement]", "Is correct object type?");
 
-	console.log( tests );
-
 	tests.run();
 
 });

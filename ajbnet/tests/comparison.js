@@ -56,8 +56,6 @@ AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 	tests.addTest(string,"isObject",false);
 	tests.addTest(false_value,"isObject",false);
 
-	console.log( tests );
-
 	tests.run();
 
 });

@@ -34,14 +34,14 @@ var AJBnet = {
 		 * @var object logsEnabled
 		 */
 		logsEnabled : {
-			core : true,
-			application : true,
-			loading : true,
-			execution : true,
-			constructor : true,
-			notice : true,
-			warning : true,
-			error : true
+			core : false,
+			application : false,
+			loading : false,
+			execution : false,
+			constructor : false,
+			notice : false,
+			warning : false,
+			error : false
 		}
 
 	},
@@ -114,7 +114,7 @@ var AJBnet = {
 	 */
 	init : function(options,force) {
 
-		// this.log("AJBnet.init()", this.logs.core);
+		this.log("AJBnet.init()", this.logs.core);
 
 		if (this.config.initRun === true && force !== true)
 			throw "Init already run!";
@@ -196,7 +196,7 @@ var AJBnet = {
 			eval("init_object="+init_json);
 			
 			if (!this.isObject(init_object)) {
-				// this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
+				this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
 				return this;
 			}
 			
@@ -207,7 +207,7 @@ var AJBnet = {
 	
 	getOrigin : function() {
 		
-		// this.log("AJBnet.getOrigin()", this.logs.core);
+		this.log("AJBnet.getOrigin()", this.logs.core);
 
 		var scripts = document.getElementsByTagName("script"), origin = null;
 	
@@ -252,7 +252,7 @@ var AJBnet = {
 		var path = classpath.split("/");
 		var classname = path.pop();
 
-		// this.log(classname, this.logs.constructor);
+		this.log("AJBnet.new() -> Trying to make " + classname + " (" + classpath + ")", this.logs.constructor);
 
 		// start here, in case we are at the top level
 		var token = classname;
@@ -273,9 +273,6 @@ var AJBnet = {
 		// this is possible as well, not particularly better though
 		//	with(AJBnet.libs.Package.Sub)
 		//		var x = new Constructor(x,y,z);
-
-		console.log( "BEAT YOUR FACE ");
-		console.log ( pointer[classname]() );
 
 		return this.construct( pointer[classname](), new_arguments);
 		// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
@@ -417,7 +414,7 @@ var AJBnet = {
 	
 	register : function(classpath, definition_closure) {
 
-		// this.log("AJBnet.register() - Running for " + classpath, this.logs.constructor);
+		this.log("AJBnet.register() - Running for " + classpath, this.logs.constructor);
 
 		// classpath ->  [namespace/]...class
 		// definition_closure - closure that either returns itself, or returns the constructor that is created in the closure
@@ -455,7 +452,7 @@ var AJBnet = {
 
 	load : function(src,classpath,callback) {
 
-		// this.log("AJBnet.load() -> " + src);
+		this.log("AJBnet.load() -> " + src, this.logs.core);
 
 		// var _classpath = classpath, _callback = callback;
 		var element = document.createElement("script");
@@ -485,7 +482,7 @@ var AJBnet = {
 
 		var details = classpath ? " (triggered by " + classpath + ")" : "";
 
-		// this.log("AJBnet.loaded() START" + details);
+		this.log("AJBnet.loaded() START" + details, this.logs.loading);
 
 		if (classpath) {
 			this.map[classpath].loaded = true;
@@ -497,11 +494,10 @@ var AJBnet = {
 			if (this.map[i] && this.map[i].loading == true)
 				continue;
 
-			// this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
-				// this.log("Testing dependencies for " + i);
+
 				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].run == true) {
-					// this.log("Dependency satisfied!  Removing dependency " + j);
+
 					var replacement_array = [];
 					for(var k = 0; k < this.map[i].dependencies.length; k++) {
 						if (k == j)
@@ -519,7 +515,6 @@ var AJBnet = {
 
 		for (i in this.map) {
 
-			// console.log( this.map, i );
 			// not even ready to check yet
 			if (this.map[i] && this.map[i].loading == true)
 				continue;
@@ -541,10 +536,11 @@ var AJBnet = {
 			}
 		}
 
-		// this.log("AJBnet.loaded() END" + details);
+		this.log("AJBnet.loaded() END" + details, this.logs.loading );
 
 		// When a library has been loaded + run, it may have satisfied others, so we loop once
 		if (loop == true) {
+			this.log("AJBnet.loaded() triggering LOOP" + details, this.logs.loading );
 			this.loaded();
 		}
 
@@ -613,7 +609,7 @@ var AJBnet = {
 		if (typeof Object.create === "function") {
 			// ECMAScript 5 
 			obj = Object.create(ctor.prototype);
-			console.log("Used Object.create");
+			this.log("Used Object.create", this.logs.constructor);
 
 		} else if ({}.__proto__) {
 
@@ -622,16 +618,16 @@ var AJBnet = {
 			obj.__proto__ = ctor.prototype;
 
 			if (obj.__proto__ === ctor.prototype) {
-				console.log("Used __proto__");
+				this.log("Used __proto__", this.logs.constructor);
 			} else {
 				// Setting it didn't work
-				console.log("__proto__ failed, used fake constructor");
+				this.log("__proto__ failed, used fake constructor", this.logs.constructor);
 				obj = makeObjectWithFakeCtor();
 			}
 
 		} else {
 			// Fallback
-			console.log("Used fake constructor");
+			this.log("Used fake constructor", this.logs.constructor);
 			obj = makeObjectWithFakeCtor();
 		}
 		
@@ -749,7 +745,7 @@ var AJBnet = {
 	 */
 	log : function(obj, type) {
 
-		if(this.config.debug === true || this.config.logsEnabled[type] === true)
+		if(this.config.debug === true && this.config.logsEnabled[type] === true)
 			this.logFunction(obj);
 
 		return this;
