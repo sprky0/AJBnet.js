@@ -30,6 +30,8 @@ Bugs:
 		
 		- The above no longer occurs, but now the callback on the lowest will never be run, not sure why
 
+	- There is something fishy happening in the construcors ... specifically with tests :(
+
 Notes:
 
 @todo This junk is all done now basically -- can move this information to a different file to keep the github homepage clean)

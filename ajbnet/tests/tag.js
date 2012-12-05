@@ -1,20 +1,25 @@
 /**
  * Test findind the originating script tag to pull the config etc
  */
-AJBnet.define("Tests/Tag",function(){
+AJBnet.define("Tests/Tag",["Tests/Core"],function(){
 
-	var scripts = document.getElementsByTagName("script");
+	$("#results").empty();
 
-	for (var i in scripts ) {
+	var origin = this.getOrigin();
+	var tests = this.new("Tests/Core",{container:"#results"});
 
-		var test = scripts[i].src + "", origin;
+	tests.addTest(origin,
+		function(test_origin) {
+			return false === AJBnet.isNull(test_origin);
+		},true, "Not null");
 
-		if (test.match( this.regex.origin )) {
-			origin = scripts[i];
-		}
+	tests.addTest(origin,
+		function(test_origin) {
+			return test_origin.toString();
+		},"[object HTMLScriptElement]", "Is correct object type?");
 
-	}
+	console.log( tests );
 
-	console.log( origin );
+	tests.run();
 
 });

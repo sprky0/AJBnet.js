@@ -3,6 +3,10 @@ AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],fu
 	this.ready(function(){
 
 		$("body").empty();
+		
+		$("html")
+			.removeClass("tests")
+			.addClass("gallery");
 
 		function run_gallery(image_array){
 

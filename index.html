@@ -1,23 +1,97 @@
 <!DOCTYPE html>
-<html class="gallery">
+<html class="tests">
 <head>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="css/screen.css" />
-	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"></script>
+	<!--<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"></script>-->
+	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false}"></script>
 </head>
 <body>
 
 	<header>
 		<h1><em>AJBnet.js</em> Framework</h1>
-		<h2>Example Application: Gallery</h2>
+		<h2>Example Applications</h2>
 	</header>
 
 	<article>
 
-		<p>This example uses the data-init attribute to specify the configuration properties of the application, and in this case, the main script.  The attribute data-init can be excluded if you want to manually init the framework, or delay any code from being run on load, like so:</p>
-		<code>AJBnet.init({debug:false,app:"Gallery/Main"});</code>
+		<h1>Basic API</h1>
+
+		<section>
+			<h2>Automatic Init</h2>
+			<p>After load, the AJBnet.autoInit method is run, which checks the data-init for a JSON object to use for init parameters.  If one is not found, this is skipped.  The attribute should be applied to the originating script tag of ajbnet.js.</p>
+			<code>&lt;script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"&gt;&lt;/script&gt;</code>
+		</section>
+
+		<section>
+			<h2>AJBnet.init(object)</h2>
+			<p>The attribute data-init can be excluded if you want to manually init the framework, for example to delay any additional code from being run on load.</p>
+			<code>AJBnet.init({debug:false,app:"Gallery/Main"});</code>
+		</section>
+
+		<section>
+			<h2>AJBnet.define(classpath, dependencies, closure)</h2>
+			<p>The method define is used to describe a namespaced class, or a block of code belonging to a particular namespace.  This includes dependencies (optional), and a closure which returns the constructor for that class.</p>
+			<code>/**
+ * This file, stored at path example/class.js under the src path,
+ * defines the namespace, dependencies, and constructor!
+ * The constructor is returned by the closure.
+ */
+AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
+	
+	var Class = function(){
+		// constructor here;
+		return this;	
+	}
+		Class.prototype.property = "a prototypically inherited property of this class";
+	
+		Class.prototype.method = function( param ){
+			return "I was a prototypically inherited method of this class, and I was passed " + param;
+		}
+
+	return Class;
+	
+});</code>
+		</section>
+
+		<section>
+			<h2>AJBnet.run(classpath)</h2>
+			<p>The run method can be used to run new code after load.  For example, the demo button below uses the following:</p>
+			<code>&lt;button onclick="AJBnet.run('Gallery/Main')"&gt;Run Demo&lt;/button&gt;</code>
+		</section>
+		
+	</article>
+	
+	<article>
+
+		<h1>Demos</h1>
+
+		<section>
+			<h2>Gallery/Main</h2>
+			<p>This example creates a full window image browser using the left/right keys to navigate.</p>
+			<button onclick="AJBnet.run('Gallery/Main')">Run Demo</button>
+		</section>
 
 	</article>
+
+	<article>
+
+		<h1>Tests</h1>
+		<p>There are some unit tests <a href="test.html">here</a>.</p>
+
+	</article>
+
+	<article>
+
+		<h1>FAQ</h1>
+		<dl>
+			<dt>Where is the confused looking devil in the top right from?</dt>
+			<dd>Cut out of the "Bomber Comics" Issue #2, which is in the Public Domain.  No particular meaning, just thought the guy looks pretty confused so that was funny.  More info at <a href="http://www.comics.org/issue/277982/">comics.org</a>.</dd>
+		</dl>
+
+	</article>
+
+	<span class="logo" />
 
 </body>
 </html>

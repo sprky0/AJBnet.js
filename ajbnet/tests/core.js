@@ -2,6 +2,15 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 	var Core = function(options){
 		AJBnet.extend(this,options); // same as forloop overwrite
+		
+		/*
+		if (!this.instance)
+			this.instance = "something" + new Date().getSeconds();
+
+		console.log("THIS THIS THIS THIS THIS");
+		console.log(this.instance);
+		*/
+
 		return this;
 	}
 
@@ -76,7 +85,7 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 			$("<th>Result</th>").appendTo(row);
 			$("<th>Notes</th>").appendTo(row);
 
-		for(i in this.tests) {
+		for(var i in this.tests) {
 
 			switch( this.tests[i].type ) {
 

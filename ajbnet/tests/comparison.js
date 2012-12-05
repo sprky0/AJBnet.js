@@ -3,6 +3,8 @@
  */
 AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 
+	$("#results").empty();
+
 	/**
 	 * Possible variable types we will use in the tests
 	 */
@@ -53,6 +55,8 @@ AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 	tests.addTest(array,"isObject",false);
 	tests.addTest(string,"isObject",false);
 	tests.addTest(false_value,"isObject",false);
+
+	console.log( tests );
 
 	tests.run();
 

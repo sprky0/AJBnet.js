@@ -7,7 +7,7 @@ html.gallery body, html.gallery {
 	height: 100%;
 }
 
-h1, h2, h3, p, ul, li, tr, td {
+h1, h2, h3, p, ul, li, tr, td, dl, dt, dd {
 	margin: 0; padding: 0;
 	color: #000;
 	font-family: helvetica;
@@ -16,6 +16,18 @@ h1, h2, h3, p, ul, li, tr, td {
 html.tests {
 	margin: 0; padding: 0;
 	width: auto;
+}
+
+article h1 {
+	font-size: 1.5em;
+	margin-bottom: .2em;
+	color: #4af;
+}
+
+article h2 {
+	font-size: 1.2em;
+	margin-bottom: .5em;
+	color: #333;
 }
 
 html.tests h1 em {
@@ -32,6 +44,11 @@ html.tests header {
 	padding: 20px;
 	background-color: rgba(255,200,200,.8);
 }
+
+html.tests header h1 {text-shadow: 0 1px 0 #ffa;}
+html.tests header h2 {text-shadow: 0 1px 0 #ffa;}
+html.tests header h1 em {text-shadow: 0 1px 0 #000;}
+html.tests header h2 em {text-shadow: 0 1px 0 #000;}
 
 html.tests body {
 	padding: 120px 20px 20px 20px;
@@ -52,4 +69,49 @@ html.tests table td {
 	padding: 3px;
 	background-color: #fff;
 	border-bottom: 1px solid #eee;
+}
+
+article {
+		margin-bottom: 20px;
+}
+
+section + section {
+	margin-top: 20px;	
+}
+
+section {
+	padding-right: 190px;
+}
+
+p {
+	font-size: .8em;	
+}
+
+code {
+	display: block;
+	margin-top: 5px;
+	padding: 3px 10px;
+	border-radius: 3px;
+	font-family: courier;
+	background-color: #eee;
+	color: #0a0;
+	font-size: .8em;
+	white-space: pre;
+}
+
+nav.right {
+	position: fixed; right: 20px; top: 20px;
+}
+
+dl {}
+dt {font-size: .8em;font-weight: bold;}
+dd {font-size: .8em;}
+
+span.logo {
+	background: url('../images/confused_devil.png') top left no-repeat;
+	width: 150px;
+	height: 150px;
+	position: fixed;
+	top: 20px; right: 20px;
+	display: block;
 }

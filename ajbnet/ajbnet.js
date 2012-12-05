@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.3
+ * @version 0.4
  * @author sprky0
  */
 var AJBnet = {
@@ -114,7 +114,7 @@ var AJBnet = {
 		if (this.config.initRun === true && force !== true)
 			throw "Init already run!";
 
-		for(i in options||{}){
+		for(var i in options||{}){
 			switch(i){
 
 				default:
@@ -168,22 +168,19 @@ var AJBnet = {
 	 */
 	autoInit : function() {
 
-		// this.log("AJBnet.autoInit()", this.logs.core);
+		var origin = this.getOrigin();
 
-		var scripts = document.getElementsByTagName("script"), origin = null;
-	
-		for (var i in scripts ) {
-			var test = scripts[i].src + "";
-			if ( test.match( AJBnet.regex.origin ) ) {
-				var origin = scripts[i];
-				break;
-			}
+		if (this.isNull(origin)) {
+			// throw "Can't find script!  That's not particularly good.";
+			return false;	
 		}
 
 		var init_json = origin.getAttribute("data-init"), init_object;
 
 		if (!this.isNull(init_json)){
+
 			// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
+			// @todo replace this
 			eval("init_object="+init_json);
 			
 			if (!this.isObject(init_object)) {
@@ -193,6 +190,23 @@ var AJBnet = {
 			
 			this.init(init_object);
 		}
+
+	},
+	
+	getOrigin : function() {
+		
+		// this.log("AJBnet.getOrigin()", this.logs.core);
+
+		var scripts = document.getElementsByTagName("script"), origin = null;
+	
+		for (var i in scripts ) {
+			var test = scripts[i].src + "";
+			if ( test.match( AJBnet.regex.origin ) ) {
+				return scripts[i];
+			}
+		}
+		
+		return null;
 
 	},
 
@@ -215,7 +229,13 @@ var AJBnet = {
 	 * @args // do something with args here, how do i jsdoc this puppy
 	 * @throws exception
 	 */
-	new : function(classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) {
+	new : function() { // classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+
+		var classpath = arguments[0], new_arguments = [];
+
+		if (arguments.length > 1)
+			for (var i = 1; i < arguments.length; i++)
+				new_arguments.push( arguments[i] );
 
 		var path = classpath.split("/");
 		var classname = path.pop();
@@ -242,7 +262,8 @@ var AJBnet = {
 		//	with(AJBnet.libs.Package.Sub)
 		//		var x = new Constructor(x,y,z);
 
-		return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
+		return this.construct( pointer[classname], new_arguments);
+		// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 
 	},
 
@@ -526,8 +547,8 @@ var AJBnet = {
 
 			this.closureHolder = closure;
 			var result = this.closureHolder();
-
-			// delete(this.closureHolder);
+			
+			delete(this.closureHolder);
 			// this.closureHolder = null;
 
 			return result;
@@ -557,6 +578,67 @@ var AJBnet = {
 
 		return obj1;
 
+	},
+
+	/**
+	 * Dynamic constructor method, thanks to T.J. Crowder's answer on stack overflow for the insight
+	 * 
+	 * @link http://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
+	 * @param object ctor constructor to use
+	 * @param array params parameters to pass to the constructor
+	 */
+	construct : function(ctor, params) {
+		
+		var obj, newobj;
+		
+		// Create the object with the desired prototype
+		if (typeof Object.create === "function") {
+			// ECMAScript 5 
+			obj = Object.create(ctor.prototype);
+			console.log("Used Object.create");
+
+		} else if ({}.__proto__) {
+
+			// Non-standard __proto__, supported by some browsers
+			obj = {};
+			obj.__proto__ = ctor.prototype;
+
+			if (obj.__proto__ === ctor.prototype) {
+				console.log("Used __proto__");
+			} else {
+				// Setting it didn't work
+				console.log("__proto__ failed, used fake constructor");
+				obj = makeObjectWithFakeCtor();
+			}
+
+		} else {
+			// Fallback
+			console.log("Used fake constructor");
+			obj = makeObjectWithFakeCtor();
+		}
+		
+		// Set the object's constructor
+		obj.constructor = ctor;
+		
+		// Apply the constructor function
+		newobj = ctor.apply(obj, params);
+		
+		// If a constructor function returns an object, that
+		// becomes the return value of `new`, so we handle
+		// that here.
+		if (newobj !== null && (typeof newobj === "object" || typeof newobj === "function")) {
+			obj = newobj;
+		}
+		
+		// Done!
+		return obj;
+
+		// Subroutine for building objects with specific prototypes
+		function makeObjectWithFakeCtor() {
+			function fakeCtor() {}
+			fakeCtor.prototype = ctor.prototype;
+			return new fakeCtor();
+		}
 	},
 
 	/**
@@ -667,4 +749,9 @@ var AJBnet = {
 	}
 
 };
+
+/**
+ * AJBnet.autoInit looks for data-init object on the origin script tag,
+ * and uses this as a JSON object to use against the AJBnet.init method
+ */
 AJBnet.autoInit();

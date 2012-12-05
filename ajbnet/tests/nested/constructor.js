@@ -7,6 +7,7 @@ AJBnet.define("Tests/Nested/Constructor",function(){
 		return this;
 	};
 
+		Constructor.prototype.test1 = 0;
 		Constructor.prototype.message = "This class is under the namespace Tests/Nested/Constructor";
 
 		Constructor.prototype.test = function() {
