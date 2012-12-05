@@ -262,7 +262,10 @@ var AJBnet = {
 		//	with(AJBnet.libs.Package.Sub)
 		//		var x = new Constructor(x,y,z);
 
-		return this.construct( pointer[classname], new_arguments);
+		console.log( "BEAT YOUR FACE ");
+		console.log ( pointer[classname]() );
+
+		return this.construct( pointer[classname](), new_arguments);
 		// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 
 	},
@@ -402,7 +405,7 @@ var AJBnet = {
 	
 	register : function(classpath, definition_closure) {
 
-		this.log("AJBnet.register() - Running for " + classpath, this.logs.constructor);
+		// this.log("AJBnet.register() - Running for " + classpath, this.logs.constructor);
 
 		// classpath ->  [namespace/]...class
 		// definition_closure - closure that either returns itself, or returns the constructor that is created in the closure
@@ -428,16 +431,19 @@ var AJBnet = {
 
 		this.log("AJBnet.register() - Running closure  for " + classpath, this.logs.constructor);
 
-		pointer[classname] = this.execute(definition_closure);
+		// this will catch the puppy if it is a code block and not returning a constructor (this is dumb.  fix this)
+		this.execute(definition_closure);
+		// pointer[classname] = this.execute(definition_closure);
+		
+		// this hangs onto the function that makes the constructor each time
+		pointer[classname] = definition_closure;
 		this.map[classpath].run = true;
-
-		console.log( this.map[classpath] );
 
 	},
 
 	load : function(src,classpath,callback) {
 
-		this.log("AJBnet.load() -> " + src);
+		// this.log("AJBnet.load() -> " + src);
 
 		// var _classpath = classpath, _callback = callback;
 		var element = document.createElement("script");
@@ -467,7 +473,7 @@ var AJBnet = {
 
 		var details = classpath ? " (triggered by " + classpath + ")" : "";
 
-		this.log("AJBnet.loaded() START" + details);
+		// this.log("AJBnet.loaded() START" + details);
 
 		if (classpath) {
 			this.map[classpath].loaded = true;
@@ -479,11 +485,11 @@ var AJBnet = {
 			if (this.map[i] && this.map[i].loading == true)
 				continue;
 
-			this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
+			// this.log("Testing " + i + " - " + this.map[i].dependencies.length + " dependencies");
 			for (var j = 0; j < this.map[i].dependencies.length; j++) {
-				this.log("Testing dependencies for " + i);
+				// this.log("Testing dependencies for " + i);
 				if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].run == true) {
-					this.log("Dependency satisfied!  Removing dependency " + j);
+					// this.log("Dependency satisfied!  Removing dependency " + j);
 					var replacement_array = [];
 					for(var k = 0; k < this.map[i].dependencies.length; k++) {
 						if (k == j)
@@ -510,7 +516,7 @@ var AJBnet = {
 
 				this.map[i].running = true;
 
-				this.log("Registering " + i, this.logs.loading);
+				// this.log("Registering " + i, this.logs.loading);
 				this.register(i, this.map[i].callback);
 				loop = true;
 
@@ -523,7 +529,7 @@ var AJBnet = {
 			}
 		}
 
-		this.log("AJBnet.loaded() END" + details);
+		// this.log("AJBnet.loaded() END" + details);
 
 		// When a library has been loaded + run, it may have satisfied others, so we loop once
 		if (loop == true) {

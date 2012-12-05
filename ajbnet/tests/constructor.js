@@ -50,7 +50,19 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 	},true,"Distinct objects constructed (test assigning objects, 2)?");
 
+	tests.addTest(null,function(){
 
+		var a = AJBnet.new("Tests/Nested/Constructor");
+		var b = AJBnet.new("Tests/Nested/Constructor");
+
+		a.test_array.push(1);
+		b.test_array.push("tacos");
+
+		AJBnet.log( [a.test1, b.test1], AJBnet.logs.application );
+
+		return a.test1[0] !== b.test1[0];
+
+	},true,"Distinct objects constructed (test assigning objects, 2)?");
 
 
 	tests.run();
