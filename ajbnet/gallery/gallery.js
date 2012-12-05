@@ -1,12 +1,11 @@
 /**
  * Image Gallery
+ *
+ * Define a gallery that will be populated with many images (ImageProxy)
  */
 AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy"],function(){
 
-	/**
-	 * Gallery with many images
-	 */
-	Gallery = function(options) {
+	var Gallery = function(options) {
 
 		AJBnet.extend(this,options);
 

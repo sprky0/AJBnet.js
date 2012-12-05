@@ -19,7 +19,7 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 		
 		return a.test1 !== b.test1;
 
-	},true,"Distinct objects constructed (test assigning integers, 1)?");
+	},true,"Distinct objects constructed? (test assigning integers, 1/2)");
 
 
 	tests.addTest(null,function(){
@@ -34,7 +34,7 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 		return a.test1 !== b.test1;
 
-	},true,"Distinct objects constructed (test assigning integers, 2)?");
+	},true,"Distinct objects constructed? (test assigning integers, 2/2)");
 
 	tests.addTest(null,function(){
 
@@ -48,21 +48,21 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 		return a.test1 !== b.test1;
 
-	},true,"Distinct objects constructed (test assigning objects, 2)?");
+	},true,"Assign objects");
 
 	tests.addTest(null,function(){
 
 		var a = AJBnet.new("Tests/Nested/Constructor");
-		var b = AJBnet.new("Tests/Nested/Constructor");
-
 		a.test_array.push(1);
-		b.test_array.push("tacos");
+		
+		var b = AJBnet.new("Tests/Nested/Constructor");
+		b.test_array.push(2);
 
-		AJBnet.log( [a.test1, b.test1], AJBnet.logs.application );
+		AJBnet.log( [a.test_array, b.test_array], AJBnet.logs.application );
 
-		return a.test1[0] !== b.test1[0];
+		return a.test_array[0] !== b.test_array[0];
 
-	},true,"Distinct objects constructed (test assigning objects, 2)?");
+	},true,"Distinct Array.push on prototyped array");
 
 
 	tests.run();

@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.4
+ * @version 0.5
  * @author sprky0
  */
 var AJBnet = {
@@ -12,6 +12,11 @@ var AJBnet = {
 	 * @var object
 	 */
 	config : {
+
+		/**
+		 * @var string shorthand Optional shorthand if you want to call AJBnet base object something else (eg: "MyBrand")
+		 */ 
+		shorthand : null,
 
 		debug : false,
 		debugLevel : 100,
@@ -142,6 +147,13 @@ var AJBnet = {
 
 		if (this.isNull(this.config.srcBasePath))
 			this.config.srcBasePath = "ajbnet/";
+
+		if (!this.isNull(this.config.shorthand)) {
+			if (window[this.config.shorthand])
+				throw "Shorthand " + this.config.shorthand + " has already been declared, before AJBnet.init()!";
+
+			window[this.config.shorthand] = this;
+		}
 
 		// If the document is not ready yet, initialize the ready loop which
 		// will wait to execute readyStack array of closures
