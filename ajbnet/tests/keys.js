@@ -4,9 +4,22 @@ AJBnet.define("Tests/Keys",['vendor/jquery-1.8.3.min.js'],function(){
 
 		$(document).bind("keyup",function(e){
 
-			console.log(e);
+			var note = null;
 
-			var $thing = $("<span>"+e.keyCode+"</span>")
+			for( var i in AJBnet.key ) {
+				
+				if (AJBnet.key[i] == e.keyCode) {
+					
+					note = "AJBnet.key." + i;
+					continue;
+				}
+				
+			}
+
+			if (AJBnet.isNull(note))
+				note = "not in AJBnet.key"
+
+			var $thing = $("<span>"+e.keyCode+"<br/><em>" + note + "</em></span>")
 					.css({
 						display:"inline-block",
 						padding:"5px", margin:"5px",

@@ -78,6 +78,7 @@ var AJBnet = {
 		RETURN : 13, ENTER : 13,
 		ALT : 18, OPTION : 18,
 		COMMAND : 224, CONTROL : 17,
+		DELETE : 8, SPACE : 32,
 
 		// ARROW KEYS
 		LEFT : 37, UP : 38,
@@ -274,7 +275,8 @@ var AJBnet = {
 		//	with(AJBnet.libs.Package.Sub)
 		//		var x = new Constructor(x,y,z);
 
-		return this.construct( pointer[classname](), new_arguments);
+		// return this.construct(pointer[classname], new_arguments);
+		return this.construct(pointer[classname](), new_arguments);
 		// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 
 	},
@@ -441,11 +443,16 @@ var AJBnet = {
 		this.log("AJBnet.register() - Running closure  for " + classpath, this.logs.constructor);
 
 		// this will catch the puppy if it is a code block and not returning a constructor (this is dumb.  fix this)
+		// and hangs onto the function that makes the constructor each time.  unfortunately
+		// creating the constructor via the closure as a factory instead of creating the instance breaks 'instanceof',
+		// which would be a nice thing to have in many cases
 		this.execute(definition_closure);
-		// pointer[classname] = this.execute(definition_closure);
-		
-		// this hangs onto the function that makes the constructor each time
 		pointer[classname] = definition_closure;
+
+		// this will actually define the constructor and stick it in that space, but it breaks things like array
+		// push by reference on the prototype.  sort of a rough tradeoff
+		// pointer[classname] = this.execute(definition_closure);
+
 		this.map[classpath].run = true;
 
 	},

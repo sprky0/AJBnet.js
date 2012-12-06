@@ -31,7 +31,7 @@ article h2 {
 }
 
 html.tests h1 em {
-	color: #fa0;
+	color: #FFFFFF;
 	font-style: normal;
 }
 
@@ -101,6 +101,11 @@ code {
 
 nav.right {
 	position: fixed; right: 20px; top: 20px;
+}
+
+nav.right div.testgroup {
+	font-family: helvetica;
+	font-size: .8em;	
 }
 
 dl {}

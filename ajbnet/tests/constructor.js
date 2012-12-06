@@ -6,7 +6,21 @@
 AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],function(){
 
 	var tests = this.new("Tests/Core",{container:"#results"});
-	
+
+	/*
+	tests.addTest(null,function(){
+
+		var a = AJBnet.new("Tests/Nested/Constructor");
+
+		// var newconstructor = AJBnet.libs.Tests.Nested.Constructor();
+		// var b = new newconstructor();
+		// console.log( b instanceof newconstructor );
+
+		return a instanceof AJBnet.libs.Tests.Nested.Constructor;
+
+	},true,"constructed object instanceof constructor?");
+	*/
+
 	tests.addTest(null,function(){
 
 		var a = AJBnet.new("Tests/Nested/Constructor");

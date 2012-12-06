@@ -8,14 +8,13 @@ with standard JS prototypical inheretance.
 
 Done:
 
-	- Core functions to shortcut missing strict comparisons, eg: isArray, isNull etc.
 	- Loading dependencies
-	- Handle loading remote libraries and libraries that don't use the same framework for declarations
+	- Handle loading remote libraries and libraries that don't use the same framework for their declaration
+	- Core functions to shortcut missing strict comparisons, eg: isArray, isNull etc.
 
 In Progress:
 
-	- Prevent double loading the same class
-	- Handle circular dependencies
+	- Handle circular / cross dependencies
 	- Moar tests
 
 Bugs:
@@ -25,14 +24,12 @@ Bugs:
 		to declare a class Name3 and a class Name4 that lives in an associated package
 		is impossible.  Need to work out a modified storage scheme to resolve.  *doh  (if needed - maybe skip)
 
-	X - It is possible to declare a circular dependency that loads forever.  Should be handled by caching loaded classes.
-		Should just check for the first level.  A -> A is no good, but I think A -> B -> A should be fine.
-		
-		- The above no longer occurs, but now the callback on the lowest will never be run, not sure why
+	- A circular dependency will no longer load forever, but does not trigger the callback on the parent module
 
 To Improve:
 
-		- Constructors are redefined each time, by re-running their respective closure.  This fixes a problem with certain objects that hang onto references, eg arrays.
+	- Constructors are redefined each time, by re-running their respective closure.  This fixes a problem with
+		prototyped arrays etc, but it breaks JS's instanceof function
 
 Notes:
 
