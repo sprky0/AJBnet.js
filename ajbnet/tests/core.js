@@ -2,19 +2,14 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 	var Core = function(options){
 		AJBnet.extend(this,options); // same as forloop overwrite
-		
-		/*
-		if (!this.instance)
-			this.instance = "something" + new Date().getSeconds();
 
-		console.log("THIS THIS THIS THIS THIS");
-		console.log(this.instance);
-		*/
+		this.display = $("<article>").prependTo(this.container);
 
 		return this;
 	}
-
+	Core.prototype.type = null;
 	Core.prototype.container = "body";
+	Core.prototype.display = "body";
 	Core.prototype.table = null;
 	Core.prototype.tests = [];
 
@@ -69,13 +64,16 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 	Core.prototype.run = function() {
 
-		$(this.container).empty().append("<h1>Test Results</h1>");
+		$(this.display).append("<h1>Test Results</h1>");
+			
+		if (!AJBnet.isNull( this.type ))
+			$(this.display).append("<h2>" + this.type + "</h2>");
 
 		this.table = $("<table>")
 			.attr("cellpadding",5)
 			.attr("cellspacing",1)
 			.attr("border",0)
-			.appendTo( this.container );
+			.appendTo( this.display );
 
 		var row = $("<tr>").appendTo(this.table);
 		

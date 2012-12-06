@@ -1,3 +1,8 @@
+/**
+ * AJBnet.js informational site styles
+ * @author sprky0
+ */
+
 html {}
 
 html.gallery body, html.gallery {
@@ -49,6 +54,18 @@ html.tests header h1 {text-shadow: 0 1px 0 #ffa;}
 html.tests header h2 {text-shadow: 0 1px 0 #ffa;}
 html.tests header h1 em {text-shadow: 0 1px 0 #000;}
 html.tests header h2 em {text-shadow: 0 1px 0 #000;}
+
+html.tests footer {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 20px;
+	background-color: rgb(200,255,200);
+}
+
+html.tests footer h1 {
+	color: #fff;
+	text-shadow: 0 1px 0 #000;
+}
 
 html.tests body {
 	padding: 101px 0 0 0;
@@ -116,11 +133,57 @@ dl {}
 dt {font-size: .8em;font-weight: bold;}
 dd {font-size: .8em;}
 
-span.logo {
+a.logo {
 	background: url('../images/confused_devil.png') top left no-repeat;
 	width: 150px;
 	height: 150px;
 	position: fixed;
 	top: 20px; right: 20px;
 	display: block;
+	overflow:hidden;
+	text-indent:-1000px;
+}
+
+nav.metalinks {
+	width:100px;
+	position:fixed;
+	right:20px;
+	bottom:20px;
+}
+nav.metalinks a:hover {
+	opacity:.6;
+}
+
+/**
+ * Download icon by Turbomilk, via Iconfinder.net
+ * @link http://www.iconfinder.com/icondetails/22775/32/arrow_down_download_icon
+ */
+a.download {
+	background: url('../images/download.png') top left no-repeat;
+	width:32px;
+	height:32px;
+	display:inline-block;
+	border:0;
+	overflow:hidden;
+	text-indent:-1000px;
+	float:right;
+	margin-right:10px;
+}
+/**
+ * Github icon by Keyamoon, via Iconfinder.net
+ * @link http://www.iconfinder.com/icondetails/83309/32/_icon
+ */
+a.github {
+	background: url('../images/github.png') top left no-repeat;
+	width:32px;
+	height:32px;
+	display:inline-block;
+	border:0;
+	overflow:hidden;
+	text-indent:-1000px;
+	float:right;
+}
+
+html.tests div#results {
+
 }

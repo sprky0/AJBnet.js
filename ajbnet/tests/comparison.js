@@ -3,8 +3,6 @@
  */
 AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 
-	$("#results").empty();
-
 	/**
 	 * Possible variable types we will use in the tests
 	 */

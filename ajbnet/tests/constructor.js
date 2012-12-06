@@ -8,6 +8,8 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 	var tests = this.new("Tests/Core",{container:"#results"});
 
 	/*
+	Can't have cake + eat cake :(  (!instanceof if we run the constructor factory for each construct)
+
 	tests.addTest(null,function(){
 
 		var a = AJBnet.new("Tests/Nested/Constructor");
