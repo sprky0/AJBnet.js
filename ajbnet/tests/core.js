@@ -71,7 +71,7 @@ AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
 
 		this.table = $("<table>")
 			.attr("cellpadding",5)
-			.attr("cellspacing",1)
+			.attr("cellspacing",0)
 			.attr("border",0)
 			.appendTo( this.display );
 

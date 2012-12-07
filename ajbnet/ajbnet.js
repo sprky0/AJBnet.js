@@ -36,7 +36,7 @@ var AJBnet = {
 		logsEnabled : {
 			core : false,
 			application : false,
-			loading : false,
+			loading : true,
 			execution : false,
 			constructor : false,
 			notice : false,
@@ -189,6 +189,10 @@ var AJBnet = {
 		}
 
 		var init_json = origin.getAttribute("data-init"), init_object;
+		
+		// require.js behavior:
+		// var main_json = origin.getAttribute("data-main"), main_classpath;
+		// if (!this.isNull(main_json)){});
 
 		if (!this.isNull(init_json)){
 

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html class="tests">
+<html class="AJBnet">
 <head>
 	<meta charset="utf-8" />
-	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true}"></script>
+	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true,app:'Tests/Main'}"></script>
 	<link rel="stylesheet" href="css/screen.css"/>
 </head>
 <body>
@@ -16,17 +16,17 @@
 
 			<div class="testgroup">
 				Expected Working:
-				<button onclick="AJBnet.run('Tests/Constructor')">Constructor</button>
-				<button onclick="AJBnet.run('Tests/Comparison')">Comparison</button>
-				<button onclick="AJBnet.run('Tests/Keys')">Check Key Codes</button>
-				<button onclick="AJBnet.run('Tests/Tag')">Find Origin</button>
+				<button class="test" id="Tests/Constructor">Constructor</button>
+				<button class="test" id="Tests/Comparison">Comparison</button>
+				<button class="test" id="Tests/Keys">Check Key Codes</button>
+				<button class="test" id="Tests/Tag">Find Origin</button>
 			</div>
 
 			<div class="testgroup">			
 				Likely Broken:
-				<button onclick="AJBnet.run('Tests/Circular')">Circular Dependency</button>
-				<button onclick="AJBnet.run('Tests/Crossed')">Cross Dependencies</button>
-				<button onclick="AJBnet.run('Tests/Doubleload')">Double Load</button>
+				<button class="test" id="Tests/Circular">Circular Dependency</button>
+				<button class="test" id="Tests/Crossed">Cross Dependencies</button>
+				<button class="test" id="Tests/Doubleload">Double Load</button>
 			</div>
 
 		</nav>

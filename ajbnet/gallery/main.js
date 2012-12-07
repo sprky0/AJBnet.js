@@ -2,16 +2,18 @@ AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],fu
 
 	this.ready(function(){
 
-		$("body").empty();
-		
-		$("html")
-			.removeClass("tests")
-			.addClass("gallery");
+		$gallery = $("body").append("<div class='gallery_view' id='gallery_viewer'/>");
+		$background = $("body")
+			.append("<div class='gallery_background'/>")
+			.bind("click",function(e){
+				$('.gallery_background').remove();
+				$('.gallery_view').remove();
+			});
 
 		function run_gallery(image_array){
 
 			var g = AJBnet.new("Gallery/Gallery",{
-				container : "body",
+				container : "#gallery_viewer",
 				images : image_array
 			});
 
