@@ -1,52 +1,17 @@
-AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],function(){
+AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 
 	this.ready(function(){
 
-		$gallery = $("body").append("<div class='gallery_view' id='gallery_viewer'/>");
-		$background = $("body")
+		$("body").append("<div class='gallery_view' id='gallery_viewer'/>");
+		$("body")
 			.append("<div class='gallery_background'/>")
 			.bind("click",function(e){
 				$('.gallery_background').remove();
 				$('.gallery_view').remove();
+				AJBnet.global('gallery').unload();
+				$(document).unbind("keyup");
 			});
 
-		function run_gallery(image_array){
-
-			var g = AJBnet.new("Gallery/Gallery",{
-				container : "#gallery_viewer",
-				images : image_array
-			});
-
-			$(document)
-				.bind("resize",function(){
-
-					// do this eventually
-					// g.recalculateScale();
-
-				})
-				.bind("keyup",function(e){
-
-					switch(e.keyCode){
-
-						default:
-						// unknown key
-						AJBnet.log(e);
-						break;
-	
-						case AJBnet.key.LEFT:
-						g.previous();
-						break;
-	
-						case AJBnet.key.RIGHT:
-						g.next();
-						break;
-	
-					}
-	
-				});
-
-		};
-		
 		$.ajax({
 			url : "test_lib/meta.php",
 			data : {},
@@ -56,6 +21,37 @@ AJBnet.define('Gallery/Main',['vendor/jquery-1.8.3.min.js','Gallery/Gallery'],fu
 			dataType : "json",
 			type : "GET"
 		});
+		
+		/**
+		 * Subroutine to create a gallery from an array of image URLs
+		 */
+		function run_gallery(image_array){
+
+			AJBnet.global('gallery', AJBnet.new("Gallery/Gallery",{container : "#gallery_viewer",images : image_array}));
+
+			$(document)
+				.bind("keyup",function(e){
+
+					switch(e.keyCode){
+
+						default:
+						// unknown key
+						AJBnet.log(e,AJBnet.logs.application);
+						break;
+	
+						case AJBnet.key.LEFT:
+						AJBnet.global('gallery').previous();
+						break;
+	
+						case AJBnet.key.RIGHT:
+						AJBnet.global('gallery').next();
+						break;
+
+					}
+	
+				});
+
+		};
 
 	});
 

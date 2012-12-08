@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.5
+ * @version 0.6
  * @author sprky0
  */
 var AJBnet = {
@@ -60,7 +60,12 @@ var AJBnet = {
 	readyStack : [],
 
 	/**
-	 * keycode shortcuts
+	 * @var object globals Holder for any random data.
+	 */
+	globals : {},
+
+	/**
+	 * @var object key Shortcuts for commonly used keycodes.
 	 */
 	key : {
 
@@ -189,7 +194,7 @@ var AJBnet = {
 		}
 
 		var init_json = origin.getAttribute("data-init"), init_object;
-		
+
 		// require.js behavior:
 		// var main_json = origin.getAttribute("data-main"), main_classpath;
 		// if (!this.isNull(main_json)){});
@@ -218,7 +223,7 @@ var AJBnet = {
 	
 		for (var i in scripts ) {
 			var test = scripts[i].src + "";
-			if ( test.match( AJBnet.regex.origin ) ) {
+			if ( test.match( this.regex.origin ) ) {
 				return scripts[i];
 			}
 		}
@@ -235,7 +240,12 @@ var AJBnet = {
 	 * @param string classpath
 	 */
 	run : function(classpath) {
-		this.require( classpath );
+
+		if (!this.isLoaded(classpath))
+			this.require( classpath );
+		else
+			this.execute(this.map[classpath].callback);
+
 		return this;
 	},
 
@@ -276,7 +286,7 @@ var AJBnet = {
 			throw "Class '" + classpath + "' not loaded yet!";
 
 		// this is possible as well, not particularly better though
-		//	with(AJBnet.libs.Package.Sub)
+		//	with(this.libs.Package.Sub)
 		//		var x = new Constructor(x,y,z);
 
 		// return this.construct(pointer[classname], new_arguments);
@@ -307,7 +317,9 @@ var AJBnet = {
 
 		if (!this.isReady()) {
 
-			setTimeout(function() { AJBnet.readyLoop(); }, 1);
+			// i'm not sure which one of these is worse -- setting timeout might let the browser control things a bit better ?
+			// setTimeout(function() { AJBnet.readyLoop(); }, 1);
+			this.readyLoop();
 
 		} else {
 
@@ -344,10 +356,12 @@ var AJBnet = {
 
 		if (classpath.match(this.regex.static)) {
 
-			var src = this.config.srcBasePath + classpath;
+			var src = this.config.srcBasePath + classpath,
+				that = this;
+
 			this.load(src,classpath,function(){
 				// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
-				AJBnet.define(classpath,function(){});
+				that.define(classpath,function(){});
 			});
 
 		} else if (classpath.match(this.regex.classpath)) {
@@ -466,17 +480,19 @@ var AJBnet = {
 		this.log("AJBnet.load() -> " + src, this.logs.core);
 
 		// var _classpath = classpath, _callback = callback;
-		var element = document.createElement("script");
+		var element = document.createElement("script"),
+			that = this;
+
 			element.setAttribute("type","text/javascript");
 			element.setAttribute("src", src);
 			element.onload = function() {
 
-				AJBnet.log("onload callback for " + classpath + " at " + src + " called.", AJBnet.logs.loading);
+				that.log("onload callback for " + classpath + " at " + src + " called.", AJBnet.logs.loading);
 
-				if (AJBnet.isFunction(callback))
+				if (that.isFunction(callback))
 					callback();
 
-				AJBnet.loaded(classpath);
+				that.loaded(classpath);
 
 			};
 
@@ -667,6 +683,27 @@ var AJBnet = {
 	},
 
 	/**
+	 * Set or load a global object
+	 * 
+	 * @return mixed Returns either the value of the object specified, null, or sets the new value and returns the object
+	 */
+	global : function(key,new_value) {
+
+		if (!this.isUndefined(new_value)) {
+			this.globals[key] = new_value;
+		} else {
+			if (this.globals[key]) {
+				return this.globals[key];
+			} else {
+				this.log("Trying to access undefined property '" + key + "'", this.logs.core);
+				return null; // throw "Trying to access undefined property '" + key + "'";
+			}
+		}
+
+		return this;
+	},
+
+	/**
 	 * @param mixed Object to test
 	 * @return boolean
 	 */
@@ -723,6 +760,8 @@ var AJBnet = {
 	},
 	
 	/**
+	 * Is the provided parameter an Object?
+	 * 
 	 * @param mixed Object to test
 	 * @return boolean
 	 */
@@ -731,7 +770,7 @@ var AJBnet = {
 	},
 	
 	/**
-	 * Is the object an Array
+	 * Is the object an Array?
 	 *
 	 * @param mixed Object to test
 	 * @return boolean
@@ -747,6 +786,16 @@ var AJBnet = {
 	 */
 	isReady : function() {
 		return (document && document.getElementsByTagName("body")[0]);
+	},
+
+	/**
+	 * Is the specified classpath loaded yet?
+	 * 
+	 * @param string classpath A classpath to test.
+	 * @return boolean
+	 */
+	isLoaded : function(classpath) {
+		return (this.map[classpath] && this.map[classpath].loaded == true);
 	},
 
 	/**

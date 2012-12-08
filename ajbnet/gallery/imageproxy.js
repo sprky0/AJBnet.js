@@ -3,7 +3,7 @@
  *
  * @todo require jquery
  */
-AJBnet.define("Gallery/ImageProxy",function(){
+AJBnet.define("Gallery/ImageProxy",["JQuery"],function(){
 
 	var ImageProxy = function(options) {
 

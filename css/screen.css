@@ -26,6 +26,13 @@ html.AJBnet {
 	width: auto;
 }
 
+html.AJBnet body {
+	margin:0 auto;
+	padding: 101px 0 0 0;
+	/*overflow: auto;*/
+}
+
+
 html.AJBnet section.keytest {
 	border: 1px solid #ccc;
 	padding: 20px;	
@@ -75,12 +82,6 @@ html.AJBnet footer h1 {
 	text-shadow: 0 1px 0 #000;
 }
 
-html.AJBnet body {
-	padding: 101px 0 0 0;
-	margin: 0;
-	overflow: auto;
-}
-
 html.AJBnet table {
 	width: 100%;	
 }
@@ -105,6 +106,11 @@ html.AJBnet article {
 
 html.AJBnet article.header {
 	background-color: #fed;
+	border-bottom: 1px solid #fdd;
+}
+html.AJBnet article.hilite {
+	background-color: #def;
+	border-top: 1px solid #ddf;
 }
 
 html.AJBnet section + section {
@@ -116,7 +122,8 @@ html.AJBnet section {
 }
 
 html.AJBnet p {
-	font-size: .8em;	
+	color: #555;
+	font-size: .8em;
 }
 
 html.AJBnet code {
@@ -141,8 +148,15 @@ nav.right div.testgroup {
 }
 
 html.AJBnet dl {}
-html.AJBnet dt {font-size: .8em;font-weight: bold;}
-html.AJBnet dd {font-size: .8em;}
+html.AJBnet dt {
+	color: #555;
+	font-size: .8em;
+	font-weight: bold;
+}
+html.AJBnet dd {
+	color: #555;
+	font-size: .8em;
+}
 
 html.AJBnet a.logo {
 	background: url('../images/confused_devil.png') top left no-repeat;

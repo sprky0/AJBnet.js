@@ -3,7 +3,7 @@
  *
  * Define a gallery that will be populated with many images (ImageProxy)
  */
-AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy"],function(){
+AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy","JQuery"],function(){
 
 	var Gallery = function(options) {
 
@@ -128,6 +128,15 @@ AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy"],function(){
 			this.current--;
 
 		this.load();
+	}
+
+	Gallery.prototype.unload = function(){
+		
+		for(var i = 0; i < this.objects.length; i++)
+			this.objects[i].unload();
+
+		delete(this);
+
 	}
 
 	return Gallery;
