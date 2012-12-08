@@ -22,10 +22,18 @@
 			</div>
 
 			<div class="testgroup">			
-				Likely Broken:
+				Inconsistent Behavior:
+				<!--
+					Clues:  This fails when jquery finishes loading before one of the other libs that use AJBnet.define()
+				
+				-->
+				<button class="test" id="Tests/Doubleload">Double Load</button>
+			</div>
+
+			<div class="testgroup">			
+				Broken:
 				<button class="test" id="Tests/Circular">Circular Dependency</button>
 				<button class="test" id="Tests/Crossed">Cross Dependencies</button>
-				<button class="test" id="Tests/Doubleload">Double Load</button>
 			</div>
 
 		</nav>

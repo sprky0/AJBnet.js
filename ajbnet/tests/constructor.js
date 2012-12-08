@@ -74,6 +74,5 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 
 	tests.run();
-	// this will not return anything b/c it's just a code block in AJBnet object scope, not an object constructor
 
 });

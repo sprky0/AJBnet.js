@@ -1,10 +1,8 @@
-AJBnet.define("Tests/Core",['vendor/jquery-1.8.3.min.js'],function(){
+AJBnet.define("Tests/Core",['JQuery'],function(){
 
 	var Core = function(options){
 		AJBnet.extend(this,options); // same as forloop overwrite
-
 		this.display = $("<article>").prependTo(this.container);
-
 		return this;
 	}
 	Core.prototype.type = null;
