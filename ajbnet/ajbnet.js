@@ -363,7 +363,9 @@ var AJBnet = {
 			this.load(src,classpath,function(){
 				// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
 				that.define(classpath,function(){});
-			});
+				// setTimeout(function(){that.loaded();},100);
+				// this is missing a loop in there b/c no dependencies ? or something
+			},true);
 
 		} else if (classpath.match(this.regex.classpath)) {
 
@@ -476,9 +478,11 @@ var AJBnet = {
 
 	},
 
-	load : function(src,classpath,callback) {
+	load : function(src,classpath,callback,forceloop) {
 
 		this.log("AJBnet.load() -> " + src, this.logs.core);
+
+		var forceloop = forceloop || false;
 
 		// var _classpath = classpath, _callback = callback;
 		var element = document.createElement("script"),
@@ -493,7 +497,7 @@ var AJBnet = {
 				if (that.isFunction(callback))
 					callback();
 
-				that.loaded(classpath);
+				that.loaded(classpath,forceloop);
 
 			};
 
@@ -506,7 +510,7 @@ var AJBnet = {
 	/**
 	 * This is called when a library has loaded or run, and checks the depdendency map for more work to do
 	 */
-	loaded : function(classpath) {
+	loaded : function(classpath,forceloop) {
 
 		var details = classpath ? " (triggered by " + classpath + ")" : "";
 
@@ -539,7 +543,7 @@ var AJBnet = {
 			}
 		}
 
-		var loop = false;
+		var loop = forceloop || false;
 
 		for (i in this.map) {
 

@@ -21,11 +21,11 @@
 				<button class="test" id="Tests/Tag">Find Origin</button>
 			</div>
 
-			<div class="testgroup">			
+			<div class="testgroup">
 				Inconsistent Behavior:
 				<!--
 					Clues:  This fails when jquery finishes loading before one of the other libs that use AJBnet.define()
-							Always fails in webkit, FF sometimes works				
+							Always fails in webkit, FF sometimes works
 				-->
 				<button class="test" id="Tests/Doubleload">Double Load</button>
 			</div>
@@ -43,6 +43,10 @@
 	</header>
 	
 	<div id="results"></div>
+
+	<footer>
+		<p>Click a button in the top right to execute that test, or <a class="all-tests" href="#all-tests">try them all at once like a madman</a>.  Just kidding, this is a good idea.</p>
+	</footer>
 
 	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true,app:'Tests/Main'}"></script>
 
