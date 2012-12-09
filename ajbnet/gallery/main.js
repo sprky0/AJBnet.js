@@ -8,12 +8,7 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 		var $view = $("<div class='gallery_view' id='gallery_viewer'/>").appendTo("body"),
 			$background = $("<div class='gallery_background'/>")
 				.appendTo("body")
-				.bind("click",function(e){
-					$background.remove();
-					$view.remove();
-					that.global('gallery').unload();
-					$(document).unbind("keyup");
-				});
+				.bind("click",close_gallery);
 
 		$.ajax({
 			url : "test_lib/meta.php",
@@ -25,6 +20,13 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 			type : "GET"
 		});
 		
+		function close_gallery() {
+			$background.remove();
+			$view.remove();
+			that.global('gallery').unload();
+			$(document).unbind("keyup");
+		}
+
 		/**
 		 * Subroutine to create a gallery from an array of image URLs
 		 */
@@ -40,6 +42,10 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 						default:
 						// unknown key
 						AJBnet.log(e,AJBnet.logs.application);
+						break;
+
+						case AJBnet.key.ESCAPE:
+						close_gallery();
 						break;
 	
 						case AJBnet.key.LEFT:

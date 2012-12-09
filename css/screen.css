@@ -28,8 +28,8 @@ html.AJBnet {
 
 html.AJBnet body {
 	margin:0 auto;
-	padding: 101px 0 0 0;
-	/*overflow: auto;*/
+	padding: 0;
+	/*overflow: auto; padding: 101px 0 0 0; */
 }
 
 
@@ -107,6 +107,7 @@ html.AJBnet article {
 html.AJBnet article.header {
 	background-color: #fed;
 	border-bottom: 1px solid #fdd;
+	padding-top: 125px;
 }
 html.AJBnet article.hilite {
 	background-color: #def;
@@ -210,7 +211,7 @@ html.AJBnet a.github {
 }
 
 html.AJBnet div#results {
-
+	padding-top: 101px;
 }
 
 html.AJBnet div.gallery_view {
