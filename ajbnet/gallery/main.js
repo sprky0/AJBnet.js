@@ -2,15 +2,18 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 
 	this.ready(function(){
 
-		$("body").append("<div class='gallery_view' id='gallery_viewer'/>");
-		$("body")
-			.append("<div class='gallery_background'/>")
-			.bind("click",function(e){
-				$('.gallery_background').remove();
-				$('.gallery_view').remove();
-				AJBnet.global('gallery').unload();
-				$(document).unbind("keyup");
-			});
+		// maintain reference to AJBnet
+		var that = this;
+
+		var $view = $("<div class='gallery_view' id='gallery_viewer'/>").appendTo("body"),
+			$background = $("<div class='gallery_background'/>")
+				.appendTo("body")
+				.bind("click",function(e){
+					$background.remove();
+					$view.remove();
+					that.global('gallery').unload();
+					$(document).unbind("keyup");
+				});
 
 		$.ajax({
 			url : "test_lib/meta.php",

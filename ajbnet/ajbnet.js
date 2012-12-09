@@ -318,7 +318,8 @@ var AJBnet = {
 		if (!this.isReady()) {
 
 			// i'm not sure which one of these is worse -- setting timeout might let the browser control things a bit better ?
-			// setTimeout(function() { AJBnet.readyLoop(); }, 1);
+			// var that = this;
+			// setTimeout(function() { that.readyLoop(); }, 1);
 			this.readyLoop();
 
 		} else {
@@ -568,6 +569,14 @@ var AJBnet = {
 		// When a library has been loaded + run, it may have satisfied others, so we loop once
 		if (loop == true) {
 			this.log("AJBnet.loaded() triggering LOOP" + details, this.logs.loading );
+			
+			/*
+			var that = this;
+			setTimeout(function(){
+				that.loaded();
+			},500);
+			*/
+
 			this.loaded();
 		}
 

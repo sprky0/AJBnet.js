@@ -79,11 +79,17 @@ AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
 		</section>
 
 		<section>
+			<h2>AJBnet.new(classpath)</h2>
+			<p>Instantiate a class which has been loaded as a dependency of the current scope or class:</p>
+			<code>var my_image = AJBnet.new('Gallery/ImageProxy');</code>
+		</section>
+
+		<section>
 			<h2>AJBnet.run(classpath)</h2>
-			<p>The run method can be used to run new code after load.  For example, the demo button below uses the following:</p>
+			<p>The run method can be used to run code.  It does not need to be loaded yet.  For example, the demo button below uses the following, which triggers the codeblock to be loaded and executed:</p>
 			<code>&lt;button onclick="AJBnet.run('Gallery/Main')"&gt;Run Demo&lt;/button&gt;</code>
 		</section>
-		
+
 	</article>
 	
 	<article class="hilite">
@@ -117,7 +123,7 @@ AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
 
 	<footer>
 
-		<h1>Thanks for reading!</h1>
+		<h1>Thanks for looking!</h1>
 		<p>I hope this library is useful to you.  If you don't like this maybe you will like <a href="http://clippy.ajbnet.com">clippy</a></p>
 	
 	</footer>
