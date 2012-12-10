@@ -2,7 +2,7 @@
  * AJBnet Javascript Library
  * 
  * @note 0.7 - just modified each function to define all used vars in the top, to remove warnings from YUI compressor
- * @note 0.8 - 
+ * @note 0.8 - AJBnet is now declared by a self executing function so we can do public / private by scope
  * 
  * @version 0.8
  * @author sprky0
@@ -502,7 +502,7 @@ var AJBnet = (function(){
 			// this will actually define the constructor and stick it in that space, but it breaks things like array
 			// push by reference on the prototype.  sort of a rough tradeoff
 			// pointer[classname] = this.execute(definition_closure);
-	
+
 			this.map[classpath].run = true;
 	
 		},
