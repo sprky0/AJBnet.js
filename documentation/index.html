@@ -13,7 +13,7 @@
 
 	<nav class="metalinks">
 		<a href="http://www.github.com/sprky0/AJBnet.js" class="github" title="View Project on Github">View Project on Github</a>
-		<a href="ajbnet/ajbnet-min.js" class="download" title="Download AJBnet.js source">Download</a>
+		<a href="ajbnet/ajbnet.zip" class="download" title="Download AJBnet.js source">Download</a>
 	</nav>
 
 	<article class="header" id="intro">
@@ -43,7 +43,7 @@
 
 		<section>
 			<h2>Automatic Init</h2>
-			<p>After load, the AJBnet.autoInit method is run, which checks the data-init for a JSON object to use for init parameters.  If one is not found, this is skipped.  The attribute should be applied to the originating script tag of ajbnet.js.</p>
+			<p>The AJBnet.autoInit method is run on load, which checks the optional data-init attribute for a JSON object to use for init parameters.  If one is not found, this is bypassed.  The attribute should be applied to the originating script tag that loads the framework source.</p>
 			<code>&lt;script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:false,app:'Gallery/Main'}"&gt;&lt;/script&gt;</code>
 		</section>
 
@@ -98,7 +98,7 @@ AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
 
 		<section>
 			<h2>Gallery/Main</h2>
-			<p>This example creates a full window image browser using the left/right keys to navigate.</p>
+			<p>This example demonstrates the AJBnet.run() method to execute main function at Gallery/Main, the class file for which has not been loaded yet.  Gallery/Main creates an image browser overlay that you can navigate using the left/right keys.</p>
 			<button onclick="AJBnet.run('Gallery/Main')">Run Demo</button>
 		</section>
 
@@ -125,7 +125,7 @@ AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
 
 		<h1>Thanks for looking!</h1>
 		<p>I hope this library is useful to you.  If you don't like this maybe you will like <a href="http://clippy.ajbnet.com">clippy</a></p>
-	
+
 	</footer>
 
 	<a class="logo" href="#intro">Top</a>
