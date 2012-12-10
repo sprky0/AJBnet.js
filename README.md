@@ -24,14 +24,14 @@ Bugs:
 		to declare a class Name3 and a class Name4 that lives in an associated package
 		is impossible.  Need to work out a modified storage scheme to resolve.  *doh  (if needed - maybe skip)
 
-	- A circular dependency will no longer load forever, but does not trigger the callback on the parent module
+	- A circular dependency will not load forever, but does not trigger the callback on the parent module
 
 To Improve:
 
 	- Constructors are redefined each time, by re-running their respective closure.  This fixes a problem with
 		prototyped arrays etc, but it breaks JS's instanceof function
 
-Browser Support:
+Confirmed Browser Support:
 
 	Safari	- 5.1.7
 	Chrome	- 23.0.1271.95
@@ -67,18 +67,13 @@ Notes:
 		{
 			"class/path" : {
 				callback : function() {},
-				callbackRun : false,
-				srcLoaded : false,
-
-				parent : null,
-				dependencies : [], // array of pointers to other
-
-				depth : 0  ????
+				loading : false,
+				loaded : false,
+				running : false,
+				run : false,
+				dependencies : []
 			}
 		}
-
-	- Not sure about traversal for this, it might be easier to have flat map?  Eg make these all siblings and just loop
-		until its all done? -- TRUE did that
 
 	- Ok here is the deal:
 		- make a map
