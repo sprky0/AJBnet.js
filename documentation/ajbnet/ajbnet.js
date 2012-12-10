@@ -1,9 +1,6 @@
 /**
  * AJBnet Javascript Library
  * 
- * @note 0.7 - just modified each function to define all used vars in the top, to remove warnings from YUI compressor
- * @note 0.8 - AJBnet is now declared by a self executing function so we can do public / private by scope
- * 
  * @version 0.8
  * @author sprky0
  * @link http://js.ajbnet.com
@@ -125,7 +122,7 @@ var AJBnet = (function(){
 		regex : {
 			namespaced_class : /^[A-Za-z0-9\-\.\/]+$/,
 			external_library : /^[A-Za-z0-9\-\.\/]+\.js$/,
-			origin : /ajbnet[-min]?.js/,
+			origin : /ajbnet(-min)?(\.\d\.\d\.\d)?.js/,
 			srcPath : /\/$/
 		},
 
