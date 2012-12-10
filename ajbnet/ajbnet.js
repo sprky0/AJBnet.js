@@ -24,7 +24,7 @@ var AJBnet = {
 		srcBasePath : null,
 
 		/**
-		 * @var string|array Classpaths to try and run automatically
+		 * @var string|array Classpath of the main function (will be run automatically on load)
 		 */
 		main : null,
 	
@@ -36,7 +36,7 @@ var AJBnet = {
 		logsEnabled : {
 			core : false,
 			application : false,
-			loading : true,
+			loading : false,
 			execution : false,
 			constructor : false,
 			notice : false,
@@ -145,6 +145,7 @@ var AJBnet = {
 					this.config.debug = options[i];
 					break;
 
+				case "main":
 				case "app":
 					this.config.main = options[i];
 					break;
@@ -168,7 +169,7 @@ var AJBnet = {
 
 		this.config.initRun = true;
 
-		// run one or many main 'scripts'
+		// run one or many main functions
 		if (!this.isNull( this.config.main )) {
 			if (this.isArray(this.config.main))
 				for(i in this.config.main)
@@ -235,9 +236,8 @@ var AJBnet = {
 	/**
 	 * Run a code block in a particular namespace, minding dependencies etc.
 	 * 
-	 * @note As is, this will only work the first time.  Need a way to force re-running the closure.
-	 * @todo Force re-run of the closure
 	 * @param string classpath
+	 * @return object AJBnet
 	 */
 	run : function(classpath) {
 
