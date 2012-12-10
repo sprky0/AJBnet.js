@@ -1,9 +1,9 @@
 AJBnet.js
 =========
 
-AJBnet.js is a javascript framework!  It is intended to provide require.js type autoloading of dependencies,
+AJBnet.js is a javascript framework!  It is intended to provide require.js style loading of dependencies,
 provide a way to define classes inside of namespaces for logical grouping, while supporting declaring classes
-with standard JS prototypical inheretance.
+with standard JS prototypical inheritance.
 
 
 Done:
