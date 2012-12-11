@@ -10,8 +10,13 @@ AJBnet.define("Tests/Tag",["Tests/Core"],function(){
 
 	tests.addTest(null,
 		function() {
-			return null !== "ajbnet-1.2.3.min.js".match(AJBnet.regex.origin);
-		},true, "Test match src ajbnet-1.2.3.min.js");
+			return null !== "ajbnet-min.1.2.3.js?v=123456789".match(AJBnet.regex.origin);
+		},true, "Test match src ajbnet-min.1.2.3.js?v=123456789");
+
+	tests.addTest(null,
+		function() {
+			return null !== "ajbnet-min.1.2.3.js".match(AJBnet.regex.origin);
+		},true, "Test match src ajbnet-min.1.2.3.js");
 
 	tests.addTest(null,
 		function() {

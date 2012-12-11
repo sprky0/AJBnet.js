@@ -2,7 +2,7 @@
 <html class="AJBnet">
 <head>
 	<meta charset="utf-8" />
-	<link rel="stylesheet" href="css/screen.css" />
+	<link rel="stylesheet" href="css/screen-min.css" />
 </head>
 <body>
 
@@ -98,8 +98,15 @@ AJBnet.define("Example/Class",["My/Dependency","Another/Class"],function(){
 
 		<section>
 			<h2>Gallery/Main</h2>
-			<p>This example demonstrates the AJBnet.run() method to execute main function at Gallery/Main, the class file for which has not been loaded yet.  Gallery/Main creates an image browser overlay that you can navigate using the left/right keys.</p>
+			<p>This example demonstrates the AJBnet.run() method to execute the closure at Gallery/Main, the class file for which has not been loaded yet.  Gallery/Main creates an image browser overlay that you can navigate using the left/right keys.</p>
 			<button onclick="AJBnet.run('Gallery/Main')">Run Demo</button>
+		</section>
+
+		<section>
+			<h2>Gallery/Inline</h2>
+			<p>This example utilizes the AJBnet.run() method to execute the closure at Gallery/Inline, the class file for which has not been loaded yet.  Gallery/Inline creates an image browser that you can navigate using the buttons in the interface or by clicking on the gallery directly.</p>
+			<button onclick="AJBnet.run('Gallery/Inline')">Run Demo</button>
+			<div id="gallery_inline_target"></div>
 		</section>
 
 	</article>
