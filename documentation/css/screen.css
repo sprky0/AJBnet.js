@@ -245,12 +245,18 @@ html.AJBnet div.gallery_inline_view {
 	height: 480px;
 	position: relative;	
 }
-#gallery_inline_target {
+html.AJBnet #gallery_inline_target {
 	margin-top:10px;
 	display:none;
 	width:640px;
 	border: 10px solid #fff;
 }
-#gallery_inline_target button {
-	width:320px;
+html.AJBnet #gallery_inline_target button {
+	opacity:.2; border: 0;
+	background-color: #fff;
+	width: 100px; height: 100%; position: absolute; z-index: 90;
+	font-size: 4em;
 }
+html.AJBnet #gallery_inline_target button:hover {opacity:.8}
+html.AJBnet button.gallery_inline_view-previous { width: 100px; left: 0; }
+html.AJBnet button.gallery_inline_view-next { width: 100px; right: 0;}

@@ -6,12 +6,12 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 		var that = this,
 			container = "#gallery_inline_target",
 			$view = $("<div class='gallery_inline_view' id='gallery_inline_viewer'/>").appendTo(container),
-			$previous = $("<button>").append("previous").appendTo(container),
-			$next = $("<button>").append("next").appendTo(container);
+			$previous = $("<button>").addClass("gallery_inline_view-previous").append("&laquo;").appendTo($view),
+			$next = $("<button>").addClass("gallery_inline_view-next").append("&raquo;").appendTo($view);
 
 		$(container).show();
 
-		$("button",$(container).parent()).remove();
+		$("button[class='demo']",$(container).parent()).remove();
 
 		// $("#gallery_inline_target").parent().find("button").attr("disabled",1);
 
@@ -32,9 +32,19 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 
 			var g = AJBnet.new("Gallery/Gallery",{container : "#gallery_inline_viewer",images : image_array});
 
-			$view.bind("click",function(){g.next();});
-			$next.bind("click",function(){g.next();});
-			$previous.bind("click",function(){g.previous();});
+			$view.bind("click",function(e){
+				g.next();
+			});
+			$next.bind("click",function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				g.next();
+			});
+			$previous.bind("click",function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				g.previous();
+			});
 
 		};
 
