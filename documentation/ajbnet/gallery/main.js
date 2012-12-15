@@ -11,7 +11,7 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 				.bind("click",close_gallery);
 
 		$.ajax({
-			url : "test_lib/meta.php",
+			url : "images/test_lib/meta.php",
 			data : {},
 			complete : function(obj,text) {},
 			error : function(obj,text) {},

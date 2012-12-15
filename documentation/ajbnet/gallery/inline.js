@@ -16,7 +16,7 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 		// $("#gallery_inline_target").parent().find("button").attr("disabled",1);
 
 		$.ajax({
-			url : "test_lib/meta.php",
+			url : "images/test_lib/meta.php",
 			data : {},
 			complete : function(obj,text) {},
 			error : function(obj,text) {},

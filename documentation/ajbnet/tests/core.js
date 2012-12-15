@@ -26,6 +26,15 @@ AJBnet.define("Tests/Core",['JQuery'],function(){
 				expected_result : expected
 			});
 
+		} else if (AJBnet.isNull(test)) {
+
+			this.tests.push({
+				type : "comparison",
+				name : name,
+				test_value : value,
+				expected_result : expected
+			});
+
 		} else {
 
 			this.tests.push({
