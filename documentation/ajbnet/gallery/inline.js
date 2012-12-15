@@ -1,5 +1,5 @@
 AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
-	
+
 	this.ready(function(){
 
 		// maintain reference to AJBnet
@@ -13,8 +13,6 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 
 		$("button[class='demo']",$(container).parent()).remove();
 
-		// $("#gallery_inline_target").parent().find("button").attr("disabled",1);
-
 		$.ajax({
 			url : "images/test_lib/meta.php",
 			data : {},
@@ -24,7 +22,7 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 			dataType : "json",
 			type : "GET"
 		});
-		
+
 		/**
 		 * Subroutine to create a gallery from an array of image URLs
 		 */
