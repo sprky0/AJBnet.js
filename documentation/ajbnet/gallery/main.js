@@ -47,17 +47,17 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 						case AJBnet.key.ESCAPE:
 						close_gallery();
 						break;
-	
+
 						case AJBnet.key.LEFT:
 						AJBnet.global('gallery').previous();
 						break;
-	
+
 						case AJBnet.key.RIGHT:
 						AJBnet.global('gallery').next();
 						break;
 
 					}
-	
+
 				});
 
 		};

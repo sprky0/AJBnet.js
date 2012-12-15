@@ -1,8 +1,3 @@
-/**
- * This is a funny one -- still sometimes fails, some sort of load delay edge case.
- * Might be solved by setting a timeout on the loaded() optional loop?
- * (but I would love to avoid that)
- */
 AJBnet.define("Tests/Doubleload",["JQuery","Tests/Core","Tests/Double/A","Tests/Double/B","Tests/Double/C"],function(){
 
 	this.log("This test will try to load classes A B and C, which all require class D.", this.logs.application);

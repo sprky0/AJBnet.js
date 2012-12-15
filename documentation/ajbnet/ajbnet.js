@@ -214,18 +214,25 @@ var AJBnet = (function(){
 			var origin = this.getOrigin(),
 				init_json,
 				init_object;
+			//	main_json,
+			//	main_string;
 
 			if (this.isNull(origin)) {
 				// throw "Can't find script!  That's not particularly good.";
 				return false;
 			}
 
-			init_json = origin.getAttribute("data-init");
-
 			// require.js behavior:
-			// var main_json = origin.getAttribute("data-main"), main_classpath;
-			// if (!this.isNull(main_json)){});
-	
+			/*
+			main_json = origin.getAttribute("data-main"), main_classpath;
+			if (!this.isNull(main_json)){
+				// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
+				// @todo replace this
+				eval("main_string="+main_json);
+			});
+			*/
+
+			init_json = origin.getAttribute("data-init");
 			if (!this.isNull(init_json)){
 	
 				// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!

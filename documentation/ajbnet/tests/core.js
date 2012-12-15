@@ -29,7 +29,7 @@ AJBnet.define("Tests/Core",['JQuery'],function(){
 		} else if (AJBnet.isNull(test)) {
 
 			this.tests.push({
-				type : "comparison",
+				type : "assert_equals",
 				name : name,
 				test_value : value,
 				expected_result : expected
@@ -140,6 +140,37 @@ AJBnet.define("Tests/Core",['JQuery'],function(){
 
 						var result = this.tests[i].test(this.tests[i].test_value);
 						var success = result === this.tests[i].expected_result;
+						var message = "Response was ";
+
+						if (true == success)
+							message += " as expected.";
+						else
+							message += " not as expected!";
+
+					} catch(e) {
+						
+						success = "false";
+						message = "<strong>Exception:</strong> " + e;
+
+					}
+
+					this.showResult(
+						this.tests[i].name,
+						this.tests[i].test_value,
+						this.tests[i].expected_result,
+						result,
+						success,
+						message
+					);
+
+					break;
+					
+				case "assert_equals":
+
+					try {
+
+						var result = (this.tests[i].test_value === this.tests[i].expected_result)+"";
+						var success = this.tests[i].test_value === this.tests[i].expected_result;
 						var message = "Response was ";
 
 						if (true == success)
