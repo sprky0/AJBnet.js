@@ -297,8 +297,8 @@ var AJBnet = (function(){
 		'new' : function() {
 			// classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
 
-			var classpath = arguments[0], new_arguments = [], i, path, token, pointer;
-	
+			var classpath = arguments[0], new_arguments = [], i, path, token, pointer, classname;
+
 			if (arguments.length > 1)
 				for (i = 1; i < arguments.length; i++)
 					new_arguments.push( arguments[i] );
