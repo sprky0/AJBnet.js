@@ -31,8 +31,10 @@ To Improve:
 	- Constructors are redefined each time, by re-running their respective closure.  This fixes a problem with
 		prototyped arrays etc, but it breaks JS's instanceof function
 
-Confirmed Browser Support:
+Confirmed Tested Browser Support:
 
-	Safari	- 5.1.7
-	Chrome	- 23.0.1271.95
-	Firefox	- 16.0.2
+	Safari	- 5.1.7+
+	Chrome	- 23.0.1271.95+
+	Firefox	- 16.0.2+
+	Opera - 12.00+
+	IE - 6/7/8+
