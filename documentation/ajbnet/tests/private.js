@@ -1,8 +1,8 @@
 AJBnet.define("Tests/Private",["Tests/Core","Tests/PublicPrivate"],function(){
 	
-	var tests = AJBnet.new("Tests/Core",{container:"#results",type:""});
+	var tests = AJBnet.construct("Tests/Core",{container:"#results",type:""});
 
-	var p = AJBnet.new("Tests/PublicPrivate");
+	var p = AJBnet.construct("Tests/PublicPrivate");
 
 	p.public();
 	p.callPrivate();

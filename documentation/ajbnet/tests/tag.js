@@ -3,10 +3,10 @@
  */
 AJBnet.define("Tests/Tag",["Tests/Core"],function(){
 
-	this.log("Finding origin.", this.logs.application);
+	AJBnet.log("Finding origin.", AJBnet.logs.application);
 
-	var origin = this.getOrigin(),
-		tests = this.new("Tests/Core",{type:"Find Source &lt;script&gt; Tag",container:"#results"});
+	var origin = AJBnet.getOrigin(),
+		tests = AJBnet.construct("Tests/Core",{type:"Find Source &lt;script&gt; Tag",container:"#results"});
 
 	tests.addTest(null,
 		function() {

@@ -2,7 +2,6 @@
  * AJBnet.js informational site styles
  * @author sprky0
  */
-
 html {}
 
 body.AJBnet h1,
@@ -120,7 +119,7 @@ body.AJBnet section + section {
 }
 
 body.AJBnet section {
-	padding-right: 190px;
+	padding-right: 170px;
 }
 
 body.AJBnet p {

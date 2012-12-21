@@ -5,14 +5,14 @@
  */
 AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],function(){
 
-	var tests = this.construct("Tests/Core",{container:"#results"});
+	var tests = AJBnet.construct("Tests/Core",{container:"#results"});
 
 	/*
 	Can't have cake + eat cake :(  (!instanceof if we run the constructor factory for each construct)
 
 	tests.addTest(null,function(){
 
-		var a = AJBnet.new("Tests/Nested/Constructor");
+		var a = AJBnet.construct("Tests/Nested/Constructor");
 
 		// var newconstructor = AJBnet.libs.Tests.Nested.Constructor();
 		// var b = new newconstructor();

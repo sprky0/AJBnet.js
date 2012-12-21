@@ -1,11 +1,11 @@
 AJBnet.define("Tests/Doubleload",["JQuery","Tests/Core","Tests/Double/A","Tests/Double/B","Tests/Double/C"],function(){
 
-	this.log("This test will try to load classes A B and C, which all require class D.", this.logs.application);
+	AJBnet.log("This test will try to load classes A B and C, which all require class D.", AJBnet.logs.application);
 
-	var a = this.new("Tests/Double/A"),
-		b = this.new("Tests/Double/B"),
-		c = this.new("Tests/Double/C"),
-		tests = this.new("Tests/Core",{type:"Double Load",container:"#results"});
+	var a = AJBnet.construct("Tests/Double/A"),
+		b = AJBnet.construct("Tests/Double/B"),
+		c = AJBnet.construct("Tests/Double/C"),
+		tests = AJBnet.construct("Tests/Core",{type:"Double Load",container:"#results"});
 
 	tests.addTest(a,function(mr_object){
 		var d = mr_object.getD();
