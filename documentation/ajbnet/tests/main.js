@@ -2,6 +2,15 @@
  * Handle bindings etc on the test.html page
  */
 AJBnet.define("Tests/Main",function(){
+
+	function getElementsByClassName(classname) {
+		var node = document, a = [],
+	    	re = new RegExp('(^| )'+classname+'( |$)'),
+    		els = node.getElementsByTagName("*");
+    	for(var i=0,j=els.length; i<j; i++)
+        	if(re.test(els[i].className))a.push(els[i]);
+    			return a;
+	}
 	
 	this.ready(function(){
 
@@ -24,7 +33,7 @@ AJBnet.define("Tests/Main",function(){
 				// (this.id+"").replace("_","/")
 		}
 
-		var items = document.getElementsByClassName("test");
+		var items = getElementsByClassName("test");
 
 		for(var i = 0; i < items.length; i++) {
 			tests.push( items[i].id );
@@ -33,7 +42,7 @@ AJBnet.define("Tests/Main",function(){
 			items[i].disabled = null;
 		}
 
-		var items = document.getElementsByClassName("all-tests");
+		var items = getElementsByClassName("all-tests");
 
 		for(var i = 0; i < items.length; i++) {
 			items[i].onclick = runall;

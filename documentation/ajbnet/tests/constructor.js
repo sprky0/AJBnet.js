@@ -5,7 +5,7 @@
  */
 AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],function(){
 
-	var tests = this.new("Tests/Core",{container:"#results"});
+	var tests = this.construct("Tests/Core",{container:"#results"});
 
 	/*
 	Can't have cake + eat cake :(  (!instanceof if we run the constructor factory for each construct)
@@ -25,8 +25,8 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 	tests.addTest(null,function(){
 
-		var a = AJBnet.new("Tests/Nested/Constructor");
-		var b = AJBnet.new("Tests/Nested/Constructor");
+		var a = AJBnet.construct("Tests/Nested/Constructor");
+		var b = AJBnet.construct("Tests/Nested/Constructor");
 		
 		a.test1 = 1;
 		b.test1 = 2;
@@ -38,10 +38,10 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 	tests.addTest(null,function(){
 
-		var a = AJBnet.new("Tests/Nested/Constructor");
+		var a = AJBnet.construct("Tests/Nested/Constructor");
 		a.test1 = 3;
 
-		var b = AJBnet.new("Tests/Nested/Constructor");
+		var b = AJBnet.construct("Tests/Nested/Constructor");
 		b.test1 = 4;
 
 		return a.test1 !== b.test1;
@@ -50,8 +50,8 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 	tests.addTest(null,function(){
 
-		var a = AJBnet.new("Tests/Nested/Constructor");
-		var b = AJBnet.new("Tests/Nested/Constructor");
+		var a = AJBnet.construct("Tests/Nested/Constructor");
+		var b = AJBnet.construct("Tests/Nested/Constructor");
 
 		a.test1 = {tacos:1};
 		b.test1 = {tacos:2};
@@ -62,10 +62,10 @@ AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],func
 
 	tests.addTest(null,function(){
 
-		var a = AJBnet.new("Tests/Nested/Constructor");
+		var a = AJBnet.construct("Tests/Nested/Constructor");
 		a.test_array.push(1);
 		
-		var b = AJBnet.new("Tests/Nested/Constructor");
+		var b = AJBnet.construct("Tests/Nested/Constructor");
 		b.test_array.push(2);
 
 		return a.test_array[0] !== b.test_array[0];

@@ -36,7 +36,7 @@ AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy","JQuery"],function(){
 		this.objects = [];
 
 		for(var i = 0; i < this.images.length; i++)
-			this.objects.push( AJBnet.new("Gallery/ImageProxy",{container:this.container,src:this.images[i],delay:true}) );
+			this.objects.push( AJBnet.construct("Gallery/ImageProxy",{container:this.container,src:this.images[i],delay:true}) );
 
 		this.load();
 
@@ -134,8 +134,6 @@ AJBnet.define("Gallery/Gallery",["Gallery/ImageProxy","JQuery"],function(){
 		
 		for(var i = 0; i < this.objects.length; i++)
 			this.objects[i].unload();
-
-		delete(this);
 
 	}
 

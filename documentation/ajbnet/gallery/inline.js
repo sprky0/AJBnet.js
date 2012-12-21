@@ -28,7 +28,7 @@ AJBnet.define("Gallery/Inline",["Gallery/Gallery"],function(){
 		 */
 		function run_gallery(image_array){
 
-			var g = AJBnet.new("Gallery/Gallery",{container : "#gallery_inline_viewer",images : image_array});
+			var g = AJBnet.construct("Gallery/Gallery",{container : "#gallery_inline_viewer",images : image_array});
 
 			$view.bind("click",function(e){
 				g.next();

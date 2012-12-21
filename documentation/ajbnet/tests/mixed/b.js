@@ -7,7 +7,7 @@ AJBnet.define("Tests/Mixed/B",["Tests/Mixed/C"],function(){
 		}
 
 		B.prototype.getC = function() {
-			return AJBnet.new("Tests/Mixed/C");
+			return AJBnet.construct("Tests/Mixed/C");
 		}
 
 	return B;

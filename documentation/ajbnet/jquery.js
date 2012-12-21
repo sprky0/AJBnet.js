@@ -1,5 +1,5 @@
 /**
- * jquery loader wrap
+ * jQuery loader wrap
  *
  * Abstract the loading of a 3rd party library to make things like upgrades easier across a large codebase.
  * I would say it's silly to load one extra file in the middle, but on a very large scale, this could save time!

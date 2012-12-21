@@ -7,7 +7,67 @@
  */
 var AJBnet = (function(){
 
-	// this is dumb but i am doing it so we can have public and private variables if it mattered
+	/**
+	 * Dynamic constructor method, thanks to T.J. Crowder's answer on stack overflow for the insight
+	 * 
+	 * @link http://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
+	 * @param object ctor constructor to use
+	 * @param array params parameters to pass to the constructor
+	 */
+	function construct(ctor, params) {
+
+		var obj, newobj;
+
+		// Create the object with the desired prototype
+		if (typeof Object.create === "function") {
+			// ECMAScript 5 
+			obj = Object.create(ctor.prototype);
+			// this.log("Used Object.create", this.logs.construct);
+
+		} else if ({}.__proto__) {
+
+			// Non-standard __proto__, supported by some browsers
+			obj = {};
+			obj.__proto__ = ctor.prototype;
+
+			if (obj.__proto__ === ctor.prototype) {
+				// this.log("Used __proto__", this.logs.construct);
+			} else {
+				// Setting it didn't work
+				// this.log("__proto__ failed, used fake constructor", this.logs.construct);
+				obj = makeObjectWithFakeCtor();
+			}
+
+		} else {
+			// Fallback
+			// this.log("Used fake constructor", this.logs.construct);
+			obj = makeObjectWithFakeCtor();
+		}
+		
+		// Set the object's constructor
+		obj.constructor = ctor;
+		
+		// Apply the constructor function
+		newobj = ctor.apply(obj, params);
+		
+		// If a constructor function returns an object, that
+		// becomes the return value of `new`, so we handle
+		// that here.
+		if (newobj !== null && (typeof newobj === "object" || typeof newobj === "function")) {
+			obj = newobj;
+		}
+		
+		// Done!
+		return obj;
+
+		// Subroutine for building objects with specific prototypes
+		function makeObjectWithFakeCtor() {
+			function fakeCtor() {}
+			fakeCtor.prototype = ctor.prototype;
+			return new fakeCtor();
+		}
+
+	};
 
 	var core = {
 
@@ -141,7 +201,7 @@ var AJBnet = (function(){
 		 * this is called automatically as soon as the object is in memory
 		 */
 		init : function(options,force) {
-	
+
 			this.log("AJBnet.init()", this.logs.core);
 	
 			var i, path;
@@ -201,7 +261,7 @@ var AJBnet = (function(){
 				else
 					this.run(this.config.main);
 			}
-	
+
 			return this;
 	
 		},
@@ -246,9 +306,9 @@ var AJBnet = (function(){
 				
 				this.init(init_object);
 			}
-	
+
 			return this;
-	
+
 		},
 	
 		/**
@@ -286,7 +346,7 @@ var AJBnet = (function(){
 
 			return this;
 		},
-	
+
 		/**
 		 * Sorry for quoting this puppy ... it's a reserved word
 		 * 
@@ -294,21 +354,22 @@ var AJBnet = (function(){
 		 * @args // do something with args here, how do i jsdoc this puppy
 		 * @throws exception
 		 */
-		'new' : function() {
+		construct : function() {
 			// classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
 
-			var classpath = arguments[0], new_arguments = [], i, path, token, pointer, classname;
+			var classpath = arguments[0],
+				new_arguments = [], i, path, token, pointer, classname;
 
 			if (arguments.length > 1)
-				for (i = 1; i < arguments.length; i++)
-					new_arguments.push( arguments[i] );
-	
+			 	for (i = 1; i < arguments.length; i++)
+			 		new_arguments.push( arguments[i] );
+
 			path = classpath.split("/");
 			classname = path.pop();
 			token = classname;
 			pointer = this.libs;
 	
-			this.log("AJBnet.new() -> Trying to make " + classname + " (" + classpath + ")", this.logs.construct);
+			this.log("AJBnet.construct() -> Trying to make " + classname + " (" + classpath + ")", this.logs.construct);
 	
 			// Traverse the tree of loaded classes until we reach the last
 			while (path.length > 0) {
@@ -323,7 +384,8 @@ var AJBnet = (function(){
 				throw "Class '" + classpath + "' not loaded yet!";
 	
 			// return this.construct(pointer[classname], new_arguments);
-			return this.construct(pointer[classname](), new_arguments);
+			// private method
+			return construct(pointer[classname](), new_arguments);
 			// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
 	
 		},
@@ -369,7 +431,7 @@ var AJBnet = (function(){
 		 * Explicitly require a single library
 		 */
 		require : function(classpath) {
-	
+
 			// be strict!
 			if (!this.isString(classpath))
 				throw "Invalid value for classpath, should be a String.";
@@ -440,7 +502,7 @@ var AJBnet = (function(){
 			/**
 			 * This will create a placeholder internally for this class.  eg: AJBnet.libs.package.sub.class = function(){}
 			 * 
-			 * For using the AJBnet.new(/package/class) method, the declaration much match this path as projected
+			 * For using the AJBnet.construct(/package/class) method, the declaration much match this path as projected
 			 * Will figure out a more convenient shorthand for this in the future to make the class definitions easier.
 			 */
 			while(path.length != 0) {
@@ -522,8 +584,22 @@ var AJBnet = (function(){
 	
 				element.setAttribute("type","text/javascript");
 				element.setAttribute("src", src);
-				element.onload = function() {
-	
+				
+				// IE rules :(
+				element.onload = element.onreadystatechange = function() {
+
+/*
+script.onreadystatechange = function() {
+if ( !done && (!this.readyState ||
+this.readyState === "loaded" || this.readyState === "complete") ) {
+done = true;
+// Handle memory leak in IE
+script.onload = script.onreadystatechange = null;
+if ( head && script.parentNode ) {
+    head.removeChild( script );
+}
+*/
+
 					that.log("onload callback for " + classpath + " at " + src + " called.", AJBnet.logs.loading);
 	
 					if (that.isFunction(callback))
@@ -666,68 +742,7 @@ var AJBnet = (function(){
 			return obj1;
 	
 		},
-	
-		/**
-		 * Dynamic constructor method, thanks to T.J. Crowder's answer on stack overflow for the insight
-		 * 
-		 * @link http://stackoverflow.com/questions/3871731/dynamic-object-construction-in-javascript
-		 * @param object ctor constructor to use
-		 * @param array params parameters to pass to the constructor
-		 */
-		construct : function(ctor, params) {
-			
-			var obj, newobj;
-			
-			// Create the object with the desired prototype
-			if (typeof Object.create === "function") {
-				// ECMAScript 5 
-				obj = Object.create(ctor.prototype);
-				this.log("Used Object.create", this.logs.construct);
-	
-			} else if ({}.__proto__) {
-	
-				// Non-standard __proto__, supported by some browsers
-				obj = {};
-				obj.__proto__ = ctor.prototype;
-	
-				if (obj.__proto__ === ctor.prototype) {
-					this.log("Used __proto__", this.logs.construct);
-				} else {
-					// Setting it didn't work
-					this.log("__proto__ failed, used fake constructor", this.logs.construct);
-					obj = makeObjectWithFakeCtor();
-				}
-	
-			} else {
-				// Fallback
-				this.log("Used fake constructor", this.logs.construct);
-				obj = makeObjectWithFakeCtor();
-			}
-			
-			// Set the object's constructor
-			obj.constructor = ctor;
-			
-			// Apply the constructor function
-			newobj = ctor.apply(obj, params);
-			
-			// If a constructor function returns an object, that
-			// becomes the return value of `new`, so we handle
-			// that here.
-			if (newobj !== null && (typeof newobj === "object" || typeof newobj === "function")) {
-				obj = newobj;
-			}
-			
-			// Done!
-			return obj;
-	
-			// Subroutine for building objects with specific prototypes
-			function makeObjectWithFakeCtor() {
-				function fakeCtor() {}
-				fakeCtor.prototype = ctor.prototype;
-				return new fakeCtor();
-			}
-		},
-	
+
 		/**
 		 * Set or load a global object
 		 * 

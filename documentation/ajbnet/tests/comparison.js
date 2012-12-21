@@ -16,7 +16,7 @@ AJBnet.define("Tests/Comparison",['Tests/Core'],function(){
 		false_value = false,
 		undefined_value = undefined;
 
-	var tests = this.new("Tests/Core",{type:"Comparison Function Tests",container:"#results"});
+	var tests = this.construct("Tests/Core",{type:"Comparison Function Tests",container:"#results"});
 
 	// number
 	tests.addTest(integer,"isNumber",true);

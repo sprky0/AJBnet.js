@@ -23,7 +23,7 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 		function close_gallery() {
 			$background.remove();
 			$view.remove();
-			that.global('gallery').unload();
+			that.global('gallery_overlay').unload();
 			$(document).unbind("keyup");
 		}
 
@@ -32,7 +32,7 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 		 */
 		function run_gallery(image_array){
 
-			AJBnet.global('gallery', AJBnet.new("Gallery/Gallery",{container : "#gallery_viewer",images : image_array}));
+			AJBnet.global('gallery_overlay', AJBnet.construct("Gallery/Gallery",{container : "#gallery_viewer",images : image_array}));
 
 			$(document)
 				.bind("keyup",function(e){
@@ -49,11 +49,11 @@ AJBnet.define('Gallery/Main',['JQuery','Gallery/Gallery'],function(){
 						break;
 
 						case AJBnet.key.LEFT:
-						AJBnet.global('gallery').previous();
+						AJBnet.global('gallery_overlay').previous();
 						break;
 
 						case AJBnet.key.RIGHT:
-						AJBnet.global('gallery').next();
+						AJBnet.global('gallery_overlay').next();
 						break;
 
 					}

@@ -5,57 +5,57 @@
 
 html {}
 
-html.AJBnet h1,
-html.AJBnet h2,
-html.AJBnet h3,
-html.AJBnet p,
-html.AJBnet ul,
-html.AJBnet li,
-html.AJBnet tr,
-html.AJBnet td,
-html.AJBnet dl,
-html.AJBnet dt,
-html.AJBnet dd {
+body.AJBnet h1,
+body.AJBnet h2,
+body.AJBnet h3,
+body.AJBnet p,
+body.AJBnet ul,
+body.AJBnet li,
+body.AJBnet tr,
+body.AJBnet td,
+body.AJBnet dl,
+body.AJBnet dt,
+body.AJBnet dd {
 	margin: 0; padding: 0;
 	color: #000;
 	font-family: helvetica;
 }
 
-html.AJBnet {
+body.AJBnet {
 	margin: 0; padding: 0;
 	width: auto;
 }
 
-html.AJBnet body {
+body.AJBnet body {
 	margin:0 auto;
 	padding: 0;
 	/*overflow: auto; padding: 101px 0 0 0; */
 }
 
 
-html.AJBnet section.keytest {
+body.AJBnet section.keytest {
 	border: 1px solid #ccc;
 	padding: 20px;	
 }
 
-html.AJBnet article h1 {
+body.AJBnet article h1 {
 	font-size: 1.5em;
 	margin-bottom: .2em;
 	color: #4af;
 }
 
-html.AJBnet article h2 {
+body.AJBnet article h2 {
 	font-size: 1.2em;
 	margin-bottom: .5em;
 	color: #333;
 }
 
-html.AJBnet h1 em {
+body.AJBnet h1 em {
 	color: #FFFFFF;
 	font-style: normal;
 }
 
-html.AJBnet header {
+body.AJBnet header {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -66,69 +66,69 @@ html.AJBnet header {
 	z-index: 100;
 }
 
-html.AJBnet header h1 {text-shadow: 0 1px 0 #ffa;}
-html.AJBnet header h2 {text-shadow: 0 1px 0 #ffa;}
-html.AJBnet header h1 em {text-shadow: 0 1px 0 #000;}
-html.AJBnet header h2 em {text-shadow: 0 1px 0 #000;}
+body.AJBnet header h1 {text-shadow: 0 1px 0 #ffa;}
+body.AJBnet header h2 {text-shadow: 0 1px 0 #ffa;}
+body.AJBnet header h1 em {text-shadow: 0 1px 0 #000;}
+body.AJBnet header h2 em {text-shadow: 0 1px 0 #000;}
 
-html.AJBnet footer {
+body.AJBnet footer {
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 	padding: 20px;
 	background-color: rgb(180,255,180);
 }
 
-html.AJBnet footer h1 {
+body.AJBnet footer h1 {
 	color: #fff;
 	text-shadow: 0 1px 0 #000;
 }
 
-html.AJBnet table {
+body.AJBnet table {
 	width: 100%;	
 }
 
-html.AJBnet table th {
+body.AJBnet table th {
 	width: 20%;
 	padding: 6px;
 	text-align: left;
 	background-color: #f0f0f0;
 	font-size: .8em;
 }
-html.AJBnet table td {
+body.AJBnet table td {
 	padding: 6px;
 	background-color: #fff;
 	border-bottom: 1px solid #eee;
 	font-size: .8em;
 }
 
-html.AJBnet article {
+body.AJBnet article {
 	padding: 20px;
 }
 
-html.AJBnet article.header {
+body.AJBnet article.header {
 	background-color: #fed;
 	border-bottom: 1px solid #fdd;
 	padding-top: 125px;
 }
-html.AJBnet article.hilite {
+body.AJBnet article.hilite {
 	background-color: #def;
 	border-top: 1px solid #ddf;
 }
 
-html.AJBnet section + section {
+body.AJBnet section + section {
 	margin-top: 20px;	
 }
 
-html.AJBnet section {
+body.AJBnet section {
 	padding-right: 190px;
 }
 
-html.AJBnet p {
+body.AJBnet p {
 	color: #555;
 	font-size: .8em;
 }
 
-html.AJBnet code {
+body.AJBnet code {
 	display: block;
 	margin-top: 5px;
 	padding: 3px 10px;
@@ -140,7 +140,7 @@ html.AJBnet code {
 	white-space: pre;
 }
 
-html.AJBnet nav.right {
+body.AJBnet nav.right {
 	position: fixed; right: 20px; top: 20px;
 }
 
@@ -149,18 +149,18 @@ nav.right div.testgroup {
 	font-size: .8em;	
 }
 
-html.AJBnet dl {}
-html.AJBnet dt {
+body.AJBnet dl {}
+body.AJBnet dt {
 	color: #555;
 	font-size: .8em;
 	font-weight: bold;
 }
-html.AJBnet dd {
+body.AJBnet dd {
 	color: #555;
 	font-size: .8em;
 }
 
-html.AJBnet a.logo {
+body.AJBnet a.logo {
 	background: url('../images/confused_devil.png') top left no-repeat;
 	width: 150px;
 	height: 150px;
@@ -172,13 +172,13 @@ html.AJBnet a.logo {
 	z-index: 200;
 }
 
-html.AJBnet nav.metalinks {
+body.AJBnet nav.metalinks {
 	width:100px;
 	position:fixed;
 	right:20px;
 	bottom:20px;
 }
-html.AJBnet nav.metalinks a:hover {
+body.AJBnet nav.metalinks a:hover {
 	opacity:.6;
 }
 
@@ -186,7 +186,7 @@ html.AJBnet nav.metalinks a:hover {
  * Download icon by Turbomilk, via Iconfinder.net
  * @link http://www.iconfinder.com/icondetails/22775/32/arrow_down_download_icon
  */
-html.AJBnet a.download {
+body.AJBnet a.download {
 	background: url('../images/download.png') top left no-repeat;
 	width:32px;
 	height:32px;
@@ -201,7 +201,7 @@ html.AJBnet a.download {
  * Github icon by Keyamoon, via Iconfinder.net
  * @link http://www.iconfinder.com/icondetails/83309/32/_icon
  */
-html.AJBnet a.github {
+body.AJBnet a.github {
 	background: url('../images/github.png') top left no-repeat;
 	width:32px;
 	height:32px;
@@ -212,11 +212,11 @@ html.AJBnet a.github {
 	float:right;
 }
 
-html.AJBnet div#results {
+body.AJBnet div#results {
 	padding-top: 101px;
 }
 
-html.AJBnet div.gallery_view {
+body.AJBnet div.gallery_view {
 	z-index:2000;
 	width:640px;
 	height:480px;
@@ -229,7 +229,7 @@ html.AJBnet div.gallery_view {
 	background-color:#121212;
 	box-shadow: 0 10px 50px rgba(0,0,0,.25);
 }
-html.AJBnet div.gallery_background {
+body.AJBnet div.gallery_background {
 	z-index:1000;
 	background-color: #222;
 	opacity:.8;
@@ -240,23 +240,23 @@ html.AJBnet div.gallery_background {
 	display:block;
 }
 
-html.AJBnet div.gallery_inline_view {
+body.AJBnet div.gallery_inline_view {
 	width: 640px;
 	height: 480px;
 	position: relative;	
 }
-html.AJBnet #gallery_inline_target {
+body.AJBnet #gallery_inline_target {
 	margin-top:10px;
 	display:none;
 	width:640px;
 	border: 10px solid #fff;
 }
-html.AJBnet #gallery_inline_target button {
+body.AJBnet #gallery_inline_target button {
 	opacity:.2; border: 0;
 	background-color: #fff;
 	width: 100px; height: 100%; position: absolute; z-index: 90;
 	font-size: 4em;
 }
-html.AJBnet #gallery_inline_target button:hover {opacity:.8}
-html.AJBnet button.gallery_inline_view-previous { width: 100px; left: 0; }
-html.AJBnet button.gallery_inline_view-next { width: 100px; right: 0;}
+body.AJBnet #gallery_inline_target button:hover {opacity:.8}
+body.AJBnet button.gallery_inline_view-previous { width: 100px; left: 0; }
+body.AJBnet button.gallery_inline_view-next { width: 100px; right: 0;}

@@ -7,7 +7,7 @@ AJBnet.define("Tests/Cross/A",["Tests/Cross/B"],function(){
 		}
 
 		A.prototype.getB = function() {
-			return AJBnet.new("Tests/Cross/B");
+			return AJBnet.construct("Tests/Cross/B");
 		}
 
 	return A;
