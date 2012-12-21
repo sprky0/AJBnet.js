@@ -1,7 +1,7 @@
 /**
  * AJBnet Javascript Library
  * 
- * @version 0.8
+ * @version 0.9
  * @author sprky0
  * @link http://js.ajbnet.com
  */
