@@ -274,45 +274,33 @@
 			autoInit : function() {
 		
 				var origin = this.getOrigin(),
-					init_json,
+					init_json_string,
 					init_object;
-				//	main_json,
-				//	main_string;
-	
+
 				if (this.isNull(origin)) {
 					// throw "Can't find script!  That's not particularly good.";
 					return false;
 				}
-	
-				// require.js behavior:
-				/*
-				main_json = origin.getAttribute("data-main"), main_classpath;
-				if (!this.isNull(main_json)){
+
+				init_json_string = origin.getAttribute("data-init");
+				if (!this.isNull(init_json_string)){
+
 					// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
 					// @todo replace this
-					eval("main_string="+main_json);
-				});
-				*/
-	
-				init_json = origin.getAttribute("data-init");
-				if (!this.isNull(init_json)){
-		
-					// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
-					// @todo replace this
-					eval("init_object="+init_json);
-					
+					init_object = eval("("+init_json_string+")");
+
 					if (!this.isObject(init_object)) {
 						this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
 						return this;
 					}
-					
+
 					this.init(init_object);
 				}
-	
+
 				return this;
-	
+
 			},
-		
+
 			/**
 			 * Get a reference to the script tag that is believed to have originated the load for the framework
 			 */	
