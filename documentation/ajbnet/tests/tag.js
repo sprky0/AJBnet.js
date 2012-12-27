@@ -6,26 +6,27 @@ AJBnet.define("Tests/Tag",["Tests/Core"],function(){
 	AJBnet.log("Finding origin.", AJBnet.logs.application);
 
 	var origin = AJBnet.getOrigin(),
-		tests = AJBnet.construct("Tests/Core",{type:"Find Source &lt;script&gt; Tag",container:"#results"});
+		tests = AJBnet.construct("Tests/Core",{type:"Find Source &lt;script&gt; Tag",container:"#results"}),
+		regex = AJBnet.getRegex();
 
 	tests.addTest(null,
 		function() {
-			return null !== "ajbnet-min.1.2.3.js?v=123456789".match(AJBnet.regex.origin);
+			return null !== "ajbnet-min.1.2.3.js?v=123456789".match(regex.origin);
 		},true, "Test match src ajbnet-min.1.2.3.js?v=123456789");
 
 	tests.addTest(null,
 		function() {
-			return null !== "ajbnet-min.1.2.3.js".match(AJBnet.regex.origin);
+			return null !== "ajbnet-min.1.2.3.js".match(regex.origin);
 		},true, "Test match src ajbnet-min.1.2.3.js");
 
 	tests.addTest(null,
 		function() {
-			return null !== "ajbnet-min.js".match(AJBnet.regex.origin);
+			return null !== "ajbnet-min.js".match(regex.origin);
 		},true, "Test match src ajbnet-min.js");
 
 	tests.addTest(null,
 		function() {
-			return null !== "ajbnet.js".match(AJBnet.regex.origin);
+			return null !== "ajbnet.js".match(regex.origin);
 		},true, "Test match src ajbnet.js");
 
 	tests.addTest(origin,

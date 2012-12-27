@@ -1,7 +1,7 @@
 /*!
  * AJBnet Javascript Library
  * 
- * @version 0.9.3
+ * @version 0.9.5
  * @author sprky0
  * @link http://js.ajbnet.com
  */
@@ -110,6 +110,19 @@
 
 		};
 
+		/**
+		 * regex
+		 */
+		var regex = {
+			namespaced_class : /^[A-Za-z0-9\-\.\/]+$/,
+			external_library : /^[A-Za-z0-9\-\.\/]+\.js$/,
+			origin : /ajbnet(-min)?(\.\d\.\d\.\d)?.js/,
+			srcPath : /\/$/
+		};
+
+		/**
+		 * core ajbnet and public properties / methods
+		 */
 		var core = {
 
 			/**
@@ -177,17 +190,7 @@
 				NINE : 57
 		
 			},
-	
-			/**
-			 * regex
-			 */
-			regex : {
-				namespaced_class : /^[A-Za-z0-9\-\.\/]+$/,
-				external_library : /^[A-Za-z0-9\-\.\/]+\.js$/,
-				origin : /ajbnet(-min)?(\.\d\.\d\.\d)?.js/,
-				srcPath : /\/$/
-			},
-	
+
 			logs : {
 				core : "core",
 				application : "application",
@@ -312,7 +315,7 @@
 		
 				for (i in scripts ) {
 					test = scripts[i].src + "";
-					if ( test.match( this.regex.origin ) ) {
+					if ( test.match( regex.origin ) ) {
 						return scripts[i];
 					}
 				}
@@ -396,14 +399,14 @@
 			 * There must be a better way to do this
 			 */
 			readyLoop : function() {
-		
+
 				if (!this.isReady()) {
-		
+
 					// i'm not sure which one of these is worse -- setting timeout might let the browser control things a bit better ?
 					// var that = this;
 					// setTimeout(function() { that.readyLoop(); }, 1);
 					this.readyLoop();
-		
+
 				} else {
 		
 					for(var i in this.readyStack)
@@ -440,7 +443,7 @@
 				};
 
 				// seems to be a static library
-				if (classpath.match(this.regex.external_library)) {
+				if (classpath.match(regex.external_library)) {
 		
 					src = config.srcBasePath + classpath;
 					this.load(src,classpath,function(){
@@ -451,7 +454,7 @@
 					},true);
 		
 				// seems to be a namespaced class
-				} else if (classpath.match(this.regex.namespaced_class)) {
+				} else if (classpath.match(regex.namespaced_class)) {
 		
 					src = config.srcBasePath + (classpath+"").toLowerCase() + ".js";
 					this.load(src,classpath);
@@ -914,10 +917,24 @@
 			logFunction : function(obj) {
 				console.log(obj);
 				return this;
+			},
+
+			/**
+			 * get the private config var
+			 */
+			getConfig : function() {
+				return config;
+			},
+
+			/**
+			 * get the private regex var
+			 */
+			getRegex : function() {
+				return regex;
 			}
-	
+
 		};
-	
+
 		/**
 		 * AJBnet.autoInit looks for data-init object on the origin script tag,
 		 * and uses this as a JSON object to use against the AJBnet.init method
