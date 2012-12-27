@@ -1,7 +1,7 @@
 /*!
  * AJBnet Javascript Library
  * 
- * @version 0.9.2
+ * @version 0.9.3
  * @author sprky0
  * @link http://js.ajbnet.com
  */
@@ -495,12 +495,12 @@
 				} else {
 					dependencies = dependencies_or_closure;
 				}
-		
+
 				var path = classpath.split("/"),
 					dependencies = dependencies || [],
 					pointer = this.libs,
 					token, i;
-		
+
 				/**
 				 * This will create a placeholder internally for this class.  eg: AJBnet.libs.package.sub.class = function(){}
 				 * 
@@ -559,7 +559,9 @@
 					throw "Closure was not passed for " + classpath;
 		
 				this.log("AJBnet.register() - Running closure  for " + classpath, this.logs.construct);
-		
+
+				this.map[classpath].running = true;
+
 				// this will catch the puppy if it is a code block and not returning a constructor (this is dumb.  fix this)
 				// and hangs onto the function that makes the constructor each time.  unfortunately
 				// creating the constructor via the closure as a factory instead of creating the instance breaks 'instanceof',
@@ -572,7 +574,8 @@
 				// pointer[classname] = this.execute(definition_closure);
 	
 				this.map[classpath].run = true;
-		
+				this.map[classpath].running = false;
+
 			},
 		
 			load : function(src,classpath,callback,forceloop) {
@@ -629,51 +632,46 @@
 					i, j, k;
 		
 				this.log("AJBnet.loaded() START" + details, this.logs.loading);
-		
+
+
+				// this initial loop sees if we can knock off any dependencies right away
 				if (classpath) {
 
-					console.log(" hi " + classpath);
-	
-					this.map[classpath].loaded = true;
+					this.log(classpath + " loaded, testing dependencies.", this.logs.loading);
 
-					// check our dependencies!
+					this.map[classpath].loaded = true;
+					this.map[classpath].loading = false;
 
 					if (this.isArray(this.map[classpath].dependencies)) {
 
-						console.log(" hi " + classpath + " 's depedneciesss");
-
-						for(i in this.map[classpath].dependencies ) {
-
-							console.log(" hi " + classpath + "'s dependeciess specifically " + this.map[classpath].dependencies[i] );
-
-							// has the required dependency already been loaded / executed ?
-							if ( this.map[ this.map[classpath].dependencies[i] ] && this.map[ this.map[classpath].dependencies[i] ].run == true ) {
-								console.log(this.map[classpath].dependencies[i] + " seems to be loaded ok already");
-								dependencies_resolved.push(i);
-								// this.map[classpath].dependencies = replacement_array;
-							}
-						}
-
 						replacement_array = [];
-						for(k = 0; k < this.map[classpath].dependencies.length; k++) {
-							if (this.inArray(k,dependencies_resolved))
-								continue;
-							else
+						dependencies_resolved = [];
+
+						for(i in this.map[classpath].dependencies )
+							if ( this.map[ this.map[classpath].dependencies[i] ] && this.map[ this.map[classpath].dependencies[i] ].run == true )
+								dependencies_resolved.push(i);
+
+						for(k = 0; k < this.map[classpath].dependencies.length; k++)
+							if (!this.inArray(k,dependencies_resolved))
 								replacement_array.push( this.map[classpath].dependencies[k] );
-						}
+
 						this.map[classpath].dependencies = replacement_array;
 
 					}
+
 				}
 
+				// this loop checks to see if there are any other classes that have satisfied dependencies
+				// shouldn't the above be included here?  i thought so too!
+
 				for (i in this.map) {
-		
+
 					// not even ready to check yet
 					if (this.map[i] && this.map[i].loading == true)
 						continue;
-		
+
 					for (j = 0; j < this.map[i].dependencies.length; j++) {
-		
+
 						if (this.map[ this.map[i].dependencies[j] ] && this.map[ this.map[i].dependencies[j] ].run == true) {
 		
 							replacement_array = [];
@@ -688,7 +686,9 @@
 						}
 					}
 				}
-		
+
+				// this loop determines if there are any classes with 0 dependencies left to satisfy, which can be registered! (run)
+
 				for (i in this.map) {
 		
 					// not even ready to check yet
@@ -698,36 +698,37 @@
 					if (this.map[i].dependencies.length == 0 && this.map[i].run === false && this.map[i].running === false) {
 		
 						this.map[i].running = true;
-		
-						// this.log("Registering " + i, this.logs.loading);
+
+						this.log("Registering " + i, this.logs.loading);
 						this.register(i, this.map[i].callback);
 						loop = true;
 		
 					} else {
-		
+
 						// trying to figure out cross dependencies / overlapping dependencies problems :(  *doh
 						// this.log( i + " still has " + this.map[i].dependencies.length + "!" );
 						// this.log( i + " thinks that it " + ( this.map[i].run !== false ? " been run " : " not been run ") );
-						
+
 					}
 				}
-		
+
 				this.log("AJBnet.loaded() END" + details, this.logs.loading );
 		
 				// When a library has been loaded + run, it may have satisfied others, so we loop once
 				if (loop == true) {
+
 					this.log("AJBnet.loaded() triggering LOOP" + details, this.logs.loading );
-					
+
 					/*
 					var that = this;
 					setTimeout(function(){
 						that.loaded();
 					},500);
 					*/
-		
+
 					this.loaded();
 				}
-		
+
 				return this;
 			},
 		
