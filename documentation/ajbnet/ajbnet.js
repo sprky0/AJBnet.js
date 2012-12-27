@@ -1,8 +1,7 @@
 /*!
  * AJBnet Javascript Library
  * 
- * @note Phasing out execute in AJBnet framework context concept, outer wrap added
- * @version 0.9.1
+ * @version 0.9.2
  * @author sprky0
  * @link http://js.ajbnet.com
  */
