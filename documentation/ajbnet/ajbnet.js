@@ -71,47 +71,47 @@
 	
 		};
 
-		var core = {
+		/**
+		 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
+		 * 
+		 * @var object
+		 */
+		var config = {
 
 			/**
-			 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
-			 * 
-			 * @var object
+			 * @var string|array Classpath of the main function (will be run automatically on load)
 			 */
-			config : {
+			main : null,
 
-				/**
-				 * @var string|array Classpath of the main function (will be run automatically on load)
-				 */
-				main : null,
+			/**
+			 * @var string shorthand Optional shorthand if you want to call AJBnet base object something else (eg: "MyBrand")
+			 */ 
+			shorthand : null,
 
-				/**
-				 * @var string shorthand Optional shorthand if you want to call AJBnet base object something else (eg: "MyBrand")
-				 */ 
-				shorthand : null,
+			debug : false,
+			initRun : false,
+			srcBasePath : null,
 
-				debug : false,
-				initRun : false,
-				srcBasePath : null,
+			/**
+			 * Which logs should be enabled for logging in the log?  LOGS
+			 *
+			 * @var object logsEnabled
+			 */
+			logsEnabled : {
+				core : false,
+				application : false,
+				loading : false,
+				execution : false,
+				construct : false,
+				notice : false,
+				warning : false,
+				error : false
+			}
 
-				/**
-				 * Which logs should be enabled for logging in the log?  LOGS
-				 *
-				 * @var object logsEnabled
-				 */
-				logsEnabled : {
-					core : false,
-					application : false,
-					loading : false,
-					execution : false,
-					construct : false,
-					notice : false,
-					warning : false,
-					error : false
-				}
+		};
 
-			},
-		
+		var core = {
+
 			/**
 			 * Libraries
 			 *
@@ -208,7 +208,7 @@
 		
 				var i, path;
 		
-				if (this.config.initRun === true && force !== true)
+				if (config.initRun === true && force !== true)
 					throw "Init already run!";
 		
 				for(i in options||{}){
@@ -224,28 +224,28 @@
 								// maybe it might eventually be "/loader.script?lib="
 								throw "Invalid src path, must end in trailing slash.";
 							}
-							this.config.srcBasePath = path;
+							config.srcBasePath = path;
 							break;
 		
 						case "debug":
-							this.config.debug = options[i];
+							config.debug = options[i];
 							break;
 		
 						case "main":
 						case "app":
-							this.config.main = options[i];
+							config.main = options[i];
 							break;
 					}
 				}
 		
-				if (this.isNull(this.config.srcBasePath))
-					this.config.srcBasePath = "ajbnet/";
+				if (this.isNull(config.srcBasePath))
+					config.srcBasePath = "ajbnet/";
 		
-				if (!this.isNull(this.config.shorthand)) {
-					if (window[this.config.shorthand])
-						throw "Shorthand " + this.config.shorthand + " has already been declared, before AJBnet.init()!";
+				if (!this.isNull(config.shorthand)) {
+					if (window[config.shorthand])
+						throw "Shorthand " + config.shorthand + " has already been declared, before AJBnet.init()!";
 		
-					window[this.config.shorthand] = this;
+					window[config.shorthand] = this;
 				}
 		
 				// If the document is not ready yet, initialize the ready loop which
@@ -253,15 +253,15 @@
 				if (!this.isReady())
 					this.readyLoop();
 		
-				this.config.initRun = true;
+				config.initRun = true;
 		
 				// run one or many main functions
-				if (!this.isNull( this.config.main )) {
-					if (this.isArray(this.config.main))
-						for(i in this.config.main)
-							this.run(this.config.main[i]);
+				if (!this.isNull( config.main )) {
+					if (this.isArray(config.main))
+						for(i in config.main)
+							this.run(config.main[i]);
 					else
-						this.run(this.config.main);
+						this.run(config.main);
 				}
 	
 				return this;
@@ -345,39 +345,36 @@
 			 * @throws exception
 			 */
 			construct : function() {
-				// classpath,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
-	
+
 				var classpath = arguments[0],
 					new_arguments = [], i, path, token, pointer, classname;
-	
+
 				if (arguments.length > 1)
 				 	for (i = 1; i < arguments.length; i++)
 				 		new_arguments.push( arguments[i] );
-	
+
 				path = classpath.split("/");
 				classname = path.pop();
 				token = classname;
 				pointer = this.libs;
-		
+
 				this.log("AJBnet.construct() -> Trying to make " + classname + " (" + classpath + ")", this.logs.construct);
-		
+
 				// Traverse the tree of loaded classes until we reach the last
 				while (path.length > 0) {
 					token = path.shift();
 					pointer = pointer[token];
 				}
-		
+
 				if (!pointer) // || !token) (token is done now)
 					throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
 		
 				if (!this.isFunction(pointer[classname]))
 					throw "Class '" + classpath + "' not loaded yet!";
-		
-				// return this.construct(pointer[classname], new_arguments);
+
 				// private method
 				return construct(pointer[classname](), new_arguments);
-				// return new pointer[classname](a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
-		
+
 			},
 		
 			/**
@@ -445,7 +442,7 @@
 				// seems to be a static library
 				if (classpath.match(this.regex.external_library)) {
 		
-					src = this.config.srcBasePath + classpath;
+					src = config.srcBasePath + classpath;
 					this.load(src,classpath,function(){
 		
 						// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
@@ -456,7 +453,7 @@
 				// seems to be a namespaced class
 				} else if (classpath.match(this.regex.namespaced_class)) {
 		
-					src = this.config.srcBasePath + (classpath+"").toLowerCase() + ".js";
+					src = config.srcBasePath + (classpath+"").toLowerCase() + ".js";
 					this.load(src,classpath);
 		
 				// no good!
@@ -678,19 +675,19 @@
 				// this loop determines if there are any classes with 0 dependencies left to satisfy, which can be registered! (run)
 
 				for (i in this.map) {
-		
+
 					// not even ready to check yet
 					if (this.map[i] && this.map[i].loading == true)
 						continue;
 
 					if (this.map[i].dependencies.length == 0 && this.map[i].run === false && this.map[i].running === false) {
-		
+
 						this.map[i].running = true;
 
 						this.log("Registering " + i, this.logs.loading);
 						this.register(i, this.map[i].callback);
 						loop = true;
-		
+
 					} else {
 
 						// trying to figure out cross dependencies / overlapping dependencies problems :(  *doh
@@ -701,7 +698,7 @@
 				}
 
 				this.log("AJBnet.loaded() END" + details, this.logs.loading );
-		
+
 				// When a library has been loaded + run, it may have satisfied others, so we loop once
 				if (loop == true) {
 
@@ -731,27 +728,27 @@
 			 * @return mixed
 			 */
 			execute : function(closure) {
-		
+
 				if (this.isFunction(closure)) {
-		
+
 					this.closureHolder = closure;
 					var result = this.closureHolder();
-					
+
 					delete(this.closureHolder);
 					// this.closureHolder = null;
-		
+
 					return result;
-		
+
 				} else {
-		
+
 					throw "Closure passed to execute is not a function!";	
-		
+
 				}
-		
+
 				return null;
-		
+
 			},
-			
+
 			/**
 			 * Extend object2 to object1 - basic overwrite
 			 *
@@ -902,7 +899,7 @@
 			 */
 			log : function(obj, type) {
 		
-				if(this.config.debug === true && this.config.logsEnabled[type] === true)
+				if(config.debug === true && config.logsEnabled[type] === true)
 					this.logFunction(obj);
 		
 				return this;
@@ -926,9 +923,8 @@
 		 * and uses this as a JSON object to use against the AJBnet.init method
 		 */
 		core.autoInit();
-	
+
 		// do whatever other internal crap needs to happen here if you want
-	
 		return core;
 
 	})();
