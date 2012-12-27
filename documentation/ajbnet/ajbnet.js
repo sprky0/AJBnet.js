@@ -108,22 +108,22 @@
 				error : false
 			}
 
-		};
+		},
 
 		/**
 		 * regex
 		 */
-		var regex = {
+		regex = {
 			namespaced_class : /^[A-Za-z0-9\-\.\/]+$/,
 			external_library : /^[A-Za-z0-9\-\.\/]+\.js$/,
 			origin : /ajbnet(-min)?(\.\d\.\d\.\d)?.js/,
 			srcPath : /\/$/
-		};
+		},
 
 		/**
 		 * core ajbnet and public properties / methods
 		 */
-		var core = {
+		core = {
 
 			/**
 			 * Libraries
@@ -514,7 +514,7 @@
 				if (dependencies.length > 0) {
 		
 					for(i = 0; i < dependencies.length; i++)
-						this.require(dependencies[i]); // classpath,
+						this.require(dependencies[i]);
 		
 				}
 		
@@ -556,7 +556,7 @@
 				// which would be a nice thing to have in many cases
 				this.execute(definition_closure);
 				pointer[classname] = definition_closure;
-		
+
 				// this will actually define the constructor and stick it in that space, but it breaks things like array
 				// push by reference on the prototype.  sort of a rough tradeoff
 				// pointer[classname] = this.execute(definition_closure);

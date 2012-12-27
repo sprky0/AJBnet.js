@@ -28,9 +28,7 @@ body.AJBnet {
 body.AJBnet body {
 	margin:0 auto;
 	padding: 0;
-	/*overflow: auto; padding: 101px 0 0 0; */
 }
-
 
 body.AJBnet section.keytest {
 	border: 1px solid #ccc;
@@ -93,6 +91,7 @@ body.AJBnet table th {
 	background-color: #f0f0f0;
 	font-size: .8em;
 }
+
 body.AJBnet table td {
 	padding: 6px;
 	background-color: #fff;
@@ -109,6 +108,7 @@ body.AJBnet article.header {
 	border-bottom: 1px solid #fdd;
 	padding-top: 125px;
 }
+
 body.AJBnet article.hilite {
 	background-color: #def;
 	border-top: 1px solid #ddf;
@@ -149,11 +149,13 @@ nav.right div.testgroup {
 }
 
 body.AJBnet dl {}
+
 body.AJBnet dt {
 	color: #555;
 	font-size: .8em;
 	font-weight: bold;
 }
+
 body.AJBnet dd {
 	color: #555;
 	font-size: .8em;
@@ -177,6 +179,7 @@ body.AJBnet nav.metalinks {
 	right:20px;
 	bottom:20px;
 }
+
 body.AJBnet nav.metalinks a:hover {
 	opacity:.6;
 }
@@ -196,6 +199,7 @@ body.AJBnet a.download {
 	float:right;
 	margin-right:10px;
 }
+
 /**
  * Github icon by Keyamoon, via Iconfinder.net
  * @link http://www.iconfinder.com/icondetails/83309/32/_icon
@@ -228,6 +232,7 @@ body.AJBnet div.gallery_view {
 	background-color:#121212;
 	box-shadow: 0 10px 50px rgba(0,0,0,.25);
 }
+
 body.AJBnet div.gallery_background {
 	z-index:1000;
 	background-color: #222;
@@ -244,18 +249,31 @@ body.AJBnet div.gallery_inline_view {
 	height: 480px;
 	position: relative;	
 }
+
 body.AJBnet #gallery_inline_target {
 	margin-top:10px;
 	display:none;
 	width:640px;
 	border: 10px solid #fff;
 }
+
 body.AJBnet #gallery_inline_target button {
 	opacity:.2; border: 0;
 	background-color: #fff;
 	width: 100px; height: 100%; position: absolute; z-index: 90;
 	font-size: 4em;
 }
-body.AJBnet #gallery_inline_target button:hover {opacity:.8}
-body.AJBnet button.gallery_inline_view-previous { width: 100px; left: 0; }
-body.AJBnet button.gallery_inline_view-next { width: 100px; right: 0;}
+
+body.AJBnet #gallery_inline_target button:hover {
+	opacity:.8
+}
+
+body.AJBnet button.gallery_inline_view-previous {
+	width: 100px;
+	left: 0;
+}
+
+body.AJBnet button.gallery_inline_view-next {
+	width: 100px;
+	right: 0;
+}
