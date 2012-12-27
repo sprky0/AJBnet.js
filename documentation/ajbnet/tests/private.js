@@ -1,6 +1,8 @@
 AJBnet.define("Tests/Private",["Tests/Core","Tests/PublicPrivate"],function(){
-	
-	var tests = AJBnet.construct("Tests/Core",{container:"#results",type:""});
+
+	// actually (member properties/methods vs local properties/methods)
+
+	var tests = AJBnet.construct("Tests/Core",{type:"Test Public vs 'Private' variable concept",container:"#results"});
 
 	var p = AJBnet.construct("Tests/PublicPrivate");
 

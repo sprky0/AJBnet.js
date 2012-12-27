@@ -5,7 +5,7 @@
  */
 AJBnet.define("Tests/Constructor",["Tests/Core","Tests/Nested/Constructor"],function(){
 
-	var tests = AJBnet.construct("Tests/Core",{container:"#results"});
+	var tests = AJBnet.construct("Tests/Core",{type:"Test Constructor method",container:"#results"});
 
 	/*
 	Can't have cake + eat cake :(  (!instanceof if we run the constructor factory for each construct)

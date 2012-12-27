@@ -884,15 +884,21 @@
 			isLoaded : function(classpath) {
 				return (this.map[classpath] && this.map[classpath].loaded == true);
 			},
-			
-			inArray : function(o,a) {
 
+			/**
+			 * Check to see if a particular scalar value exists in an array
+			 * 
+			 * @param mixed o
+			 * @param array a
+			 * @return boolean
+			 */			
+			inArray : function(o,a) {
+				if (this.isArray(o) || this.isObject(o))
+					throw "Test value should be scalar";
 				for(var i in a)
 					if (a[i] == o)
 						return true;
-
 				return false;
-
 			},
 		
 			/**
