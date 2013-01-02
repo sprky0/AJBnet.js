@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<script type="text/javascript" src="ajbnet/vendor/html5shiv.js"></script>
+	<link rel="stylesheet" href="css/screen.css" /><!--[if lt IE 9]><style type="text/css">body.AJBnet header {background-color:#fdc;}</style><![endif]-->
+</head>
+<body class="AJBnet">
+
+	<header>
+		<h1><em>AJBnet.js</em> Framework</h1>
+		<h2>API Documentation</h2>
+	</header>
+
+	<nav class="metalinks">
+		<a href="http://www.github.com/sprky0/AJBnet.js" class="github" title="View Project on Github">View Project on Github</a>
+		<a href="ajbnet/ajbnet.zip" class="download" title="Download AJBnet.js source">Download</a>
+	</nav>
+	
+	<article class="header" id="intro">
+
+		<h1>Basic Implementation</h1>
+
+		<section>
+			<h2>Part one, load the framework</h2>
+			<p>Include the framework by giving it a script tag with a data-init attribute containing the configuration object.</p>
+			<code>&lt;script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{srcBasePath:'js/',shorthand:'MyNamespace'}"&gt;&lt;/script&gt;</code>
+		</section>
+
+		<section>
+			<h2>Your main function</h2>
+			<p>In terminology derived from c and similar languages, your 'main' function is the body of the application, which sets everything into motion.  This particular main has a dependency on a particular version of jquery, which will be loaded before this code is run.</p>
+			<code>MyNamespace.define("Namespace/Main","vendor/jquery-2.0.0.min.js",function(){
+
+  alert( typeof $ );
+
+});</code>
+		</section>
+
+	</article>
+
+	<article>
+
+		<h1>Advanced API (Methods)</h1>
+
+		<section>
+			<h2>AJBnet.init(options)</h2>
+			<p>The AJBnet.init method, and data-init attribute of the originating script tag both accept an object which can contain one or more of the following properties.</p>
+
+			<dl>
+
+				<dt>srcBasePath</dt>
+				<dd>the base path at which the library should attempt to load libraries.</dd>
+
+				<dt>shorthand</dt>
+				<dd>String containing a reference name to use for the global AJBnet library object.  This is provided to allow the library to be nested in another namespace, or simply referred to differently (eg:  YourSite.AJBnet or simply YourSite).  This will be declared in window / global scope when the AJBnet.init() method is called by autoInit or manually.</dd>
+
+				<dt>debug</dt>
+				<dd>Boolean <code class="inline">true</code> or <code class="inline">false</code> to enable or explicitly disable logging.</dd>
+
+				<dt>app</dt>
+				<dd>String or Array containing the classpath(s) of the desired main function(s).</dd>
+
+				<dt>main</dt>
+				<dd>An alias for <code class="inline">app</code></dd>
+
+			</dl>
+
+		</section>
+
+		<section>
+			<h2>AJBnet.run(classpath)</h2>
+			<p>If the dependency has been loaded, run the closure at the supplied classpath, and return its value.  If that particular dependency does not exist yet, attempt to requre it (this must happen asyncronously).</p>
+		</section>
+
+		<section>
+			<h2>AJBnet.construct(classpath,argument0,argument1, ... argumentN)</h2>
+			<p>Attempt to construct a new object from the constructor returned by the classpath.  This method will pass the supplied arguments to the constructor.</p>
+		</section>
+
+		<section>
+			<h2>AJBnet.global(key,value)</h2>
+			<p>Set or get value by key.  If value is excluded, it will return the value set previously.  If value is included, it returns a reference the AJBnet object so it can be chained.</p>
+		</section>
+
+		<section>
+			<h2>AJBnet.ready(closure)</h2>
+			<p>Run the passed closure when the document is available.  This can be nested in a define block or used separately.</p>
+		</section>
+
+		<section>
+			<h2>AJBnet.execute(closure)</h2>
+			<p>Run a closure and return the returned value.  If the variable passed is not a closure, this will return null.</p>
+		</section>
+
+		<section>
+			<h2>AJBnet.log(text,type)</h2>
+			<p>Try to write the text supplied to the AJBnet.logFunction() method.  The AJBnet.log method checks against the enabled log types to see if the log should be written or not.</p>
+		</section>
+
+	</article>
+	
+	<article>
+		
+		<h1>Advanced API (Properties)</h1>
+
+		<section>
+			<h2>AJBnet.key object</h2>
+			<p>The key object is a shorthand of many key codes to use for your bindings.<!--<code class="inline">Framework.bind(AJBnet.key.A, function(e){})</code>--></p>
+			<code>{
+  // ROMAN ALPHA
+  A : 65, B : 66, C : 67, D : 68,
+  E : 69, F : 70, G : 71, H : 72,
+  I : 73, J : 74, K : 75, L : 76,
+  M : 77, N : 78, O : 79, P : 80,
+  Q : 81, R : 82, S : 83, T : 84,
+  U : 85, V : 86, W : 87, X : 88,
+  Y : 89, Z : 90,
+  // OTHER
+  TAB : 9, SHIFT : 16, ESCAPE : 27,
+  RETURN : 13, ENTER : 13,
+  ALT : 18, OPTION : 18,
+  COMMAND : 224, CONTROL : 17,
+  DELETE : 8, SPACE : 32,
+
+  // ARROW KEYS
+  LEFT : 37, UP : 38,
+  RIGHT : 39, DOWN : 40,
+
+  //  NUMERALS
+  ZERO : 48, ONE : 49, TWO : 50,
+  THREE : 51, FOUR : 52, FIVE : 53,
+  SIX : 54, SEVEN : 55, EIGHT : 56,
+  NINE : 57
+}
+</code>
+		</section>
+
+	</article>
+
+	<footer>
+		<h1>Thanks for looking!</h1>
+		<p>I hope this library is useful to you.  If you don't like this maybe you will like <a href="http://clippy.ajbnet.com">clippy</a></p>
+	</footer>
+
+	<a class="logo" href="#intro">Top</a>
+
+	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true,app:'Tests/Main',shorthand:'my_site'}"></script>
+
+</body>
+</html>
