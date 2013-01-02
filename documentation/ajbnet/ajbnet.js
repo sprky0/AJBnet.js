@@ -208,7 +208,7 @@
 			init : function(options,force) {
 	
 				this.log("AJBnet.init()", this.logs.core);
-		
+
 				var i, path;
 		
 				if (config.initRun === true && force !== true)
@@ -220,14 +220,21 @@
 						default:
 							throw "Unknown option '" + i + "' passed to AJBnet.init";
 							break;
-		
+
+						case "base":
 						case "srcBasePath":
 							path = options[i];
-							if (!path.match(this.srcPath)) {
-								// maybe it might eventually be "/loader.script?lib="
-								throw "Invalid src path, must end in trailing slash.";
-							}
+							// if (!path.match(this.srcPath)) {
+							// maybe it might eventually be "/loader.script?lib="
+							//	throw "Invalid src path, must end in trailing slash.";
+							// }
 							config.srcBasePath = path;
+							break;
+		
+						case "shorthand":
+							if (window[options[i]])
+								throw "Requested shorthand '" + options[i] + "' already in use in window scope.";
+							config.shorthand = options[i];
 							break;
 		
 						case "debug":
@@ -927,13 +934,15 @@
 
 			/**
 			 * get the private config var
+			 * @return object config
 			 */
 			getConfig : function() {
 				return config;
 			},
 
 			/**
-			 * get the private regex var
+			 * get the private regex var containing
+			 * @return object regex
 			 */
 			getRegex : function() {
 				return regex;

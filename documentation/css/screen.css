@@ -133,11 +133,15 @@ body.AJBnet code {
 	padding: 3px 10px;
 	border-radius: 3px;
 	font-family: courier;
-	background-color: #eee;
-	color: #0a0;
+	background-color: #f0f0f0;
+	border: 1px solid #dddddd;
+	color: #00aa00;
 	font-size: .8em;
 	white-space: pre;
 }
+	body.AJBnet code.inline {
+		display:inline;		
+	}
 
 body.AJBnet nav.right {
 	position: fixed; right: 20px; top: 20px;
@@ -148,17 +152,19 @@ nav.right div.testgroup {
 	font-size: .8em;	
 }
 
-body.AJBnet dl {}
+body.AJBnet dl {
+	margin-top: 10px;	
+}
 
 body.AJBnet dt {
 	color: #555;
 	font-size: .8em;
 	font-weight: bold;
 }
-
 body.AJBnet dd {
 	color: #555;
 	font-size: .8em;
+	margin-bottom: 10px;
 }
 
 body.AJBnet a.logo {
