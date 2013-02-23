@@ -15,11 +15,17 @@
 		<nav class="right">
 
 			<div class="testgroup">
+				Pre Test:
+				<button onclick="(function(t,b){b.disabled = true;var s = document.createElement('script');s.setAttribute('src','ajbnet/ajbnet.js');s.setAttribute('data-init','{debug:true,app:\'Tests/Main\'}');t.appendChild(s);})(document.body,this);">Load Library Asyncronously</button>
+			</div>
+
+			<div class="testgroup">
 				Expected Working:
 				<button class="test" id="Tests/Constructor">Constructor</button>
 				<button class="test" id="Tests/Comparison">Comparison</button>
 				<button class="test" id="Tests/Keys">Check Key Codes</button>
 				<button class="test" id="Tests/Tag">Find Origin</button>
+				<button class="test" id="Tests/Private">Public / Private</button>
 			</div>
 
 			<div class="testgroup">
@@ -29,7 +35,6 @@
 							Always fails in webkit, FF sometimes works
 				-->
 				<button class="test" id="Tests/Doubleload">Double Load</button>
-				<button class="test" id="Tests/Private">Public / Private</button>
 			</div>
 
 			<div class="testgroup">			
@@ -56,11 +61,11 @@
 		<h1>Thanks for looking!</h1>
 		<p>I hope this library is useful to you.  If you don't like this maybe you will like <a href="http://clippy.ajbnet.com">clippy</a></p>
 
-		<p>Click a button in the top right to execute that test, or <a class="all-tests" href="#all-tests">try them all at once like a madman</a>.  Just kidding, this is a good idea.</p>
+		<p>Click a button in the top right to execute that test, or <a class="all-tests" href="#all-tests">try them all at once</a>!</p>
 
 	</footer>
 
-	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true,app:'Tests/Main'}"></script>
+	<!--<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{debug:true,app:'Tests/Main'}"></script>-->
 
 </body>
 </html>
