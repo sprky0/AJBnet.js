@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<script type="text/javascript" src="ajbnet/vendor/html5shiv.js"></script>
+	<link rel="stylesheet" href="css/screen-min.css" /><!--[if lt IE 9]><style type="text/css">body.AJBnet header {background-color:#fdc;}</style><![endif]-->
+	<script>
+
+	function run(form) {
+
+//{debug:true,app:'Tests/Main',src:'ajbnet/'}
+
+		console.log( form.children );
+
+	}
+
+	</script>
+	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{src:'ajbnet/',app:'LoadTree/Main'}"></script>
+</head>
+<body class="AJBnet">
+
+	<header>
+
+		<h1><em>AJBnet.js</em> Framework</h1>
+		<h2>Load Debugger</h2>
+
+		<nav class="right">
+
+			<form onsubmit="run(this);return false;" id="loadtree_form">
+				<input name="data-init" value="{src:'ajbnet/',app:'LoadTree/Main'}" style="width:100%"/>
+				<button>Run</button>
+			</form>
+
+		</nav>
+
+		<br class="clear" />
+
+	</header>
+
+	<nav class="metalinks">
+		<a href="http://www.github.com/sprky0/AJBnet.js" class="github" title="View Project on Github">View Project on Github</a>
+		<a href="ajbnet/ajbnet.zip" class="download" title="Download AJBnet.js source">Download</a>
+	</nav>
+
+	<div id="results"></div>
+
+	<footer>
+
+		<!-- footer stuff -->
+
+	</footer>
+
+</body>
+</html>
