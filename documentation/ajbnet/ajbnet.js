@@ -1,13 +1,18 @@
 /*!
  * AJBnet Javascript Library
  * 
- * @version 0.9.5
+ * @version 0.9.6
  * @author sprky0
  * @link http://js.ajbnet.com
  */
-(function(scope){
+(function(scope,key){
 
-	scope.AJBnet = (function(){
+	'use strict';
+
+	/**
+	 * AJBnet library factory
+	 */
+	function ajbnet_build(){
 
 		/**
 		 * Local dynamic constructor method, thanks to T.J. Crowder's answer on stack overflow for the insight
@@ -72,6 +77,21 @@
 		};
 
 		/**
+		 * Include the JSON object if it is not available in the Browser
+		 */
+		if (!JSON) {
+			var JSON = {
+				stringify : function(j){
+					throw "Not supported yet.";
+				},
+				parse : function(s){
+					// @note don't do this, go here and do this instead https://github.com/douglascrockford/JSON-js/blob/master/json_parse.js
+					return eval("("+s+")");
+				}
+			}
+		}
+
+		/**
 		 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
 		 * 
 		 * @var object
@@ -90,7 +110,7 @@
 
 			debug : false,
 			initRun : false,
-			srcBasePath : null,
+			src : null,
 
 			/**
 			 * Which logs should be enabled for logging in the log?  LOGS
@@ -213,7 +233,7 @@
 		
 				if (config.initRun === true && force !== true)
 					throw "Init already run!";
-		
+
 				for(i in options||{}){
 					switch(i){
 		
@@ -221,16 +241,10 @@
 							throw "Unknown option '" + i + "' passed to AJBnet.init";
 							break;
 
-						case "base":
-						case "srcBasePath":
-							path = options[i];
-							// if (!path.match(this.srcPath)) {
-							// maybe it might eventually be "/loader.script?lib="
-							//	throw "Invalid src path, must end in trailing slash.";
-							// }
-							config.srcBasePath = path;
+						case "src":
+							config.src = options[i];
 							break;
-		
+
 						case "shorthand":
 							if (window[options[i]])
 								throw "Requested shorthand '" + options[i] + "' already in use in window scope.";
@@ -248,8 +262,9 @@
 					}
 				}
 		
-				if (this.isNull(config.srcBasePath))
-					config.srcBasePath = "ajbnet/";
+				if (this.isNull(config.src)) {
+					config.src = "ajbnet/";
+				}
 		
 				if (!this.isNull(config.shorthand)) {
 					if (window[config.shorthand])
@@ -295,9 +310,7 @@
 				init_json_string = origin.getAttribute("data-init");
 				if (!this.isNull(init_json_string)){
 
-					// THIS IS THE _BAD_ WAY TO PARSE JSON, DON'T DO THIS KIDS!
-					// @todo replace this
-					init_object = eval("("+init_json_string+")");
+					init_object = this.JSON.parse(init_json_string);
 
 					if (!this.isObject(init_object)) {
 						this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
@@ -348,8 +361,6 @@
 			},
 	
 			/**
-			 * Sorry for quoting this puppy ... it's a reserved word
-			 * 
 			 * @param string classname Which class to instantiate
 			 * @args // do something with args here, how do i jsdoc this puppy
 			 * @throws exception
@@ -401,7 +412,7 @@
 			},
 		
 			/**
-			 * Loop is called continuously until the document is ready for interaction
+			 * Loop is called periodically until the document is ready for interaction
 			 *
 			 * There must be a better way to do this
 			 */
@@ -409,10 +420,9 @@
 
 				if (!this.isReady()) {
 
-					// i'm not sure which one of these is worse -- setting timeout might let the browser control things a bit better ?
-					// var that = this;
-					// setTimeout(function() { that.readyLoop(); }, 1);
-					this.readyLoop();
+					var that = this;
+					// check like, 100x per second until it's ready
+					setTimeout(function() { that.readyLoop(); }, 10);
 
 				} else {
 		
@@ -442,6 +452,7 @@
 				// set the state if it exists
 				if (!this.map[classpath]) {
 					this.map[classpath] = {
+						dependencies : [],
 						loading : true,
 						loaded : false,
 						running : false,
@@ -452,7 +463,7 @@
 				// seems to be a static library
 				if (classpath.match(regex.external_library)) {
 		
-					src = config.srcBasePath + classpath;
+					src = config.src + classpath;
 					this.load(src,classpath,function(){
 		
 						// Do all the setup for this before we call "loaded()" and start fidgeting with dependencies
@@ -462,8 +473,8 @@
 		
 				// seems to be a namespaced class
 				} else if (classpath.match(regex.namespaced_class)) {
-		
-					src = config.srcBasePath + (classpath+"").toLowerCase() + ".js";
+
+					src = config.src + (classpath+"").toLowerCase() + ".js";
 					this.load(src,classpath);
 		
 				// no good!
@@ -546,10 +557,10 @@
 					token = path.shift();
 					pointer = pointer[token];
 				}
-		
+
 				if (!this.isObject(pointer)) // || !token) (token is done now)
 					throw "Classpath '" + classpath + "' could not be traversed!  Incorrect naming or nesting in declaration?";
-		
+
 				if (!this.isFunction(definition_closure))
 					throw "Closure was not passed for " + classpath;
 		
@@ -600,7 +611,7 @@
 	}
 	*/
 	
-						that.log("onload callback for " + classpath + " at " + src + " called.", AJBnet.logs.loading);
+						that.log("onload callback for " + classpath + " at " + src + " called.", core.logs.loading);
 		
 						if (that.isFunction(callback))
 							callback();
@@ -743,10 +754,7 @@
 
 					this.closureHolder = closure;
 					var result = this.closureHolder();
-
 					delete(this.closureHolder);
-					// this.closureHolder = null;
-
 					return result;
 
 				} else {
@@ -769,7 +777,7 @@
 			 */
 			extend : function(obj1,obj2) {
 		
-				for(i in obj2||{})
+				for(var i in obj2||{})
 					obj1[i] = obj2[i];
 		
 				return obj1;
@@ -907,7 +915,7 @@
 						return true;
 				return false;
 			},
-		
+
 			/**
 			 * logging
 			 *
@@ -928,7 +936,6 @@
 			 * @return object AJBnet
 			 */
 			logFunction : function(obj) {
-				console.log(obj);
 				return this;
 			},
 
@@ -946,19 +953,38 @@
 			 */
 			getRegex : function() {
 				return regex;
+			},
+
+			/**
+			 * Internal JSON methods
+			 */
+			JSON : {
+				stringify : function(s){
+					return JSON.stringify(s);
+				},
+				parse : function(j) {
+					return JSON.parse(j);
+				}
 			}
 
 		};
 
-		/**
-		 * AJBnet.autoInit looks for data-init object on the origin script tag,
-		 * and uses this as a JSON object to use against the AJBnet.init method
-		 */
-		core.autoInit();
-
 		// do whatever other internal crap needs to happen here if you want
 		return core;
 
-	})();
+	}
 
-})(window);
+	var core = ajbnet_build();
+
+	/**
+	 * Assign the library to our desired key
+	 */
+	scope[key] = core;
+
+	/**
+	 * AJBnet.autoInit looks for data-init object on the origin script tag,
+	 * and uses this as a JSON object to use against the AJBnet.init method
+	 */
+	core.autoInit();
+
+})(window,'AJBnet');
