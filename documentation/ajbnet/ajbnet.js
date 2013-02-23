@@ -7,7 +7,8 @@
  */
 (function(scope,key){
 
-	'use strict';
+	// the minifier hates this puppy, how come?
+	"use strict";
 
 	/**
 	 * AJBnet library factory
@@ -77,21 +78,6 @@
 		};
 
 		/**
-		 * Include the JSON object if it is not available in the Browser
-		 */
-		if (!JSON) {
-			var JSON = {
-				stringify : function(j){
-					throw "Not supported yet.";
-				},
-				parse : function(s){
-					// @note don't do this, go here and do this instead https://github.com/douglascrockford/JSON-js/blob/master/json_parse.js
-					return eval("("+s+")");
-				}
-			}
-		}
-
-		/**
 		 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
 		 * 
 		 * @var object
@@ -128,6 +114,19 @@
 				error : false
 			}
 
+		},
+
+		/**
+		 * Include the JSON object if it is not available in Browser
+		 */
+		JSON = JSON || {
+			stringify : function(j){
+				throw "Not supported yet.";
+			},
+			parse : function(s){
+				// @note don't do this, go here and do this instead https://github.com/douglascrockford/JSON-js/blob/master/json_parse.js
+				return eval("("+s+")");
+			}
 		},
 
 		/**
@@ -228,13 +227,11 @@
 			init : function(options,force) {
 	
 				this.log("AJBnet.init()", this.logs.core);
-
-				var i, path;
 		
 				if (config.initRun === true && force !== true)
 					throw "Init already run!";
 
-				for(i in options||{}){
+				for(var i in options||{}){
 					switch(i){
 		
 						default:
@@ -598,19 +595,7 @@
 					
 					// IE rules :(
 					element.onload = element.onreadystatechange = function() {
-	
-	/*
-	script.onreadystatechange = function() {
-	if ( !done && (!this.readyState ||
-	this.readyState === "loaded" || this.readyState === "complete") ) {
-	done = true;
-	// Handle memory leak in IE
-	script.onload = script.onreadystatechange = null;
-	if ( head && script.parentNode ) {
-	    head.removeChild( script );
-	}
-	*/
-	
+
 						that.log("onload callback for " + classpath + " at " + src + " called.", core.logs.loading);
 		
 						if (that.isFunction(callback))
@@ -619,6 +604,20 @@
 						that.loaded(classpath,forceloop);
 		
 					};
+
+
+					// notes re IE implementation
+					/*
+					script.onreadystatechange = function() {
+					if ( !done && (!this.readyState ||
+					this.readyState === "loaded" || this.readyState === "complete") ) {
+					done = true;
+					// Handle memory leak in IE
+					script.onload = script.onreadystatechange = null;
+					if ( head && script.parentNode ) {
+					    head.removeChild( script );
+					}
+					*/
 		
 				document.getElementsByTagName("head")[0].appendChild( element );
 		
