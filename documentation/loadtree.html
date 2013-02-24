@@ -4,17 +4,6 @@
 	<meta charset="utf-8" />
 	<script type="text/javascript" src="ajbnet/vendor/html5shiv.js"></script>
 	<link rel="stylesheet" href="css/screen-min.css" /><!--[if lt IE 9]><style type="text/css">body.AJBnet header {background-color:#fdc;}</style><![endif]-->
-	<script>
-
-	function run(form) {
-
-//{debug:true,app:'Tests/Main',src:'ajbnet/'}
-
-		console.log( form.children );
-
-	}
-
-	</script>
 	<script type="text/javascript" src="ajbnet/ajbnet.js" data-init="{src:'ajbnet/',app:'LoadTree/Main'}"></script>
 </head>
 <body class="AJBnet">
@@ -26,7 +15,7 @@
 
 		<nav class="right">
 
-			<form onsubmit="run(this);return false;" id="loadtree_form">
+			<form onsubmit="return false;" id="loadtree_form">
 				<input name="data-init" value="{src:'ajbnet/',app:'LoadTree/Main'}" style="width:100%"/>
 				<button>Run</button>
 			</form>

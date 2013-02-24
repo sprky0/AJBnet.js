@@ -941,6 +941,13 @@
 			},
 
 			/**
+			 * Run the local parseJSON method
+			 */
+			parseJSON : function(json_string) {
+				return parseJSON(json_string);	
+			},
+
+			/**
 			 * get the private config var
 			 * @return object config
 			 */
