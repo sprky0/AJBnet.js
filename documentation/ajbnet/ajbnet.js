@@ -98,6 +98,18 @@
 			return null;
 
 		},
+		
+		parseConfigJSON = function(json_string) {
+
+			if (core.isObject(JSON) && core.isFunction(JSON.parse)) {
+				core.log("AJBnet.parseConfigJSON() via core JSON parser", core.logs.core);
+				return JSON.parse(json_string);
+			} else {
+				core.log("AJBnet.parseConfigJSON() via function eval workaround", core.logs.core);
+				return (new Function("return "+json_string))();
+			}
+
+		},
 
 		/**
 		 * Stack of closures to run on document ready
@@ -164,21 +176,6 @@
 
 			}
 
-		},
-
-		/**
-		 * Include the JSON object if it is not available in Browser
-		 */
-		JSON = JSON || {
-			stringify : function(j){
-				throw "Not supported yet.";
-			},
-			parse : function(s){
-				// this sucks because it stops obsfucation of local symbols
-				// @note don't do this, go here and do this instead https://github.com/douglascrockford/JSON-js/blob/master/json_parse.js
-				// return eval("("+s+")");
-				return s;
-			}
 		},
 
 		/**
@@ -354,7 +351,7 @@
 				init_json_string = origin.getAttribute("data-init");
 				if (!this.isNull(init_json_string)){
 
-					init_object = this.JSON.parse(init_json_string);
+					init_object = parseConfigJSON(init_json_string);
 
 					if (!this.isObject(init_object)) {
 						this.log("AJBnet.autoInit() did not find a valid object for init", core.logs.core);
@@ -961,18 +958,6 @@
 
 			getOrigin : function() {
 				return getOrigin();
-			},
-
-			/**
-			 * Internal JSON methods
-			 */
-			JSON : {
-				stringify : function(s){
-					return JSON.stringify(s);
-				},
-				parse : function(j) {
-					return JSON.parse(j);
-				}
 			}
 
 		};
