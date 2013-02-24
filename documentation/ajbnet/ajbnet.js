@@ -1,14 +1,14 @@
 /*!
  * AJBnet Javascript Library
  * 
- * @version 0.9.6
+ * @version 0.9.7
  * @author sprky0
  * @link http://js.ajbnet.com
  */
-(function(scope,key){
+;(function(scope,key){
 
-	// the minifier hates this puppy, how come?
-	"use strict";
+	// YUI doesn't love this, so i'm holding off on it
+	// "use strict";
 
 	/**
 	 * AJBnet library factory
@@ -22,7 +22,7 @@
 		 * @param object ctor constructor to use
 		 * @param array params parameters to pass to the constructor
 		 */
-		function construct(ctor, params) {
+		var construct = function(ctor, params) {
 
 			var obj, newobj;
 
@@ -30,7 +30,7 @@
 			if (typeof Object.create === "function") {
 				// ECMAScript 5 
 				obj = Object.create(ctor.prototype);
-				// this.log("Used Object.create", this.logs.construct);
+				// this.log("Used Object.create", core.logs.construct);
 	
 			} else if ({}.__proto__) {
 	
@@ -39,16 +39,16 @@
 				obj.__proto__ = ctor.prototype;
 	
 				if (obj.__proto__ === ctor.prototype) {
-					// this.log("Used __proto__", this.logs.construct);
+					// this.log("Used __proto__", core.logs.construct);
 				} else {
 					// Setting it didn't work
-					// this.log("__proto__ failed, used fake constructor", this.logs.construct);
+					// this.log("__proto__ failed, used fake constructor", core.logs.construct);
 					obj = makeObjectWithFakeCtor();
 				}
 	
 			} else {
 				// Fallback
-				// this.log("Used fake constructor", this.logs.construct);
+				// this.log("Used fake constructor", core.logs.construct);
 				obj = makeObjectWithFakeCtor();
 			}
 			
@@ -75,14 +75,41 @@
 				return new fakeCtor();
 			}
 	
-		};
+		},
+
+		/**
+		 * Get a reference to the script tag that is believed to have originated the load for the framework
+		 * 
+		 * @void
+		 */	
+		getOrigin = function() {
+			
+			core.log("AJBnet.getOrigin()", core.logs.core);
+	
+			var scripts = document.getElementsByTagName("script"), i, test;
+
+			for (i in scripts ) {
+				test = scripts[i].src + "";
+				if ( test.match( regex.origin ) ) {
+					return scripts[i];
+				}
+			}
+
+			return null;
+
+		},
+
+		/**
+		 * Stack of closures to run on document ready
+		 */
+		readyStack = [],
 
 		/**
 		 * AJBnet Configuration parameters - where to try to load things, state, debug, etc.
 		 * 
 		 * @var object
 		 */
-		var config = {
+		config = {
 
 			/**
 			 * @var string|array Classpath of the main function (will be run automatically on load)
@@ -117,6 +144,29 @@
 		},
 
 		/**
+		 * Loop is called periodically until the document is ready for interaction
+		 *
+		 * There must be a better way to do this
+		 * 
+		 * @void
+		 */
+		readyLoop = function() {
+
+			if (!core.isReady()) {
+
+				// check like, lets say, 100x per second until it's ready
+				setTimeout(readyLoop, 10);
+
+			} else {
+
+				for(var i in readyStack)
+					core.execute(readyStack[i]);
+
+			}
+
+		},
+
+		/**
 		 * Include the JSON object if it is not available in Browser
 		 */
 		JSON = JSON || {
@@ -124,8 +174,10 @@
 				throw "Not supported yet.";
 			},
 			parse : function(s){
+				// this sucks because it stops obsfucation of local symbols
 				// @note don't do this, go here and do this instead https://github.com/douglascrockford/JSON-js/blob/master/json_parse.js
-				return eval("("+s+")");
+				// return eval("("+s+")");
+				return s;
 			}
 		},
 
@@ -165,13 +217,8 @@
 			/**
 			 * All closures called by AJBnet.execute() are assigned here first
 			 */
-			closureHolder : null,
-			
-			/**
-			 * Stack of closures to run on document ready
-			 */
-			readyStack : [],
-		
+			closure : null,
+
 			/**
 			 * @var object globals Holder for any random data.
 			 */
@@ -226,7 +273,7 @@
 			 */
 			init : function(options,force) {
 	
-				this.log("AJBnet.init()", this.logs.core);
+				this.log("AJBnet.init()", core.logs.core);
 		
 				if (config.initRun === true && force !== true)
 					throw "Init already run!";
@@ -262,7 +309,7 @@
 				if (this.isNull(config.src)) {
 					config.src = "ajbnet/";
 				}
-		
+
 				if (!this.isNull(config.shorthand)) {
 					if (window[config.shorthand])
 						throw "Shorthand " + config.shorthand + " has already been declared, before AJBnet.init()!";
@@ -273,7 +320,7 @@
 				// If the document is not ready yet, initialize the ready loop which
 				// will wait to execute readyStack array of closures
 				if (!this.isReady())
-					this.readyLoop();
+					readyLoop();
 		
 				config.initRun = true;
 		
@@ -294,8 +341,8 @@
 			 * Try to get an init object from the optional data-init property of the originating script tag.
 			 */
 			autoInit : function() {
-		
-				var origin = this.getOrigin(),
+
+				var origin = getOrigin(),
 					init_json_string,
 					init_object;
 
@@ -310,7 +357,7 @@
 					init_object = this.JSON.parse(init_json_string);
 
 					if (!this.isObject(init_object)) {
-						this.log("AJBnet.autoInit() did not find a valid object for init", this.logs.core);
+						this.log("AJBnet.autoInit() did not find a valid object for init", core.logs.core);
 						return this;
 					}
 
@@ -321,26 +368,6 @@
 
 			},
 
-			/**
-			 * Get a reference to the script tag that is believed to have originated the load for the framework
-			 */	
-			getOrigin : function() {
-				
-				this.log("AJBnet.getOrigin()", this.logs.core);
-		
-				var scripts = document.getElementsByTagName("script"), i, test;
-		
-				for (i in scripts ) {
-					test = scripts[i].src + "";
-					if ( test.match( regex.origin ) ) {
-						return scripts[i];
-					}
-				}
-				
-				return null;
-		
-			},
-		
 			/**
 			 * Run a code block in a particular namespace, minding dependencies etc.
 			 * 
@@ -376,7 +403,7 @@
 				token = classname;
 				pointer = this.libs;
 
-				this.log("AJBnet.construct() -> Trying to make " + classname + " (" + classpath + ")", this.logs.construct);
+				this.log("AJBnet.construct() -> Trying to make " + classname + " (" + classpath + ")", core.logs.construct);
 
 				// Traverse the tree of loaded classes until we reach the last
 				while (path.length > 0) {
@@ -403,31 +430,8 @@
 				if (this.isReady())
 					this.execute(closure);
 				else
-					this.readyStack.push(closure);
-		
-				return this;
-			},
-		
-			/**
-			 * Loop is called periodically until the document is ready for interaction
-			 *
-			 * There must be a better way to do this
-			 */
-			readyLoop : function() {
+					readyStack.push(closure);
 
-				if (!this.isReady()) {
-
-					var that = this;
-					// check like, 100x per second until it's ready
-					setTimeout(function() { that.readyLoop(); }, 10);
-
-				} else {
-		
-					for(var i in this.readyStack)
-						this.execute(this.readyStack[i]);
-		
-				}
-		
 				return this;
 			},
 		
@@ -491,6 +495,8 @@
 			 */
 			define : function(classpath, dependencies_or_closure, closure) {
 		
+				// consider doing this test with arguments array to make these param names less stupid
+			
 				// Test to figure out which param is which (can exclude dependencies if you don't have any)
 				if (this.isFunction(dependencies_or_closure)) {
 					closure = dependencies_or_closure;
@@ -539,7 +545,7 @@
 			
 			register : function(classpath, definition_closure) {
 		
-				this.log("AJBnet.register() - Running for " + classpath, this.logs.construct);
+				this.log("AJBnet.register() - Running for " + classpath, core.logs.construct);
 		
 				// classpath ->  [namespace/]...class
 				// definition_closure - closure that either returns itself, or returns the constructor that is created in the closure
@@ -561,7 +567,7 @@
 				if (!this.isFunction(definition_closure))
 					throw "Closure was not passed for " + classpath;
 		
-				this.log("AJBnet.register() - Running closure  for " + classpath, this.logs.construct);
+				this.log("AJBnet.register() - Running closure  for " + classpath, core.logs.construct);
 
 				this.map[classpath].running = true;
 
@@ -583,12 +589,11 @@
 		
 			load : function(src,classpath,callback,forceloop) {
 		
-				this.log("AJBnet.load() -> " + src, this.logs.core);
+				this.log("AJBnet.load() -> " + src, core.logs.core);
 		
 				forceloop = forceloop || false;
 				
-				var element = document.createElement("script"),
-					that = this;
+				var element = document.createElement("script"), that = this;
 		
 					element.setAttribute("type","text/javascript");
 					element.setAttribute("src", src);
@@ -636,13 +641,13 @@
 					replacement_array = [],
 					i, j, k;
 		
-				this.log("AJBnet.loaded() START" + details, this.logs.loading);
+				this.log("AJBnet.loaded() START" + details, core.logs.loading);
 
 
 				// this initial loop sees if we can knock off any dependencies right away
 				if (classpath) {
 
-					this.log(classpath + " loaded, testing dependencies.", this.logs.loading);
+					this.log(classpath + " loaded, testing dependencies.", core.logs.loading);
 
 					this.map[classpath].loaded = true;
 					this.map[classpath].loading = false;
@@ -704,7 +709,7 @@
 
 						this.map[i].running = true;
 
-						this.log("Registering " + i, this.logs.loading);
+						this.log("Registering " + i, core.logs.loading);
 						this.register(i, this.map[i].callback);
 						loop = true;
 
@@ -717,12 +722,12 @@
 					}
 				}
 
-				this.log("AJBnet.loaded() END" + details, this.logs.loading );
+				this.log("AJBnet.loaded() END" + details, core.logs.loading );
 
 				// When a library has been loaded + run, it may have satisfied others, so we loop once
 				if (loop == true) {
 
-					this.log("AJBnet.loaded() triggering LOOP" + details, this.logs.loading );
+					this.log("AJBnet.loaded() triggering LOOP" + details, core.logs.loading );
 
 					/*
 					var that = this;
@@ -751,9 +756,9 @@
 
 				if (this.isFunction(closure)) {
 
-					this.closureHolder = closure;
-					var result = this.closureHolder();
-					delete(this.closureHolder);
+					this.closure = closure;
+					var result = this.closure();
+					delete(this.closure);
 					return result;
 
 				} else {
@@ -796,7 +801,7 @@
 					if (this.globals[key]) {
 						return this.globals[key];
 					} else {
-						this.log("Trying to access undefined property '" + key + "'", this.logs.core);
+						this.log("Trying to access undefined property '" + key + "'", core.logs.core);
 						return null; // throw "Trying to access undefined property '" + key + "'";
 					}
 				}
@@ -954,6 +959,10 @@
 				return regex;
 			},
 
+			getOrigin : function() {
+				return getOrigin();
+			},
+
 			/**
 			 * Internal JSON methods
 			 */
@@ -973,6 +982,9 @@
 
 	}
 
+	/**
+	 * Get a copy of the core library
+	 */
 	var core = ajbnet_build();
 
 	/**
