@@ -84,7 +84,7 @@
 		 */	
 		getOrigin = function() {
 			
-			core.log("AJBnet.getOrigin()", core.logs.core);
+			core.log("AJBnet local getOrigin()", core.logs.core);
 	
 			var scripts = document.getElementsByTagName("script"), i, test;
 
@@ -98,14 +98,14 @@
 			return null;
 
 		},
-		
-		parseConfigJSON = function(json_string) {
+
+		parseJSON = function(json_string) {
 
 			if (core.isObject(JSON) && core.isFunction(JSON.parse)) {
-				core.log("AJBnet.parseConfigJSON() via core JSON parser", core.logs.core);
+				core.log("AJBnet local parseJSON() via core JSON parser", core.logs.core);
 				return JSON.parse(json_string);
 			} else {
-				core.log("AJBnet.parseConfigJSON() via function eval workaround", core.logs.core);
+				core.log("AJBnet local parseJSON() via new Function() eval workaround", core.logs.core);
 				return (new Function("return "+json_string))();
 			}
 
@@ -351,7 +351,7 @@
 				init_json_string = origin.getAttribute("data-init");
 				if (!this.isNull(init_json_string)){
 
-					init_object = parseConfigJSON(init_json_string);
+					init_object = parseJSON(init_json_string);
 
 					if (!this.isObject(init_object)) {
 						this.log("AJBnet.autoInit() did not find a valid object for init", core.logs.core);
@@ -984,3 +984,4 @@
 	core.autoInit();
 
 })(window,'AJBnet');
+
